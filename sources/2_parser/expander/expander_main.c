@@ -1,15 +1,6 @@
 #include "../../../includes/minishell.h"
 
-void	failed_mess(t_data *data, char *mess, int code)
-{
-	ft_putstr_fd(mess, 2);
-	if (*mess)
-		ft_putstr_fd("\n", 2);
-	//data->err = 1;
-	data->exit_status += code;
-}
-
-static char	*expand_exit_status(t_data *data, int *i)
+char	*expand_exit_status(t_data *data, int *i)
 {
 	char	*before;
 	char	*in_var;
@@ -30,7 +21,7 @@ static char	*expand_exit_status(t_data *data, int *i)
 	return (data->expanded_str);
 }
 
-static char	*expand_stuff(t_data *data, char *str, char *var, int *i)
+char	*expand_stuff(t_data *data, char *str, char *var, int *i)
 {
 	char	*before;
 	char	*in_var;
@@ -51,7 +42,7 @@ static char	*expand_stuff(t_data *data, char *str, char *var, int *i)
 	return (data->expanded_str);
 }
 
-static char	*expand_else(t_data *data, char *str, int *i)
+char	*expand_else(t_data *data, char *str, int *i)
 {
 	char	*tmp;
 
@@ -67,7 +58,7 @@ static char	*expand_else(t_data *data, char *str, int *i)
 	return (data->expanded_str);
 }
 
-static char	*expan_var(char *str, t_data *data)
+char	*expan_var(char *str, t_data *data)
 {
 	int		i;
 	char	*var;

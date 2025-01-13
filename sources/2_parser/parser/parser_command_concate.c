@@ -1,11 +1,5 @@
 #include "../../../includes/minishell.h"
 
-/**
- * @brief Compte le nombre total d'éléments associés à une commande.
- *
- * @param node Noeud de commande dont les éléments sont comptés.
- * @return Le nombre total d'éléments (commande, arguments et flags).
- */
 size_t	get_number_of_command_elements(t_commands *node)
 {
 	size_t	count;
@@ -28,13 +22,6 @@ size_t	get_number_of_command_elements(t_commands *node)
 	return (count);
 }
 
-/**
- * @brief Ajoute une commande au tableau final_group d'un noeud de commande.
- *
- * @param command_ptr Pointeur vers le noeud de commande à modifier.
- * @param i Pointeur vers l'indice actuel dans le tableau final_group.
- * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE sinon.
- */
 int	add_cmd_to_final_group(t_commands *command_ptr, size_t *i)
 {
 	command_ptr->final_group[*i] = ft_strdup(command_ptr->command);
@@ -44,14 +31,6 @@ int	add_cmd_to_final_group(t_commands *command_ptr, size_t *i)
 	return (EXIT_SUCCESS);
 }
 
-/**
- * @brief Ajoute les arguments d'un noeud de commande au tableau final_group.
- *
-
-* @param command_ptr Pointeur vers le noeud de commande contenant les arguments.
- * @param i Pointeur vers l'indice actuel dans le tableau final_group.
- * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE sinon.
- */
 int	add_args_to_final_group(t_commands *command_ptr, size_t *i)
 {
 	t_list	*arg;
@@ -68,13 +47,6 @@ int	add_args_to_final_group(t_commands *command_ptr, size_t *i)
 	return (EXIT_SUCCESS);
 }
 
-/**
- * @brief Ajoute les flags d'un noeud de commande au tableau final_group.
- *
- * @param command_ptr Pointeur vers le noeud de commande contenant les flags.
- * @param i Pointeur vers l'indice actuel dans le tableau final_group.
- * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE sinon.
- */
 int	add_flags_to_final_group(t_commands *command_ptr, size_t *i)
 {
 	t_list	*flag;
@@ -91,12 +63,6 @@ int	add_flags_to_final_group(t_commands *command_ptr, size_t *i)
 	return (EXIT_SUCCESS);
 }
 
-/**
- * @brief Concatène les cmds, args et flags dans un tab final_group.
- *
- * @param data Structure contenant la liste des commandes.
- * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE sinon.
- */
 int	concate_final_group_commands(t_data *data)
 {
 	t_commands	*command_ptr;

@@ -38,6 +38,8 @@ SRC         =   main.c \
                 1_lexer/lexer_utils.c \
                 2_parser/expander/expander_main.c \
                 2_parser/expander/expander_utils.c \
+				2_parser/expander/expander_dollars.c \
+				2_parser/expander/expander_more_utils.c \
                 2_parser/heredoc/here_doc.c \
                 2_parser/parser/parser_main.c \
                 2_parser/parser/parser_utils.c \
@@ -93,11 +95,6 @@ all: project_logo $(OBJ_DIR)
 
 $(LIBFT):
 	@echo "$(CYAN)\nCOMPILING $$(echo $(LIBFT) | tr '[:lower:]' '[:upper:]')$(RESET)"
-	@if [ -d $(LIBFT_DIR) ]; then \
-		git -C $(LIBFT_DIR) pull; \
-	else \
-		git clone https://github.com/ugozchi/42_Libft.git $(LIBFT_DIR); \
-	fi
 	make -C $(LIBFT_DIR)
 
 $(NAME): entry_message $(OBJS)
