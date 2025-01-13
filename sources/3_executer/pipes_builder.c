@@ -1,0 +1,51 @@
+#include "minishell.h"
+
+/*
+** Crée un tableau contenant les descripteurs de fichiers nécessaires
+** pour gérer les entrées/sorties entre plusieurs commandes dans un pipeline.
+**
+** @param fd_out: Le descripteur de sortie global (par ex., stdout).
+** @param fd_in: Le descripteur d'entrée global (par ex., stdin).
+** @param cmds_num: Le nombre de commandes dans le pipeline.
+**
+** @return: Un tableau d'entiers contenant les descripteurs configurés, ou
+** NULL en cas d'erreur.
+*/
+int	*build_pipes(int fd_out, int fd_in, int cmds_num)
+{
+	int	i;
+	int	*fd_pipes;
+
+	if (!cmds_num)
+		return (0);
+	fd_pipes = ft_calloc((2 * cmds_num) + 3, sizeof(int));
+	if (!fd_pipes)
+	{
+		ft_putendl_fd(MALLOC_ERR_PIPE, 2);
+		return (NULL);
+	}
+	fd_pipes[0] = fd_in;
+	fd_pipes[1] = -1;
+	fd_pipes[(2 * cmds_num)] = -1;
+	fd_pipes[(2 * cmds_num) + 1] = fd_out;
+	i = 0;
+	while (fd_pipes && ++i < cmds_num)
+	{
+		if (pipe(&fd_pipes[i * 2]) < 0)
+		{
+			ft_putendl_fd(PIPING_ERR, 2);
+			free(fd_pipes);
+		}
+	}
+	return (fd_pipes);
+}
+
+/*Exemple avec fd_in = 0, fd_out = 1 et cmds_num = 3
+
+Index 2 & 3 connecte cmd 1 et cmd 2
+Index 4 & 5 connecte cmd 2 et cmd 3
+
+Sortie : [ 0, -1, pipe1_read, pipe1_write, pipe2_read, pipe2_write, -1, 1 ]
+
+fd_in -> entre standard pour cmd 1
+fd_out -> sortie standar pour cmd 3*/
