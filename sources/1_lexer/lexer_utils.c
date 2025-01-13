@@ -19,7 +19,7 @@ t_token	*new_token(char *start, char *end, t_type type, t_quote quote)
 	if (!new)
 	{
 		perror("malloc error");
-		free(start);//ajout ugo
+		free(start);
 		return (NULL);
 	}
 	else if ((start && end && end >= start) && quote)
