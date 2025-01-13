@@ -30,7 +30,7 @@ typedef enum e_quote
 	NQ,
 	SQ,
 	DQ,
-}						t_quote;
+}			t_quote;
 
 typedef enum e_type
 {
@@ -46,7 +46,7 @@ typedef enum e_type
 	STDIN,
 	STDOUT,
 	ARG_IN_OUT,
-}						t_type;
+}			t_type;
 
 typedef struct s_list
 {
@@ -170,66 +170,65 @@ void					ft_lst_addback(t_list *list, t_list *new);
 
 /**************************       1_lexer       *******************************/
 /*lexer_main.c*/
-int	lexer(t_data *data, int is_new_command);
-int lexer_finalize(t_data *data, t_quote current_quote,
-		char **current_token, int is_new_command);
-int	lexer_core(t_data *data, t_quote *current_quote,
-			char **current_token, int *is_new_command);
-char	*append_char(char *str, char c);
-int	check_double_tokens(char *str);
+int						lexer(t_data *data, int is_new_command);
+int 					lexer_finalize(t_data *data, t_quote current_quote,
+							char **current_token, int is_new_command);
+int						lexer_core(t_data *data, t_quote *current_quote,
+							char **current_token, int *is_new_command);
+char					*append_char(char *str, char c);
+int						check_double_tokens(char *str);
 
 /*lexer_define_tokens.c*/
-t_token	*define_tokens_exit_echo(t_token *token);
-t_token	*create_and_add_token(t_data *data, char *value,
-		int *is_new_command);
-t_token	*define_arg_type(t_token *token);
-int	add_symbol_token(t_data *data, char symbol, int *is_new_command);
+t_token					*define_tokens_exit_echo(t_token *token);
+t_token					*create_and_add_token(t_data *data, char *value,
+							int *is_new_command);
+t_token					*define_arg_type(t_token *token);
+int						add_symbol_token(t_data *data, char symbol, int *is_new_command);
 
 /*lexer_quotes.c*/
-int no_quote(t_data *data, t_quote *current_quote,
-		char **current_token, int *is_new_command);
-int double_quote(t_data *data, t_quote *current_quote,
-		char **current_token);
-int single_quote(t_data *data, t_quote *current_quote,
-		char **current_token);
+int 					no_quote(t_data *data, t_quote *current_quote,
+							char **current_token, int *is_new_command);
+int 					double_quote(t_data *data, t_quote *current_quote,
+							char **current_token);
+int 					single_quote(t_data *data, t_quote *current_quote,
+							char **current_token);
 
 /*lexer_utils.c*/
-void	lst_token_add_back(t_data *data, t_token *new);
-t_token	*new_token(char *start, char *end, t_type type, t_quote quote);
-int	is_just_spaces(char *arg);
-
+void					lst_token_add_back(t_data *data, t_token *new);
+t_token					*new_token(char *start, char *end, t_type type, t_quote quote);
+int						is_just_spaces(char *arg);
 
 /**************************       2_parser      *******************************/
 /******* Expander *******/
 /*expander_main.c*/
 int						expander(t_data *data);
-void	failed_mess(t_data *data, char *mess, int code);
+char					*expan_var(char *str, t_data *data);
+char					*expand_else(t_data *data, char *str, int *i);
+char					*expand_stuff(t_data *data, char *str, char *var, int *i);
+char					*expand_exit_status(t_data *data, int *i);
+
+/*expand_dollars.c*/
+int						is_finish_expand(char *str, t_data *data, int count, int *i);
+char					*expand_dollar_sequence(char **str, int *i);
+char					*peer_odd_dollar(int dollar_count, char *result, char *pid_str,
+							char *temp);
+int						dollar_in_str(char *str, t_data *data);
+
 /*expander_utils.c*/
+char					*ft_strjoin_char(char *str, char c);
+int						is_in_single_quotes(char *str, int index);
+int						is_exist_in_env(char *var, t_data *data);
+size_t					get_var_len(char *str);
 
-char	*ft_strjoin_char(char *str, char c);
-int	is_in_single_quotes(char *str, int index);
-int	is_exist_in_env(char *var, t_data *data);
-size_t	get_var_len(char *str);
+/*expander_more_utils.c*/
+void					failed_mess(t_data *data, char *mess, int code);
+char					*ft_concatenate(char *before, char *in_var);
+char					*extract_var(char *str, int *i);
+char					*give_me_inside_var(char *var, t_data *data);
+int						is_in_double_quotes(char *str, int index);
 
-char	*ft_concatenate(char *before, char *in_var);
-char	*extract_var(char *str, int *i);
-char	*give_me_inside_var(char *var, t_data *data);
-int	is_in_double_quotes(char *str, int index);
-
-char	*expand_dollar_sequence(char **str, int *i);
-char	*peer_odd_dollar(int dollar_count, char *result, char *pid_str,
-		char *temp);
-int	dollar_in_str(char *str, t_data *data);
-int	is_finish_expand(char *str, t_data *data, int count, int *i);
 
 /******* Heredoc ********/
-// int						is_quoted_delimiter(const char *delimiter);
-
-// void					populate_here_doc(int write_fd, char *delimiter,
-// 							t_data *data);
-// int						handle_here_doc_line(char *line, int fd,
-// 							const char *delim, int quoted);
-// int						here_doc(t_data *data);
 void					populate_here_doc(int write_fd, char *delimiter,
 							t_data *data);
 int						here_doc(t_data *data);
@@ -341,7 +340,7 @@ int						builtin_exit(t_commands *command, t_data *data);
 /*export.c*/
 int						find_key_index(t_data *data, char *key);
 int						is_valid_name(char *name);
-int					export_with_arg(t_commands *command, t_data *data);
+int						export_with_arg(t_commands *command, t_data *data);
 int						builtin_export(t_commands *command, t_data *data);
 
 /*export_utils.c*/

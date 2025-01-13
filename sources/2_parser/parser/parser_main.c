@@ -1,15 +1,5 @@
 #include "minishell.h"
 
-/**
- * @brief Ouvre un descripteur de fichier pour une redirection
- *		et met à jour ses informations.
- *
- * @param data Structure contenant les informations globales nécessaires.
- * @param redir Structure représentant la redirection (entrée ou sortie).
- * @param token Token indiquant le type et la valeur de la redirection.
- * @param oflag Flags utilisés pour ouvrir le fichier.
- * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE sinon.
- */
 int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		int oflag)
 {
@@ -36,13 +26,6 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 	return (EXIT_SUCCESS);
 }
 
-/**
- * @brief Gère les redirections en ouvrant les fichiers correspondants.
- *
- * @param data Structure contenant les informations nécessaires.
- * @param token Token indiquant le type de redirection.
- * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE sinon.
- */
 int	parser_helper_redirections(t_data *data, t_token *token)
 {
 	if (token->type == INPUT || token->type == HEREDOC)
@@ -65,15 +48,6 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 	return (EXIT_SUCCESS);
 }
 
-/**
- * @brief Gère l'ajout des commandes, flags et arguments au noeud courant.
- *
- * @param data Structure contenant les informations nécessaires.
- * @param token Token analysé pour déterminer son type.
-
-	* @param create_new_node Indique si un nouveau noeud de commande doit être créé.
- * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE sinon.
- */
 int	parser_helper_others(t_data *data, t_token *token, int *create_new_node)
 {
 	static t_commands	*ptr = NULL;
