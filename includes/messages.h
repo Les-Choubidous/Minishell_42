@@ -58,6 +58,7 @@
 /*env*/
 # define ENV_ERR_ARG "minishell: env: too many arguments\n"
 # define ENV_ERR_FLAGS "minishell: env: no options supported\n"
+# define INVALID_ARG_ENV "minishell : env: too many arguments\n"
 
 /*exit*/
 # define EXIT_ERR_EXTRA_ARG "minishell: exit: too many arguments\n"
@@ -68,7 +69,6 @@
 # define EXPORT_ERR_ARG "minishell: export: too many arguments\n"
 # define EXPORT_ERR_INVALID_NAME "minishell : export : invalid name\n"
 # define EXPORT_ERR_IDENTIFIER "minishell : export : invalid identifier\n"
-
 /*pwd*/
 # define PWD_ERR_FLAGS "minishell: pwd: no options supported\n"
 # define PWD_ERR_EXTRA_ARG "minishell: pwd: too many arguments\n"

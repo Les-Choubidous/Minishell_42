@@ -1,5 +1,24 @@
 #include "../../includes/minishell.h"
 
+t_token	*create_and_add_token(t_data *data, char *value,
+		int *is_new_command)
+{
+	t_type	type;
+	t_token	*new;
+
+	type = ARG;
+	if (*is_new_command)
+	{
+		type = CMD;
+		*is_new_command = 0;
+	}
+	new = new_token(value, value + ft_strlen(value), type, NQ);
+	if (!new)
+		return (NULL);
+	lst_token_add_back(data, new);
+	return (new);
+}
+
 int single_quote(t_data *data, t_quote *current_quote,
 		char **current_token)
 {

@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-void	add_cpy_env2(char *type, char *value, t_env **env, t_data *data)
+void	add_export(char *type, char *value, t_env **env, t_data *data)
 {
 	t_env	*node;
 	t_env	*new_last_node;
@@ -17,7 +17,7 @@ void	add_cpy_env2(char *type, char *value, t_env **env, t_data *data)
 	{
 		*env = new_last_node;
 		if (data != NULL)
-			data->cpy_env2 = *env;
+			data->export = *env;
 	}
 	else
 	{
@@ -34,7 +34,7 @@ void	get_shlvl_export(t_data *data)
 	int		i;
 
 	i = 0;
-	export = data->cpy_env2;
+	export = data->export;
 	while (data->env[i])
 	{
 		if (!ft_strncmp(data->env[i], "SHLVL=", 6))
@@ -57,14 +57,14 @@ static void	export_without_env(t_data *data, t_env *cpy_env2)
 {
 	if (!*data->env)
 	{
-		add_cpy_env2(ft_strdup("OLDPWD"), ft_strdup(""), &cpy_env2, data);
-		add_cpy_env2(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env2, data);
-		add_cpy_env2(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env2, data);
+		add_export(ft_strdup("OLDPWD"), ft_strdup(""), &cpy_env2, data);
+		add_export(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env2, data);
+		add_export(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env2, data);
 		return ;
 	}
 }
 
-void	get_env2(char **env, t_data *data)
+void	get_env_for_export(char **env, t_data *data)
 {
 	int		i;
 	int		j;
@@ -81,7 +81,7 @@ void	get_env2(char **env, t_data *data)
 			j = 0;
 			while (env[i][j] != '=')
 				j++;
-			add_cpy_env2(ft_substr(env[i], 0, j), ft_substr(env[i], j + 1,
+			add_export(ft_substr(env[i], 0, j), ft_substr(env[i], j + 1,
 					ft_strlen(env[i])), &cpy_env2, data);
 		}
 		i++;

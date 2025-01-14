@@ -1,25 +1,63 @@
 #include "../../includes/minishell.h"
 
-int	add_symbol_token(t_data *data, char symbol, int *is_new_command)
+t_type	get_token_type(t_data *data, char symbol, int *is_new_command)
 {
-	t_type	type;
-	t_token	*new;
-
-	type = ARG;
 	if (symbol == '|')
 	{
-		type = PIPE;
 		*is_new_command = 1;
+		return (PIPE);
 	}
-	else if (symbol == '<')
-		type = INPUT;
-	else if (symbol == '>')
-		type = OUTPUT;
-	new = new_token((char *)&symbol, (char *)&symbol + 1, type, NQ);
+	if (symbol == '<' && *(data->line + 1) == '<')
+	{
+		data->line++;
+		return (HEREDOC);
+	}
+	if (symbol == '<')
+		return (INPUT);
+	if (symbol == '>')
+		return (OUTPUT);
+	return (-1);
+}
+
+int	create_and_add_symbol_token(t_data *data, char *value, t_type type)
+{
+	t_token	*new;
+
+	new = new_token(value, value + ft_strlen(value), type, NQ);
+	free(value);
 	if (!new)
 		return (0);
 	lst_token_add_back(data, new);
 	return (1);
+}
+
+int	add_symbol_token(t_data *data, char symbol, int *is_new_command)
+{
+	t_type	type;
+	char	*value;
+
+	type = get_token_type(data, symbol, is_new_command);
+	if (type == HEREDOC)
+	{
+		if (*(data->line + 1) == '<')
+		{
+			printf("Syntax error: unexpected token '<<<'\n");
+			data->exit_status = 2;
+			return (0);
+		}
+		value = ft_strdup("<<");
+	}
+	else if (type == INPUT)
+		value = ft_strdup("<");
+	else if (type == OUTPUT)
+		value = ft_strdup(">");
+	else if (type == PIPE)
+		value = ft_strdup("|");
+	else
+		return (0);
+	if (!value)
+		return (0);
+	return (create_and_add_symbol_token(data, value, type));
 }
 
 t_token	*define_arg_type(t_token *token)
@@ -40,25 +78,6 @@ t_token	*define_arg_type(t_token *token)
 		current = current->next;
 	}
 	return (token);
-}
-
-t_token	*create_and_add_token(t_data *data, char *value,
-		int *is_new_command)
-{
-	t_type	type;
-	t_token	*new;
-
-	type = ARG;
-	if (*is_new_command)
-	{
-		type = CMD;
-		*is_new_command = 0;
-	}
-	new = new_token(value, value + ft_strlen(value), type, NQ);
-	if (!new)
-		return (NULL);
-	lst_token_add_back(data, new);
-	return (new);
 }
 
 t_token	*define_tokens_exit_echo(t_token *token)

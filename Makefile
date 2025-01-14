@@ -1,14 +1,11 @@
 ###############################################################################
-#                        MAKEFILE CORRIGE POUR MINISHELL                       #
+#                        MAKEFILE POUR MINISHELL                             #
 ###############################################################################
 
 # Compiler targets and libraries
 NAME        = minishell
 CC          = cc
 
-# ---------------------------------------------------------------------------
-# => Regrouper les flags dans une seule définition pour éviter l'écrasement
-# ---------------------------------------------------------------------------
 CFLAGS      = -Wall -Werror -Wextra -g -MMD -MP  -fsanitize=address
 
 READLINE_DIR= $(shell brew --prefix readline)

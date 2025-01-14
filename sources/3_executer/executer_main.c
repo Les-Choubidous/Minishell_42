@@ -18,8 +18,6 @@ int	executer(t_data *data)
 	int		*fd_pipes;
 	pid_t	*pid;
 
-	printf("here\n");
-
 	cmds_num = cmd_count(data->command);
 	pid = (pid_t *)ft_calloc(cmds_num, sizeof(pid_t));
 	if (!pid)
