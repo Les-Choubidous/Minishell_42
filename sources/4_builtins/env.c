@@ -1,24 +1,58 @@
-// #include "minishell.h"
+#include "minishell.h"
 
-// static int	check_args(t_commands *commands)
-// {
-// 	if (commands->arg)
-// 		return (ft_printf_exit_code(ENV_ERR_ARG, EXIT_FAILURE));
-// 	if (commands->flag)
-// 		return (ft_printf_exit_code(ENV_ERR_FLAGS, EXIT_FAILURE));
-// 	return (EXIT_SUCCESS);
-// }
+void	write_str_fd(t_data *data, char *str_err, char *s, int fd)
+{
+	if (!s)
+		return ;
+	while (*s)
+	{
+		write_char_fd(data, str_err, *s++, fd);
+		// if (data->err)
+		// 	return ;
+	}
+}
+void	write_char_fd(t_data *data, char *str_err, char c, int fd)
+{
+	if (fd > -1)
+	{
+		if (write(fd, &c, 1) == -1)
+		{
+			write_str_fd(data, str_err, str_err, 2);
+			write_str_fd(data, str_err,
+				": write error : no space left on device\n", 2);
+			//data->err = 1;
+			return ;
+		}
+	}
+}
 
-// int	builtin_env(t_commands *command, t_data *data)
-// {
-// 	size_t	i;
+static void	print_env(t_data *data, int fd)
+{
+	t_env	*tmp;
 
-// 	if (!data->full_env) //!data->env && )
-// 		return (EXIT_SUCCESS);
-// 	if (check_args(command))
-// 		return (EXIT_FAILURE);
-// 	i = 0;
-// 	while (data->full_env[i])
-// 		ft_printf("%s\n", data->full_env[i++]);
-// 	return (EXIT_SUCCESS);
-// }
+	tmp = data->cpy_env;
+	while (tmp)
+	{
+		write_str_fd(data, "env", tmp->type, fd);
+		write_str_fd(data, "env", "=", fd);
+		write_str_fd(data, "env", tmp->value, fd);
+		write_str_fd(data, "env", "\n", fd);
+		tmp = tmp->next;
+	}
+}
+
+int	builtin_env(t_data *data, t_token *tok, int fd_out)
+{
+	if (tok->next)
+	{
+		ft_putstr_fd("INVALID_ARG_ENV\n", 2);
+		data->exit_status += 1;
+		return (EXIT_FAILURE);
+	}
+	else
+	{
+		print_env(data, fd_out);
+		return (EXIT_SUCCESS);
+	}
+}
+

@@ -25,7 +25,7 @@ int	execute_builtin(int *fd_pipes, int pos, t_commands *command, t_data *data)
 			STDOUT_FILENO) == -1)
 		return (EXIT_FAILURE);
 	close_unused_fd(fd_pipes, pos, FDX_RW, pos + 1);
-	exit_code = launch_builtin(command, data);
+	exit_code = launch_builtin(data, command, data->token, STDOUT_FILENO);
 	close_fd(&fd_pipes[pos]);
 	close_fd(&fd_pipes[pos + 3]);
 	if (dup2(original_fd[0], STDIN_FILENO) == -1 || dup2(original_fd[1],
@@ -35,18 +35,6 @@ int	execute_builtin(int *fd_pipes, int pos, t_commands *command, t_data *data)
 	return (exit_code);
 }
 
-/**
- * @brief Redirige stdin & stdout vers des descripteurs donnés,
- *        exécute une commande dans un processus enfant et sauvegarde l'ID
- *        du processus enfant.
- *
- * @param fd_pipes Tableau contenant les descripteurs de fichiers pour stdin et
- * stdout.
- * @param pos Position dans `fd_pipes` des descripteurs à utiliser.
- * @param pid Adresse où sauvegarder l'ID du processus enfant.
- * @param data Structure contenant les commandes et données globales.
- * @return 0 en cas de succès, 1 en cas d'échec.
- */
 int	execute_env(int *fd_pipes, int pos, int *pid, t_data *data)
 {
 	int			i;

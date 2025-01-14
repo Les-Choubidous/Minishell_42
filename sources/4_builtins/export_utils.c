@@ -1,100 +1,97 @@
-// #include "minishell.h"
+#include "minishell.h"
 
-// void	just_add_to_export(t_data *data, char *key)
-// {
-// 	char	*temp;
-// 	int		i;
 
-// 	i = 0;
-// 	while (data->env_export[i])
-// 		i++;
-// 	temp = ft_strjoin(key, "=");
-// 	data->env_export[i] = ft_strdup(temp);
-// 	free(temp);
-// 	data->env_export[i] = NULL;
-// }
+int find_if_env_exist(t_env *env, char *value)
+{
+	t_env	*tmp;
+	char	*sub;
+	int		i;
 
-// void	update_env_value(t_data *data, int i, char *key, char *value)
-// {
-// 	char	*key_eq;
-// 	char	*tmp;
+	tmp = env;
+	i = 0;
+	while (tmp)
+	{
+		sub = ft_strjoin(tmp->type, "=");
+		if (!ft_strncmp(sub, value, ft_strlen(sub)))
+			return (free(sub), i);
+		i++;
+		free(sub);
+		tmp = tmp->next;
+	}
+	return (-1);
+}
 
-// 	key_eq = ft_strjoin(key, "=");
-// 	free(data->full_env[i]);
-// 	if (value)
-// 	{
-// 		tmp = ft_strjoin(key_eq, value);
-// 		free(key_eq);
-// 	}
-// 	else
-// 	{
-// 		tmp = key_eq;
-// 	}
-// 	free(data->env_export[i]);
-// 	data->full_env[i] = tmp;
-// 	data->env_export[i] = ft_strdup(tmp);
-// }
+void	modif_env_node(t_data *data, char *value, int j)
+{
+	int		i;
+	t_env	*tmp;
 
-// void	add_env_key(t_data *data, char *key, char *value)
-// {
-// 	char	*tmp;
-// 	int		len;
+	tmp = data->cpy_env;
+	i = check_syntax_export(value, data);
+	if (!i)
+		return ;
+	while (j > 0)
+	{
+		tmp = tmp->next;
+		j--;
+	}
+	free(tmp->value);
+	tmp->value = ft_substr(value, i, ft_strlen(value));
+}
 
-// 	len = 0;
-// 	while (data->full_env[len])
-// 		len++;
-// 	data->full_env = (char **)ft_realloc((void **)data->full_env,
-// 				(size_t)(len + 1), (size_t)(len + 2));
-// 	data->env_export = (char **)ft_realloc((void **)data->env_export,
-// 				(size_t)(len + 1), (size_t)(len + 2));
-// 	tmp = join_key_val(key, value);
-// 	data->full_env[len] = tmp;
-// 	data->env_export[len] = ft_strdup(tmp);
-// 	data->full_env[len + 1] = NULL;
-// 	data->env_export[len + 1] = NULL;
-// 	//free_env_list(data->env);
-// 	//data->env = ft_get_env(data->full_env);
-// }
+void	add_env_node(t_data *data, char *value)
+{
+	int	i;
 
-// void	add_env_export(t_data *data, char *key, char *value)
-// {
-// 	int		i;
-// 	char	*temp;
-// 	char	*joined;
+	(void)data;
+	i = check_syntax_export(value, data);
+	if (!i)
+		return ;
+	add_cpy_env(ft_substr(value, 0, i - 1), ft_substr(value, i,
+			ft_strlen(value)), &data->cpy_env, data);
+}
 
-// 	i = 0;
-// 	while (data->env_export[i])
-// 		i++;
-// 	temp = ft_strjoin(key, "=");
-// 	if (value)
-// 	{
-// 		joined = ft_strjoin(temp, value);
-// 		free(temp);
-// 		temp = joined;
-// 	}
-// 	data->full_env[i] = ft_strdup(temp);
-// 	data->env_export[i] = ft_strdup(temp);
-// 	free(temp);
-// 	data->full_env[i + 1] = NULL;
-// 	data->env_export[i + 1] = NULL;
-// 	//free_env_list(data->env);
-// 	//data->env = ft_get_env(data->full_env);
-// }
 
-// void	update_or_add_env(t_data *data, char *arg)
-// {
-// 	char	*key;
-// 	char	*value;
-// 	int		index;
+char	*export_key(char *arg)
+{
+	char	*equal;
+	char	*key;
 
-// 	key = get_key(arg);
-// 	index = find_key_index(data, key);
-// 	value = get_value(arg);
-// 	if (index >= 0)
-// 		update_env_value(data, index, key, value);
-// 	else
-// 		add_env_key(data, key, value);
-// 	free(key);
-// 	if (value)
-// 		free(value);
-// }
+	if (arg[0] == '=')
+		return (ft_strdup(arg));
+	equal = ft_strchr(arg, '=');
+	if (!equal)
+		key = ft_strdup(arg);
+	else
+		key = ft_substr(arg, 0, equal - arg);
+	return (key);
+}
+
+int	is_valid_name(char *name)
+{
+	int	i;
+
+	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(name, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		free(name);
+		return (0);
+	}
+	i = 1;
+	while (name[i])
+	{
+		if (!ft_isalnum(name[i]) && name[i] != '_')
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(name, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			free(name);
+			return (0);
+		}
+		i++;
+	}
+	free(name);
+	return (1);
+}
