@@ -318,7 +318,8 @@ void	free_close_fds(t_data *data, int i);
 /**************************      4_builtins     *******************************/
 /*builtins_utils.c*/
 int						command_is_a_builtin(t_commands *node);
-int						launch_builtin(t_commands *node, t_data *data);
+//int						launch_builtin(t_commands *node, t_data *data);
+int	launch_builtin(t_data *data, t_commands *node, t_token *token, int fd);
 
 /*cd.c*/
 char					*get_target_path(t_commands *commands, t_data *data);
@@ -327,12 +328,13 @@ char					*get_target_path(t_commands *commands, t_data *data);
 int						update_env_vars(char *old_pwd, char *new_pwd,
 							t_data *data);
 int						builtin_cd(t_commands *commands, t_data *data);
-int	update_env_val(t_data *data, int i, char *key, char *value);
+int						update_env_val(t_data *data, int i, char *key, char *value);
 /*echo.c*/
 int						builtin_echo(t_commands *commands, t_data *data);
 
 /*env.c*/
-int						builtin_env(t_commands *commands, t_data *data);
+//int						builtin_env(t_commands *commands, t_data *data);
+int						builtin_env(t_data *data, t_token *tok, int fd_out);
 
 /*exit.c*/
 int						builtin_exit(t_commands *command, t_data *data);
@@ -341,14 +343,27 @@ int						builtin_exit(t_commands *command, t_data *data);
 int						find_key_index(t_data *data, char *key);
 int						is_valid_name(char *name);
 int						export_with_arg(t_commands *command, t_data *data);
-int						builtin_export(t_commands *command, t_data *data);
+//int						builtin_export(t_commands *command, t_data *data);
+int					builtin_export(t_data *data, t_token *token, int fd);
 
 /*export_utils.c*/
-void					just_add_to_export(t_data *data, char *key);
-void					update_env_value(t_data *data, int i, char *key, char *value);
-void					add_env_key(t_data *data, char *key, char *value);
-void					add_env_export(t_data *data, char *key, char *value);
-void					update_or_add_env(t_data *data, char *arg);
+int						is_valid_name(char *name);
+char					*export_key(char *arg);
+void					add_env_node(t_data *data, char *value);
+void					modif_env_node(t_data *data, char *value, int j);
+int						find_if_env_exist(t_env *env, char *value);
+
+/*syntaxe_export.c*/
+t_env	*sort_list(t_env *cpy, int (*cmp)(const char *, const char *));
+int	check_syntax_export(char *value, t_data *data);
+void	no_equal_in_export(t_data *data, char *value);
+void	modif_export_node(t_data *data, char *value, int exist);
+void	modif_export(t_data *data, char *value);
+
+/*get_env_export.c*/
+void	get_env2(char **env, t_data *data);
+void	get_shlvl_export(t_data *data);
+void	add_cpy_env2(char *type, char *value, t_env **env, t_data *data);
 
 /*pwd.c*/
 //char					*find_env_value(t_env *env, const char *key);
@@ -361,7 +376,7 @@ int						build_new_env(t_data *data, char ***new_env, ssize_t length,
 							ssize_t identifier_index);
 int						build_new_export(t_data *data, char ***new_env, ssize_t length,
 							ssize_t identifier_index);
-int						builtin_unset(t_commands *c, t_data *data);
+int						builtin_unset(t_data *data, t_token *token);
 
 /*unset_utils.c*/
 int						remove_variable_from_export(char *identifier, t_data *data);
@@ -396,5 +411,9 @@ void					print_list(t_list *lst, const char *label);
 /*utils_test.c*/
 const char				*get_type_name(t_type type);
 void					print_tokens(t_token *token);
+
+void	write_str_fd(t_data *data, char *str_err, char *s, int fd);
+void	write_char_fd(t_data *data, char *str_err, char c, int fd);
+
 
 #endif

@@ -1,140 +1,105 @@
-// #include "minishell.h"
-
-// static int	check_args(t_commands *commands)
-// {
-// 	if (commands->flag != NULL)
-// 		return (ft_printf_exit_code(EXPORT_ERR_FLAGS, EXIT_FAILURE));
-// 	return (EXIT_SUCCESS);
-// }
-
-// int	find_key_index(t_data *data, char *key)
-// {
-// 	char	*equal;
-// 	int		i;
-// 	int		key_len;
-
-// 	i = 0;
-// 	while (data->full_env[i])
-// 	{
-// 		equal = ft_strchr(data->full_env[i], '=');
-// 		if (equal)
-// 		{
-// 			key_len = (int)(equal - data->full_env[i]);
-// 			if ((int)ft_strlen(key) == key_len && ft_strncmp(data->full_env[i],
-// 					key, key_len) == 0)
-// 				return (i);
-// 		}
-// 		i++;
-// 	}
-// 	return (-1);
-// }
-
-// int	is_valid_name(char *name)
-// {
-// 	int	i;
-
-// 	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
-// 		return (0);
-// 	i = 1;
-// 	while (name[i])
-// 	{
-// 		if (!ft_isalnum(name[i]) && name[i] != '_')
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
+#include "minishell.h"
 
 
-// /*******************************export seul ************************** */
-// // a voir si on le rajoute car cela marche MAIS
-// // il faudrait juste corriger crash lie Maj de env_export
-// // car full_env et export sont anormalement liees
+//exclamation mark
+static int	point_dexclamation(t_data *data)
+{
+	t_token	*tmp;
+	int		i;
+	char *error_mess;
 
-// // static void	print_with_equal(char *str, char *equal)
-// // {
-// // 	*equal = '\0';
-// // 	ft_putstr_fd(str, 1);
-// // 	ft_putstr_fd("=\"", 1);
-// // 	ft_putstr_fd(equal + 1, 1);
-// // 	ft_putstr_fd("\"\n", 1);
-// // 	*equal = '=';
-// // }
+	error_mess = NULL;
+	tmp = data->token->next;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->value[i])
+		{
+			if (tmp->value[i] == '!' && tmp->value[i + 1])
+			{
+				ft_putstr_fd("minishell: " , 2);
+				error_mess = ft_substr(tmp->value, i , ft_strlen(tmp->value));
+				ft_putstr_fd(error_mess, 2);
+				ft_putstr_fd(": event not found\n", 2);
+				free(error_mess);
+				return (1);
+			}
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
-// // static void	print_env_export(t_data *data)
-// // {
-// // 	char	**sorted;
-// // 	char	*equal;
-// // 	int		i;
+static void	handle_while(t_data *data, t_token *tmp_tok)
+{
+	t_token	*tmp_tiktok;
+	int		exist;
 
-// // 	sorted = sort_tab(data->env_export);
-// // 	if (!sorted)
-// // 		return ;
-// // 	i = 0;
-// // 	while (sorted[i])
-// // 	{
-// // 		equal = ft_strchr(sorted[i], '=');
-// // 		ft_putstr_fd("declare -x ", 1);
-// // 		if (equal)
-// // 			print_with_equal(sorted[i], equal);
-// // 		else
-// // 		{
-// // 			ft_putstr_fd(sorted[i], 1);
-// // 			ft_putchar_fd('\n', 1);
-// // 		}
-// // 		i++;
-// // 	}
-// // 	free_char_array(sorted);
-// // }
-// /****************************************************************************************** */
+	tmp_tiktok = data->token->next;
+	while (tmp_tok)
+	{
+		if (point_dexclamation(data))
+			return ;
+		if (!is_valid_name(export_key(tmp_tiktok->value)))
+		{
+			tmp_tiktok = tmp_tok->next;
+			tmp_tok = tmp_tok->next;
+			continue ;
+		}
+		tmp_tiktok = tmp_tok->next;
+		if (tmp_tok->value)
+			exist = find_if_env_exist(data->cpy_env, tmp_tok->value);
+		if (exist != -1)
+			modif_env_node(data, tmp_tok->value, exist);
+		else
+			add_env_node(data, tmp_tok->value);
+		modif_export(data, tmp_tok->value);
+		tmp_tok = tmp_tok->next;
+	}
+}
+static void	display_export_order(t_data *data, int fd)
+{
+	t_env	*sort_tmp;
 
-// int	export_with_arg(__attribute__((unused)) t_commands *command,
-// 		t_data *data)
-// {
-// 	t_list	*temp_arg;
-// 	char	*arg;
-// 	char	*key;
-// 	char	*value;
-// 	int		i;
+	sort_tmp = data->cpy_env2;
+	while (sort_tmp)
+	{
+		write_str_fd(data, "export", "declare -x ", fd);
+		write_str_fd(data, "export", sort_tmp->type, fd);
+		if (sort_tmp->equal)
+			write_str_fd(data, "export", "=\"", fd);
+		if (sort_tmp->value)
+			write_str_fd(data, "export", sort_tmp->value, fd);
+		if (sort_tmp->equal)
+			write_str_fd(data, "export", "\"", fd);
+		write_str_fd(data, "export", "\n", fd);
+		sort_tmp = sort_tmp->next;
+	}
+}
 
-// 	i = 0;
-// 	temp_arg = command->arg;
-// 	while (temp_arg)
-// 	{
-// 		arg = temp_arg->value;
-// 		key = get_key(arg);
-// 		value = get_value(arg);
-// 		if (!is_valid_name(&key[i]))
-// 		{
-// 			printf("export : '%s': not a valid identifier\n", arg);
-// 			return (EXIT_FAILURE);
-// 		}
-// 		i++;
-// 		if (value)
-// 		{
-// 			update_or_add_env(data, arg);
-// 			// free(value);
-// 		}
-// 		else
-// 			just_add_to_export(data, key);
-// 		// free(key);
-// 		temp_arg = temp_arg->next;
-// 	}
-// 	return (EXIT_SUCCESS);
-// }
 
-// int	builtin_export(t_commands *command, t_data *data)
-// {
-// 	// if (!command->arg)
-// 	// {
-// 	// 	print_env_export(data);
-// 	// 	return (EXIT_SUCCESS);
-// 	// }
-// 	if (check_args(command) != EXIT_SUCCESS)
-// 		return (EXIT_FAILURE);
-// 	if (!command->arg)
-// 		return (EXIT_FAILURE);
-// 	else
-// 		export_with_arg(command, data);
-// 	return (EXIT_SUCCESS);
-// }
+int	builtin_export(t_data *data, t_token *token, int fd)
+{
+	t_token	*tmp_tok;
+
+	tmp_tok = token->next;
+	if (!data->cpy_env2)
+	{
+		get_env2(data->env, data);
+		data->cpy_env2 = sort_list(data->cpy_env2, ft_strcmp);
+	}
+	if (!tmp_tok)
+	{
+		display_export_order(data, fd);
+		return (EXIT_FAILURE);
+	}
+	if (tmp_tok->value[0] == '\0')
+	{
+		ft_putstr_fd("INVALID_VAL_EXPORT", 2);
+		return (EXIT_FAILURE);
+	}
+	handle_while(data, tmp_tok);
+	return (EXIT_SUCCESS);
+}
+

@@ -49,7 +49,7 @@ void	launch_minishell(t_data *data)
 			add_history(data->line);
 
 		if (expander(data) == EXIT_FAILURE || lexer(data, 1) == EXIT_FAILURE
-			|| parser(data) == EXIT_FAILURE )//|| executer(data) == EXIT_FAILURE)
+			|| parser(data) == EXIT_FAILURE || executer(data) == EXIT_FAILURE)
 		{
 			free_mem_between_cmd(data);
 			continue ;
