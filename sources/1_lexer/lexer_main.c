@@ -9,6 +9,8 @@ int	check_double_tokens(char *str)
 		if ((*str == '<' && *(str + 1) == '<') || (*str == '>' && *(str
 					+ 1) == '>'))
 			return (EXIT_SUCCESS);
+		// else if ((*str == '<' && *(str + 1) == '<') || (*str == '>' && *(str + 1) == '>'))
+		// 	return (EXIT_SUCCESS);
 		else
 		{
 			printf("Syntax error: unexpected token %c after token %c\n", *(str + 1), *str);
@@ -16,6 +18,7 @@ int	check_double_tokens(char *str)
 		}
 	}
 }
+
 
 char	*append_char(char *str, char c)
 {
@@ -82,7 +85,6 @@ int lexer_finalize(t_data *data, t_quote current_quote,
 	}
 	define_tokens_exit_echo(data->token);
 	define_arg_type(data->token);
-
 	//print_tokens(data->token);
 	return (EXIT_SUCCESS);
 }

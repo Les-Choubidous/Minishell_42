@@ -17,8 +17,6 @@
 
 /********************************MACROS***************************************/
 # define SUPPORTED_SYMBOLS "<|>"
-# define VALID_CHARACTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\
-							0123456789_"
 # define FDX_NONE -1 // Aucun fd paticulier ne doit etre open
 # define FDX_OR 0    // Seul entre pipe read reste ouverte
 # define FDX_OW 1    // Seule la sortie pipe write reste ouvert
@@ -96,25 +94,24 @@ typedef struct s_env
 
 typedef struct s_redir
 {
-    int infile;
-    int outfile;
-    int fds_doc[2]; // pour heredoc
-    int heredoc;    // boolean ou usage divers
-} t_redir;
+	int	infile;
+	int	outfile;
+	int	fds_doc[2];
+	int	heredoc;
+}	t_redir;
 
 typedef struct s_pipes
 {
-    int     nb_pipe;      // nb de pipes détectés
-    int   **fds;          // fds[i] = [read_end, write_end]
-    pid_t  *pid;          // tableau d'id de processus
-    int     orig_fds[2];  // copie de stdin/stdout originels
-} t_pipes;
+	int		nb_pipe;
+	int		**fds;
+	pid_t	*pid;
+	int		orig_fds[2];
+}			t_pipes;
 
 typedef struct s_data
 {
 	char				wich_quote_err;
 	char				**env;
-	//char				**env_export;
 	char				*expanded_str;
 
 	char				**path;
@@ -123,30 +120,32 @@ typedef struct s_data
 	int					exit_status;
 
 	t_env				*cpy_env;
-	t_env				*cpy_env2;
+	t_env				*export;
 
 	t_commands			*command;
 	t_token				*token;
 	t_in_out			input;
 	t_in_out			output;
 	t_redir				*redir;
-	t_pipes  *pipex;
+	t_pipes				*pipex;
 }						t_data;
 
 struct s_data_extended
 {
-    t_data   base;     // Le t_data original
-    t_redir *redir;    // Pointeur vers la struct de redirection
-    t_pipes *pipex;    // Pointeur vers la struct de pipes
+	t_data	base;
+	t_redir	*redir;
+	t_pipes	*pipex;
 };
 
-int execute_single_command(t_data *data);
+#define UNUSED(x) (void)(x)
+
 /********************************FUNCTIONS*************************************/
 /**************************       0_utils       *******************************/
 /*init_env.c*/
 void					ft_get_env(char **env, t_data *data);
 void					get_shlvl_env(t_data *data);
-void					add_cpy_env(char *type, char *value, t_env **env, t_data *data);
+void					add_cpy_env(char *type, char *value, t_env **env,
+							t_data *data);
 t_env					*last_value(t_env *env);
 
 /*init.c*/
@@ -171,7 +170,7 @@ void					ft_lst_addback(t_list *list, t_list *new);
 /**************************       1_lexer       *******************************/
 /*lexer_main.c*/
 int						lexer(t_data *data, int is_new_command);
-int 					lexer_finalize(t_data *data, t_quote current_quote,
+int						lexer_finalize(t_data *data, t_quote current_quote,
 							char **current_token, int is_new_command);
 int						lexer_core(t_data *data, t_quote *current_quote,
 							char **current_token, int *is_new_command);
@@ -179,24 +178,33 @@ char					*append_char(char *str, char c);
 int						check_double_tokens(char *str);
 
 /*lexer_define_tokens.c*/
-t_token					*define_tokens_exit_echo(t_token *token);
-t_token					*create_and_add_token(t_data *data, char *value,
+t_type					get_token_type(t_data *data, char symbol,
+							int *is_new_command);
+int						create_and_add_symbol_token(t_data *data, char *value,
+							t_type type);
+int						add_symbol_token(t_data *data, char symbol,
 							int *is_new_command);
 t_token					*define_arg_type(t_token *token);
-int						add_symbol_token(t_data *data, char symbol, int *is_new_command);
+t_token					*define_tokens_exit_echo(t_token *token);
 
 /*lexer_quotes.c*/
-int 					no_quote(t_data *data, t_quote *current_quote,
+t_token					*create_and_add_token(t_data *data, char *value,
+							int *is_new_command);
+int						no_quote(t_data *data, t_quote *current_quote,
 							char **current_token, int *is_new_command);
-int 					double_quote(t_data *data, t_quote *current_quote,
+int						double_quote(t_data *data, t_quote *current_quote,
 							char **current_token);
-int 					single_quote(t_data *data, t_quote *current_quote,
+int						single_quote(t_data *data, t_quote *current_quote,
 							char **current_token);
 
 /*lexer_utils.c*/
-void					lst_token_add_back(t_data *data, t_token *new);
-t_token					*new_token(char *start, char *end, t_type type, t_quote quote);
 int						is_just_spaces(char *arg);
+t_token					*init_new_token(t_type type, t_quote quote);
+t_token					*new_token(char *start, char *end, t_type type,
+							t_quote quote);
+char					*extract_token_value(char *start, char *end,
+							t_quote quote);
+void					lst_token_add_back(t_data *data, t_token *new);
 
 /**************************       2_parser      *******************************/
 /******* Expander *******/
@@ -204,15 +212,16 @@ int						is_just_spaces(char *arg);
 int						expander(t_data *data);
 char					*expan_var(char *str, t_data *data);
 char					*expand_else(t_data *data, char *str, int *i);
-char					*expand_stuff(t_data *data, char *str, char *var, int *i);
+char					*expand_stuff(t_data *data, char *var);
 char					*expand_exit_status(t_data *data, int *i);
 
 /*expand_dollars.c*/
-int						is_finish_expand(char *str, t_data *data, int count, int *i);
-char					*expand_dollar_sequence(char **str, int *i);
-char					*peer_odd_dollar(int dollar_count, char *result, char *pid_str,
-							char *temp);
-int						dollar_in_str(char *str, t_data *data);
+int						is_finish_expand(char *str, t_data *data, int count,
+							int *i);
+char					*expand_dollar_sequence(char **str, int *i, t_data *data);
+char					*peer_odd_dollar(int dollar_count, char *result,
+							char *pid_str, char *temp);
+int						dollar_in_str(char *str);
 
 /*expander_utils.c*/
 char					*ft_strjoin_char(char *str, char c);
@@ -225,12 +234,10 @@ void					failed_mess(t_data *data, char *mess, int code);
 char					*ft_concatenate(char *before, char *in_var);
 char					*extract_var(char *str, int *i);
 char					*give_me_inside_var(char *var, t_data *data);
-int						is_in_double_quotes(char *str, int index);
-
+//int						is_in_double_quotes(char *str, int index);
 
 /******* Heredoc ********/
-void					populate_here_doc(int write_fd, char *delimiter,
-							t_data *data);
+void					populate_here_doc(int write_fd, char *delimiter);
 int						here_doc(t_data *data);
 
 /******** Parser ********/
@@ -266,17 +273,14 @@ int						populate_node_argument(t_commands *node,
 							t_token *token);
 
 /*syntaxe_line.c*/
-void	syntaxe_line(char *line, t_data *data);
+void					syntaxe_line(char *line, t_data *data);
 
 /**************************      3_executer     *******************************/
 /*command_executer.c*/
 char					**env_extract_paths(char **env);
-char	*search_cmd_path(t_data *data, t_commands *cmd, char **env);
-//char	*search_cmd_path(t_commands *cmd, char **env);
+char					*search_cmd_path(t_data *data, t_commands *cmd,
+							char **env);
 int						command_executer(t_commands *command, t_data *data);
-
-// int env_split_full_path(t_data *data);
-// void	print_path(char **list);
 
 /*executer_main.c*/
 int						cmd_count(t_commands *cmds);
@@ -296,45 +300,26 @@ int						catch_child_execs(pid_t *pid, int num, t_data *data,
 							int *fd_pipes);
 int						execute_pipeline(int *fd_pipes, pid_t *pid,
 							t_data *data);
-//int execute_pipeline(t_data *data);
+
 /*pipes_builder.c*/
 int						*build_pipes(int fd_out, int fd_in, int cmds_num);
-//int build_pipes(int fd_out, int fd_in, int cmds_num, int **fd_pipes);
 
-char	**env_to_tab(t_env *env);
-t_token	*recup_tok_after_pipe(t_token *tmp);
-void	exec_dup2_pipe(t_data *data, t_token *tmp, int i);
-void	exec_dup2_simple(t_data *data);
-void	ft_pipes(t_data *data);
-int	pipe_in_line(t_data *data);
-void	update_last_cmd(t_data *data, char *cmd_path);
-char	*valid_cmd(t_data *data, char *cmd);
-void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok);
-void	simple_exec(t_data *data, t_token *tmp);
-void	open_file(t_data *data, t_token *tok);
-int executer(t_data *data);
-t_token	*check_if_cmd_after_redir(t_data *data, t_token *tmp);
-void	free_close_fds(t_data *data, int i);
 /**************************      4_builtins     *******************************/
 /*builtins_utils.c*/
 int						command_is_a_builtin(t_commands *node);
-//int						launch_builtin(t_commands *node, t_data *data);
-int	launch_builtin(t_data *data, t_commands *node, t_token *token, int fd);
+int						launch_builtin(t_data *data, t_commands *node,
+							t_token *token, int fd);
 
 /*cd.c*/
-char					*get_target_path(t_commands *commands, t_data *data);
-// int						overwrite_env_value(t_env *env, const char *key,
-// 							const char *value);
-int						update_env_vars(char *old_pwd, char *new_pwd,
-							t_data *data);
 int						builtin_cd(t_commands *commands, t_data *data);
-int						update_env_val(t_data *data, int i, char *key, char *value);
+
 /*echo.c*/
 int						builtin_echo(t_commands *commands, t_data *data);
 
 /*env.c*/
-//int						builtin_env(t_commands *commands, t_data *data);
 int						builtin_env(t_data *data, t_token *tok, int fd_out);
+void					putchar_fd(t_data *data, char *str_err, char c, int fd);
+void					putstr_fd(t_data *data, char *str_err, char *s, int fd);
 
 /*exit.c*/
 int						builtin_exit(t_commands *command, t_data *data);
@@ -343,8 +328,7 @@ int						builtin_exit(t_commands *command, t_data *data);
 int						find_key_index(t_data *data, char *key);
 int						is_valid_name(char *name);
 int						export_with_arg(t_commands *command, t_data *data);
-//int						builtin_export(t_commands *command, t_data *data);
-int					builtin_export(t_data *data, t_token *token, int fd);
+int						builtin_export(t_data *data, t_token *token, int fd);
 
 /*export_utils.c*/
 int						is_valid_name(char *name);
@@ -354,33 +338,38 @@ void					modif_env_node(t_data *data, char *value, int j);
 int						find_if_env_exist(t_env *env, char *value);
 
 /*syntaxe_export.c*/
-t_env	*sort_list(t_env *cpy, int (*cmp)(const char *, const char *));
-int	check_syntax_export(char *value, t_data *data);
-void	no_equal_in_export(t_data *data, char *value);
-void	modif_export_node(t_data *data, char *value, int exist);
-void	modif_export(t_data *data, char *value);
+t_env					*sort_list(t_env *cpy, int (*cmp)
+							(const char *, const char *));
+int						check_syntax_export(char *value, t_data *data);
+void					no_equal_in_export(t_data *data, char *value);
+void					modif_export_node(t_data *data, char *value, int exist);
+void					modif_export(t_data *data, char *value);
 
 /*get_env_export.c*/
-void	get_env2(char **env, t_data *data);
-void	get_shlvl_export(t_data *data);
-void	add_cpy_env2(char *type, char *value, t_env **env, t_data *data);
+void					get_env_for_export(char **env, t_data *data);
+void					get_shlvl_export(t_data *data);
+void					add_export(char *type, char *value, t_env **env,
+							t_data *data);
 
 /*pwd.c*/
 //char					*find_env_value(t_env *env, const char *key);
 int						builtin_pwd(t_commands *commands, t_data *data);
-char	*find_env_value(char **env, const char *key);
+char					*find_env_value(char **env, const char *key);
+
 /*unset.c*/
 int						reverse_free_char_array(char **arr, ssize_t count,
 							int exit_code);
-int						build_new_env(t_data *data, char ***new_env, ssize_t length,
-							ssize_t identifier_index);
-int						build_new_export(t_data *data, char ***new_env, ssize_t length,
-							ssize_t identifier_index);
+int						build_new_env(t_data *data, char ***new_env,
+							ssize_t length,	ssize_t identifier_index);
+int						build_new_export(t_data *data, char ***new_env,
+							ssize_t length, ssize_t identifier_index);
 int						builtin_unset(t_data *data, t_token *token);
 
 /*unset_utils.c*/
-int						remove_variable_from_export(char *identifier, t_data *data);
-int						remove_variable_from_env(char *identifier, t_data *data);
+int						remove_variable_from_export(char *identifier,
+							t_data *data);
+int						remove_variable_from_env(char *identifier,
+							t_data *data);
 int						remove_from_env_lst(t_data *data, t_list *ptr_env);
 
 /*************************        5_free       *******************************/
@@ -408,12 +397,9 @@ void					exit_minishell(t_data *data, int exit_status);
 void					print_command_list(t_commands *head);
 void					print_string_array(char **arr, const char *label);
 void					print_list(t_list *lst, const char *label);
+
 /*utils_test.c*/
 const char				*get_type_name(t_type type);
 void					print_tokens(t_token *token);
-
-void	write_str_fd(t_data *data, char *str_err, char *s, int fd);
-void	write_char_fd(t_data *data, char *str_err, char c, int fd);
-
 
 #endif

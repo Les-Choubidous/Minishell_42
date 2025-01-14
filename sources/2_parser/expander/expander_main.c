@@ -1,4 +1,4 @@
-#include "../../../includes/minishell.h"
+#include "minishell.h"
 
 char	*expand_exit_status(t_data *data, int *i)
 {
@@ -21,7 +21,7 @@ char	*expand_exit_status(t_data *data, int *i)
 	return (data->expanded_str);
 }
 
-char	*expand_stuff(t_data *data, char *str, char *var, int *i)
+char	*expand_stuff(t_data *data, char *var)
 {
 	char	*before;
 	char	*in_var;
@@ -29,10 +29,15 @@ char	*expand_stuff(t_data *data, char *str, char *var, int *i)
 	before = ft_strdup(data->expanded_str);
 	if (!before)
 		return (failed_mess(data, "malloc failed", 1), NULL);
-	if (is_exist_in_env(var, data))
+	if (ft_strcmp(var, "$$") == 0)
+		in_var = ft_strdup("(pid)");
+	else if (ft_strcmp(var, "?") == 0)
+		in_var = ft_itoa(data->exit_status);
+	else if (is_exist_in_env(var, data))
 		in_var = give_me_inside_var(var, data);
 	else
-		in_var = expand_dollar_sequence(&str, i);
+		in_var = ft_strdup("");
+
 	free(data->expanded_str);
 	data->expanded_str = ft_concatenate(before, in_var);
 	free(before);
@@ -77,10 +82,16 @@ char	*expan_var(char *str, t_data *data)
 		}
 		else if (str[i] == '$' && !is_in_single_quotes(str, i))
 		{
-			var = extract_var(str + i, &i);
-			if (!var)
-				return (failed_mess(data, "Failed to extract variable", 1), NULL);
-			data->expanded_str = expand_stuff(data, str, var, &i);
+			if (str[i + 1] == '$' || str[i + 1] == '?')
+			{
+				var = extract_var(str + i, &i);
+				if (!var)
+					return (failed_mess(data, "Failed to extract variable", 1), NULL);
+			}
+			else
+				var = extract_var(str + i, &i);
+
+			data->expanded_str = expand_stuff(data, var);
 			free(var);
 			if (!data->expanded_str)
 				return (NULL);
@@ -100,7 +111,7 @@ int	expander(t_data *data)
 	if (!data->line)
 		return (EXIT_FAILURE);
 	data->expanded_str = NULL;
-	if (dollar_in_str(data->line, data))
+	if (dollar_in_str(data->line))
 	{
 		data->expanded_str = expan_var(data->line, data);
 		if (!data->expanded_str)

@@ -10,66 +10,62 @@ int	is_just_spaces(char *arg)
 	return (1);
 }
 
-t_token	*new_token(char *start, char *end, t_type type, t_quote quote)
+t_token	*init_new_token(t_type type, t_quote quote)
 {
 	t_token	*new;
-	char	*temp;
 
 	new = malloc(sizeof(t_token));
 	if (!new)
 	{
 		perror("malloc error");
-		free(start);
 		return (NULL);
 	}
-	else if ((start && end && end >= start) && quote)
-	{
-		if (quote == DQ)
-		{
-			temp = ft_substr(start, 0 , end - start + 1);
-			if (!temp)
-			{
-				perror("token value malloc");
-				free(new); // ajout ugo
-				free(temp); // debug cas "ls |"
-				free(start); // ajout ugo
-				return (NULL);
-			}
-			new->value = ft_strdup(temp);
-			//ft_concate(3, temp2, temp, temp2);
-			free(temp);
-		}
-		else
-		{
-			new->value = ft_substr(start, 0 , end - start + 1);
-			if (!new->value)
-			{
-				perror("token value malloc");
-				free(new); // debug cas "ls |"
-				free(start); // ajout ugo
-				return (NULL);
-			}
-		}
-	}
-	else if (start && end && end >= start)
-	{
-		new->value = ft_substr(start, 0, end - start);
-		if (!new->value)
-		{
-			perror("token value malloc");
-			free(new);
-			free(start); // ajout ugo
-			return (NULL);
-		}
-	}
-	else
-		new->value = NULL;
-	//free(start); // fait crash si : >
 	new->type = type;
 	new->quote = quote;
+	new->value = NULL;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
+}
+
+t_token	*new_token(char *start, char *end, t_type type, t_quote quote)
+{
+	t_token	*new;
+
+	new = init_new_token(type, quote);
+	if (!new)
+	{
+		free(start);
+		return (NULL);
+	}
+	if (start && end && end >= start)
+	{
+		new->value = extract_token_value(start, end, quote);
+		if (!new->value)
+		{
+			free(new);
+			free(start);
+			return (NULL);
+		}
+	}
+	return (new);
+}
+char	*extract_token_value(char *start, char *end, t_quote quote)
+{
+	char	*temp;
+
+	if (quote == DQ)
+	{
+		temp = ft_substr(start, 0, end - start + 1);
+		if (!temp)
+		{
+			perror("token value malloc");
+			return (NULL);
+		}
+		return (ft_strdup(temp));
+	}
+	else
+		return (ft_substr(start, 0, end - start + 1));
 }
 
 void	lst_token_add_back(t_data *data, t_token *new)

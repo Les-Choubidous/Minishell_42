@@ -9,14 +9,19 @@ int	here_doc(t_data *data)
 		return (perror_return("here_doc pipe"));
 	data->input.fd = pipe_fds[0];
 	write_fd = pipe_fds[1];
-	populate_here_doc(write_fd, data->input.value, data);
+	populate_here_doc(write_fd, data->input.value);
 	return (EXIT_SUCCESS);
 }
 
-void	populate_here_doc(int write_fd, char *delimiter, t_data *data)
+void	populate_here_doc(int write_fd, char *delimiter)
 {
 	char	*line;
-	printf("populate here doc : %s\n", data->line);
+	if (!delimiter || !*delimiter)
+	{
+		perror("heredoc delimiter is missing");
+		close(write_fd);
+		return;
+	}
 	while (1)
 	{
 		//signals_interactive();

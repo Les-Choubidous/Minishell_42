@@ -36,7 +36,6 @@ void	launch_minishell(t_data *data)
 			exit_minishell(data, EXIT_SUCCESS);
 		if (is_line_empty_or_need_continue(data))
 			continue ;
-
 		if (g_signal_received)
 		{
 			data->exit_status = 130;
@@ -44,10 +43,8 @@ void	launch_minishell(t_data *data)
 			continue ;
 		}
 		syntaxe_line(data->line, data);
-
 		if (ft_strlen(data->line))
 			add_history(data->line);
-
 		if (expander(data) == EXIT_FAILURE || lexer(data, 1) == EXIT_FAILURE
 			|| parser(data) == EXIT_FAILURE || executer(data) == EXIT_FAILURE)
 		{
@@ -55,14 +52,12 @@ void	launch_minishell(t_data *data)
 			continue ;
 		}
 		free_mem_between_cmd(data);
-		// print_final_group(data->command);
 	}
 
 }
 
 void	exit_minishell(t_data *data, int exit_status)
 {
-	// (void)data;
 	ft_printf_colour(RED, "Exiting minishell 👋\n");
 	free_all_memory(data);
 	clear_history();

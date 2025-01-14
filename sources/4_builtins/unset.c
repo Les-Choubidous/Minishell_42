@@ -1,4 +1,5 @@
 #include "minishell.h"
+
 static void	unset_env_node(t_env *delete, t_data *data)
 {
 	t_env	*start;
@@ -24,10 +25,10 @@ static void	unset_export_node(t_env *delete, t_data *data)
 {
 	t_env	*start;
 
-	start = data->cpy_env2;
+	start = data->export;
 	if (delete == start)
 	{
-		data->cpy_env2 = data->cpy_env2->next;
+		data->export = data->export->next;
 		free(delete->type);
 		free(delete->value);
 		free(delete);
@@ -57,7 +58,7 @@ static void	find_node_to_unset(t_env *env, t_data *data, char *value)
 	}
 }
 
-static void	find_node_to_unset2(t_env *env, t_data *data, char *value)
+static void	find_node_to_export(t_env *env, t_data *data, char *value)
 {
 	t_env	*tmp;
 
@@ -83,7 +84,7 @@ int	builtin_unset(t_data *data, t_token *token)
 		if (tmp_tok->value)
 		{
 			find_node_to_unset(data->cpy_env, data, tmp_tok->value);
-			find_node_to_unset2(data->cpy_env2, data, tmp_tok->value);
+			find_node_to_export(data->export, data, tmp_tok->value);
 		}
 		tmp_tok = tmp_tok->next;
 	}

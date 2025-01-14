@@ -1,44 +1,23 @@
-#include "../../../includes/minishell.h"
+#include "minishell.h"
 
-int	is_finish_expand(char *str, t_data *data, int count, int *i)
-{
-	char	*var;
-
-	var = extract_var(str + *i, i);
-	if (var && (is_exist_in_env(var, data) || (str + *i)[0] != '?'))
-	{
-		free(var);
-		return (1);
-	}
-	if (var)
-	{
-		free(var);
-	}
-	if (count % 2 == 0)
-		return (1);
-	return (0);
-}
-
-int	dollar_in_str(char *str, t_data *data)
+int	dollar_in_str(char *str)
 {
 	int	i;
-	int	open;
-	int	count;
+	int	in_single;
+	int	in_double;
 
 	i = 0;
-	open = 0;
-	count = 0;
+	in_single = 0;
+	in_double = 0;
 	while (str[i])
 	{
-		if (str[i] == '$')
-			count++;
-		if (str[i] == '\'' && !open)
-			open = 1;
-		else if (str[i] == '\'' && open)
-			open = 0;
-		else if (str[i] == '$')
+		if (str[i] == '\'' && !in_double)
+			in_single = !in_single;
+		else if (str[i] == '"' && !in_single)
+			in_double = !in_double;
+		if (str[i] == '$' && !in_single)
 		{
-			if (is_finish_expand(str, data, count, &i))
+			if (str[i + 1] == '$' || str[i + 1] == '?' || ft_isalnum(str[i + 1]))
 				return (1);
 		}
 		i++;
@@ -46,51 +25,71 @@ int	dollar_in_str(char *str, t_data *data)
 	return (0);
 }
 
-char	*peer_odd_dollar(int dollar_count, char *result, char *pid_str,
-		char *temp)
+static char	*append_pid(char *result)
 {
-	while (dollar_count >= 2)
+	char	*temp;
+	char	*pid_str;
+
+	pid_str = "(pid)";
+	if (!pid_str)
+		return (NULL);
+	if (!result)
+		result = ft_strdup(pid_str);
+	else
 	{
-		if (!result)
-			result = ft_strdup(pid_str);
-		else
-		{
-			temp = ft_strjoin(result, pid_str);
-			free(result);
-			result = temp;
-		}
-		dollar_count -= 2;
+		temp = ft_strjoin(result, pid_str);
+		free(result);
+		result = temp;
 	}
-	if (dollar_count == 1)
-	{
-		if (!result)
-			result = ft_strdup("$");
-		else
-		{
-			temp = ft_strjoin(result, "$");
-			free(result);
-			result = temp;
-		}
-	}
+	free(pid_str);
 	return (result);
 }
 
-char	*expand_dollar_sequence(char **str, int *i)
+static char	*append_exit_status(char *result, int exit_status)
 {
-	size_t	dollar_count;
-	char	*pid_str;
-	char	*result;
 	char	*temp;
+	char	*status_str;
 
-	temp = NULL;
-	dollar_count = 0;
-	pid_str = "(pid)";
+	status_str = ft_itoa(exit_status);
+	if (!status_str)
+		return (NULL);
+	if (!result)
+		result = ft_strdup(status_str);
+	else
+	{
+		temp = ft_strjoin(result, status_str);
+		free(result);
+		result = temp;
+	}
+	free(status_str);
+	return (result);
+}
+
+char	*expand_dollar_sequence(char **str, int *i, t_data *data)
+{
+	char	*result;
+
 	result = NULL;
 	while ((*str)[*i] == '$')
 	{
-		dollar_count++;
 		(*i)++;
+		if ((*str)[*i] == '$')
+		{
+			result = append_pid(result);
+			(*i)++;
+		}
+		else if ((*str)[*i] == '?')
+		{
+			result = append_exit_status(result, data->exit_status);
+			(*i)++;
+		}
+		else
+		{
+			if (!result)
+				result = ft_strdup("$");
+		}
+		if (!result)
+			return (NULL);
 	}
-	result = peer_odd_dollar(dollar_count, result, pid_str, temp);
 	return (result);
 }
