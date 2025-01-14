@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/*utils*/
 size_t	get_var_len(char *str)
 {
 	size_t	len;
@@ -26,7 +25,7 @@ int	is_exist_in_env(char *var, t_data *data)
 	tmp = data->cpy_env;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->value, var) == 0)
+		if (ft_strcmp(tmp->type, var) == 0)
 			return (1);
 		tmp = tmp->next;
 	}

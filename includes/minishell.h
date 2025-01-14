@@ -212,17 +212,16 @@ void					lst_token_add_back(t_data *data, t_token *new);
 int						expander(t_data *data);
 char					*expan_var(char *str, t_data *data);
 char					*expand_else(t_data *data, char *str, int *i);
-char					*expand_stuff(t_data *data, char *str, char *var,
-							int *i);
+char					*expand_stuff(t_data *data, char *var);
 char					*expand_exit_status(t_data *data, int *i);
 
 /*expand_dollars.c*/
 int						is_finish_expand(char *str, t_data *data, int count,
 							int *i);
-char					*expand_dollar_sequence(char **str, int *i);
+char					*expand_dollar_sequence(char **str, int *i, t_data *data);
 char					*peer_odd_dollar(int dollar_count, char *result,
 							char *pid_str, char *temp);
-int						dollar_in_str(char *str, t_data *data);
+int						dollar_in_str(char *str);
 
 /*expander_utils.c*/
 char					*ft_strjoin_char(char *str, char c);
@@ -235,7 +234,7 @@ void					failed_mess(t_data *data, char *mess, int code);
 char					*ft_concatenate(char *before, char *in_var);
 char					*extract_var(char *str, int *i);
 char					*give_me_inside_var(char *var, t_data *data);
-int						is_in_double_quotes(char *str, int index);
+//int						is_in_double_quotes(char *str, int index);
 
 /******* Heredoc ********/
 void					populate_here_doc(int write_fd, char *delimiter);
