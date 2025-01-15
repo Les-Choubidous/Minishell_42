@@ -74,7 +74,6 @@ char	*ft_strjoin_char(char *str, char c)
 		new_str[1] = '\0';
 		return (new_str);
 	}
-
 	len = ft_strlen(str);
 	new_str = malloc(sizeof(char) * (len + 2));
 	if (!new_str)

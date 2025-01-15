@@ -16,17 +16,16 @@ int	here_doc(t_data *data)
 void	populate_here_doc(int write_fd, char *delimiter)
 {
 	char	*line;
+
 	if (!delimiter || !*delimiter)
 	{
 		perror("heredoc delimiter is missing");
 		close(write_fd);
-		return;
+		return ;
 	}
 	while (1)
 	{
-		//signals_interactive();
 		line = readline(HERE_DOC_PROMPTE);
-		//signals_non_interactive();
 		if (!line)
 			break ;
 		if (!ft_strcmp(line, delimiter))
@@ -35,11 +34,6 @@ void	populate_here_doc(int write_fd, char *delimiter)
 			line = NULL;
 			break ;
 		}
-		// if (expand_string(&line, data) == EXIT_FAILURE)
-		// {
-		// 	free(line);
-		// 	break ;
-		// }
 		write(write_fd, line, ft_strlen(line));
 		write(write_fd, "\n", 1);
 		free(line);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*expand_exit_status(t_data *data, int *i)
+char	*expand_var_or_exit(t_data *data, char *var, int *i)
 {
 	char	*before;
 	char	*in_var;
@@ -8,36 +8,15 @@ char	*expand_exit_status(t_data *data, int *i)
 	before = ft_strdup(data->expanded_str);
 	if (!before)
 		return (failed_mess(data, "malloc failed", 1), NULL);
-	in_var = ft_itoa(data->exit_status);
-	if (!in_var)
-		return (free(before), failed_mess(data, "malloc failed", 1), NULL);
-	(*i) += 2;
-	free(data->expanded_str);
-	data->expanded_str = ft_concatenate(before, in_var);
-	free(before);
-	free(in_var);
-	if (!data->expanded_str)
-		return (failed_mess(data, "malloc failed", 1), NULL);
-	return (data->expanded_str);
-}
-
-char	*expand_stuff(t_data *data, char *var)
-{
-	char	*before;
-	char	*in_var;
-
-	before = ft_strdup(data->expanded_str);
-	if (!before)
-		return (failed_mess(data, "malloc failed", 1), NULL);
-	if (ft_strcmp(var, "$$") == 0)
-		in_var = ft_strdup("(pid)");
-	else if (ft_strcmp(var, "?") == 0)
+	if (ft_strcmp(var, "$?") == 0)
+	{
 		in_var = ft_itoa(data->exit_status);
+		(*i) += 2;
+	}
 	else if (is_exist_in_env(var, data))
 		in_var = give_me_inside_var(var, data);
 	else
 		in_var = ft_strdup("");
-
 	free(data->expanded_str);
 	data->expanded_str = ft_concatenate(before, in_var);
 	free(before);
@@ -47,7 +26,7 @@ char	*expand_stuff(t_data *data, char *var)
 	return (data->expanded_str);
 }
 
-char	*expand_else(t_data *data, char *str, int *i)
+char	*process_character(t_data *data, char *str, int *i)
 {
 	char	*tmp;
 
@@ -63,10 +42,25 @@ char	*expand_else(t_data *data, char *str, int *i)
 	return (data->expanded_str);
 }
 
+char	*process_expansion(char *str, t_data *data, int *i)
+{
+	char	*var;
+
+	if (str[*i] == '$' && str[*i + 1] == '?' && !is_in_single_quotes(str, *i))
+		return (expand_var_or_exit(data, "$?", i));
+	if (str[*i] == '$' && !is_in_single_quotes(str, *i))
+	{
+		var = extract_var(str + *i, i);
+		if (!var)
+			return (failed_mess(data, "Failed to extract variable", 1), NULL);
+		return (expand_var_or_exit(data, var, i));
+	}
+	return (process_character(data, str, i));
+}
+
 char	*expan_var(char *str, t_data *data)
 {
-	int		i;
-	char	*var;
+	int	i;
 
 	i = 0;
 	data->expanded_str = ft_strdup("");
@@ -74,34 +68,9 @@ char	*expan_var(char *str, t_data *data)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] == '?' && !is_in_single_quotes(str, i))
-		{
-			data->expanded_str = expand_exit_status(data, &i);
-			if (!data->expanded_str)
-				return (NULL);
-		}
-		else if (str[i] == '$' && !is_in_single_quotes(str, i))
-		{
-			if (str[i + 1] == '$' || str[i + 1] == '?')
-			{
-				var = extract_var(str + i, &i);
-				if (!var)
-					return (failed_mess(data, "Failed to extract variable", 1), NULL);
-			}
-			else
-				var = extract_var(str + i, &i);
-
-			data->expanded_str = expand_stuff(data, var);
-			free(var);
-			if (!data->expanded_str)
-				return (NULL);
-		}
-		else
-		{
-			data->expanded_str = expand_else(data, str, &i);
-			if (!data->expanded_str)
-				return (NULL);
-		}
+		data->expanded_str = process_expansion(str, data, &i);
+		if (!data->expanded_str)
+			return (NULL);
 	}
 	return (data->expanded_str);
 }

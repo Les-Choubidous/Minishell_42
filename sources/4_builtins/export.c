@@ -4,7 +4,7 @@ static int	event_expansion(t_data *data)
 {
 	t_token	*tmp;
 	int		i;
-	char *error_mess;
+	char	*error_mess;
 
 	error_mess = NULL;
 	tmp = data->token->next;
@@ -15,8 +15,8 @@ static int	event_expansion(t_data *data)
 		{
 			if (tmp->value[i] == '!' && tmp->value[i + 1])
 			{
-				ft_putstr_fd("minishell: " , 2);
-				error_mess = ft_substr(tmp->value, i , ft_strlen(tmp->value));
+				ft_putstr_fd("minishell: ", 2);
+				error_mess = ft_substr(tmp->value, i, ft_strlen(tmp->value));
 				ft_putstr_fd(error_mess, 2);
 				ft_putstr_fd(": event not found\n", 2);
 				free(error_mess);
@@ -77,7 +77,6 @@ static void	display_export_order(t_data *data, int fd)
 	}
 }
 
-
 int	builtin_export(t_data *data, t_token *token, int fd)
 {
 	t_token	*tmp_tok;
@@ -95,7 +94,7 @@ int	builtin_export(t_data *data, t_token *token, int fd)
 	}
 	if (tmp_tok->value[0] == '\0')
 	{
-		ft_putstr_fd(EXPORT_ERR_IDENTIFIER , 2);
+		ft_putstr_fd(EXPORT_ERR_IDENTIFIER, 2);
 		return (EXIT_FAILURE);
 	}
 	update_env_from_tokens(data, tmp_tok);

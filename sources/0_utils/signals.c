@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 // Fonction pour gérer SIGINT dans le shell (processus parent)
-static void sigint_shell_action(int signum)
+static void	sigint_shell_action(int signum)
 {
 	(void)signum;
 	write(STDERR_FILENO, "\n", 1);
@@ -15,7 +15,7 @@ static void sigint_shell_action(int signum)
 }
 
 // Fonction pour configurer la gestion des signaux pour le shell
-void configure_shell_signals(void)
+void	configure_shell_signals(void)
 {
 	signal(SIGINT, sigint_shell_action);
 	signal(SIGQUIT, SIG_IGN);
@@ -23,7 +23,7 @@ void configure_shell_signals(void)
 }
 
 // Fonction pour gérer SIGINT dans les processus enfants
-static void sigint_child_action(int signum)
+static void	sigint_child_action(int signum)
 {
 	(void)signum;
 	write(STDERR_FILENO, "\n", 1);
@@ -31,9 +31,8 @@ static void sigint_child_action(int signum)
 }
 
 // Fonction pour configurer la gestion des signaux pour les processus enfants
-void configure_child_signals(void)
+void	configure_child_signals(void)
 {
 	signal(SIGINT, sigint_child_action);
 	signal(SIGQUIT, SIG_DFL);
 }
-

@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		int oflag)
 {
@@ -16,9 +15,6 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 	redir->value = ft_strdup(token->next->value);
 	if (!redir->value)
 		return (perror_return("ft_strdup for redirection value"));
-	//if (redir->quote != SQ)
-		//expand_string(&redir->value, data);
-		//printf("expand string : %s\n", data->expanded_str);
 	if (redir->type != HEREDOC)
 	{
 		redir->fd = open(redir->value, oflag, 0644);
@@ -108,8 +104,6 @@ int	parser(t_data *data)
 	}
 	if (create_new_node && *data->line)
 		return (ft_printf_exit_code("No command after pipe\n", EXIT_FAILURE));
-	// if (expander(data))
-	// 	return (EXIT_FAILURE);
 	if (concate_final_group_commands(data))
 		return (EXIT_FAILURE);
 	if (data->input.type == HEREDOC && here_doc(data))

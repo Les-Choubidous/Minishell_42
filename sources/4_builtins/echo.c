@@ -24,7 +24,7 @@ static void	print_echo(char **array, int flag, int pos)
 		if (ft_strlen(array[pos]) == 0)
 		{
 			pos++;
-			continue;
+			continue ;
 		}
 		if (first)
 		{
@@ -54,7 +54,7 @@ int	builtin_echo(t_commands *commands, __attribute__((unused)) t_data *data)
 			pos++;
 		}
 		else
-			break;
+			break ;
 	}
 	print_echo(commands->final_group, flag, pos);
 	return (EXIT_SUCCESS);

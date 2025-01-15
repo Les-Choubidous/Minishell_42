@@ -1,6 +1,4 @@
-
 #include "minishell.h"
-
 
 int	populate_node_command(t_commands *node, t_token *token)
 {
@@ -26,11 +24,6 @@ int	populate_node_argument(t_commands *node, t_token *token)
 {
 	if (!node)
 		return (EXIT_FAILURE);
-	// if (ft_strcmp(node->command, "export"))
-	// {
-	// 	if (add_new_list_node(&node->arg, token))
-	// 		return (EXIT_FAILURE);
-	// }
 	if (add_new_list_node(&node->arg, token))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

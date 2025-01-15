@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-/*
-** Crée un tableau contenant les descripteurs de fichiers nécessaires
-** pour gérer les entrées/sorties entre plusieurs commandes dans un pipeline.
-**
-** @param fd_out: Le descripteur de sortie global (par ex., stdout).
-** @param fd_in: Le descripteur d'entrée global (par ex., stdin).
-** @param cmds_num: Le nombre de commandes dans le pipeline.
-**
-** @return: Un tableau d'entiers contenant les descripteurs configurés, ou
-** NULL en cas d'erreur.
-*/
 int	*build_pipes(int fd_out, int fd_in, int cmds_num)
 {
 	int	i;

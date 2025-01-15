@@ -25,7 +25,7 @@ t_env	*sort_list(t_env *cpy, int (*cmp)(const char *, const char *))
 	return (tmp);
 }
 
-int find_if_env_exist(t_env *env, char *value)
+int	find_if_env_exist(t_env *env, char *value)
 {
 	t_env	*tmp;
 	char	*sub;
@@ -74,7 +74,6 @@ void	add_env_node(t_data *data, char *value)
 	add_cpy_env(ft_substr(value, 0, i - 1), ft_substr(value, i,
 			ft_strlen(value)), &data->cpy_env, data);
 }
-
 
 char	*export_key(char *arg)
 {

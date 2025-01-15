@@ -74,6 +74,64 @@ static void	find_node_to_export(t_env *env, t_data *data, char *value)
 	}
 }
 
+/******************************/
+
+#include "minishell.h"
+
+// Compte le nombre de variables dans ta liste chaînée
+static int  env_list_size(t_env *env)
+{
+    int count = 0;
+    while (env)
+    {
+        count++;
+        env = env->next;
+    }
+    return (count);
+}
+
+// Construit la chaîne "TYPE=VALUE"
+static char *join_env_var(const char *type, const char *value)
+{
+    char *tmp;
+    char *joined;
+
+    tmp = ft_strjoin(type, "=");       // "PATH=" par ex.
+    if (!tmp)
+        return (NULL);
+    joined = ft_strjoin(tmp, value);   // "PATH=/bin:/usr/bin"
+    free(tmp);
+    return (joined);
+}
+
+// Convertit la liste chaînée data->cpy_env en tableau de char**
+static char **list_to_envp(t_env *env)
+{
+    char    **array;
+    int     size;
+    int     i;
+
+    size = env_list_size(env);
+    array = malloc(sizeof(char *) * (size + 1));
+    if (!array)
+        return (NULL);
+    i = 0;
+    while (env)
+    {
+        array[i] = join_env_var(env->type, env->value);
+        if (!array[i]) // en cas d'erreur d'allocation
+        {
+            // penser à free ce qui est déjà alloué
+            // + free(array)
+            return (NULL);
+        }
+        i++;
+        env = env->next;
+    }
+    array[i] = NULL;
+    return (array);
+}
+
 int	builtin_unset(t_data *data, t_token *token)
 {
 	t_token	*tmp_tok;
@@ -88,5 +146,6 @@ int	builtin_unset(t_data *data, t_token *token)
 		}
 		tmp_tok = tmp_tok->next;
 	}
-	return (EXIT_SUCCESS);
+	 free_char_array(data->env);            // libère l'ancien tableau
+    data->env = list_to_envp(data->cpy_env);	return (EXIT_SUCCESS);
 }
