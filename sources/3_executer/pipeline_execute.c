@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-/**
- * @brief Sauvegarde les redirections actuelles de stdin & stdout,
- * redirige stdin & stdout vers des descripteurs donnés, exécute une commande
- * interne (builtin) et restaure les descripteurs initiaux.
-
- * @param fd_pipes Tableau contenant les descripteurs de fichiers à utiliser
- * pour stdin et stdout.
- * @param pos Position dans `fd_pipes` des descripteurs à utiliser.
- * @param cmd Commande interne (builtin) à exécuter.
- * @param data Structure principale contenant les données globales.
- * @return Code de sortie de la commande.
- */
 int	execute_builtin(int *fd_pipes, int pos, t_commands *command, t_data *data)
 {
 	int	exit_code;
@@ -47,15 +35,10 @@ int	execute_env(int *fd_pipes, int pos, int *pid, t_data *data)
 		cmd = cmd->next;
 	if (!cmd || !cmd->command)
 		return (EXIT_FAILURE);
-	//exec_path = search_cmd_path(cmd, data->full_env);
-	exec_path = search_cmd_path(data, cmd, data->env); //ajout ugo
+	exec_path = search_cmd_path(data, cmd, data->env);
 	if (!exec_path)
-		//return (data->exit_status = 127, EXIT_FAILURE);
-		return (EXIT_FAILURE); //ajout ugo
+		return (EXIT_FAILURE);
 	free(exec_path);
-		// return (EXIT_FAILURE);
-		// exec_path = cmd->command;
-	// if (access(exec_path, X_OK | F_OK) == -1)
 	*pid = fork();
 	if (*pid < 0)
 		return (EXIT_FAILURE);
@@ -64,7 +47,6 @@ int	execute_env(int *fd_pipes, int pos, int *pid, t_data *data)
 		if (dup2(fd_pipes[pos], STDIN_FILENO) == -1 || dup2(fd_pipes[pos + 3],
 				STDOUT_FILENO) == -1)
 			return (EXIT_FAILURE);
-		// close_unused_fd(fd_pipes, pos, FDX_RW, 2 * cmd_count(data->command));
 		close_unused_fd(fd_pipes, pos, FDX_NONE, 2 * cmd_count(data->command));
 		exit(command_executer(cmd, data));
 	}
@@ -98,15 +80,6 @@ int	catch_child_execs(pid_t *pid, int num, t_data *data, int *fd_pipes)
 	return (EXIT_SUCCESS);
 }
 
-/**
-* @brief Exécute plusieurs cmd en pipeline en créant des processus pour chaque
-* cmd.
-*
-* @param fd_pipes Tableau contenant les descripteurs de fichiers pour les pipes.
- * @param pid Tableau contenant les IDs des processus enfants.
- * @param data Structure principale contenant les commandes et données globales.
- * @return Code de sortie final (EXIT_SUCCESS ou EXIT_FAILURE).
- */
 int	execute_pipeline(int *fd_pipes, pid_t *pid, t_data *data)
 {
 	t_commands	*command;

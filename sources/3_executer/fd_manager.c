@@ -1,11 +1,5 @@
 #include "minishell.h"
 
-/**
- * @brief Ferme un descripteur de fichier donné, sauf s'il s'agit de stdin,
-	stdout ou stderr.
- * @param fd Pointeur vers le descripteur de fichier à fermer.
- * @return 0 en cas de succès, 1 en cas d'échec.
- */
 int	close_fd(int *fd)
 {
 	if (*fd <= 2)
@@ -19,16 +13,6 @@ int	close_fd(int *fd)
 	return (EXIT_SUCCESS);
 }
 
-/**
- * @brief Ferme les descripteurs inutiles dans un tableau,
-	sauf ceux indiqués par `keep`.
- * @param fd_pipes Tableau contenant les descripteurs de fichiers.
- * @param pos Position dans le tableau des descripteurs d'entrée/sortie.
- * @param keep Indique quels descripteurs doivent rester ouverts (FDX_RW,
-	FDX_OR, FDX_OW, FDX_NONE).
- * @param len Taille du tableau `fd_pipes`.
- * @return 0 en cas de succès, 1 en cas d'échec.
- */
 int	close_unused_fd(int *fd_pipes, int pos, int keep, int len)
 {
 	int	i;

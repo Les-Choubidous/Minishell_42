@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 void	add_export(char *type, char *value, t_env **env, t_data *data)
@@ -73,7 +72,7 @@ void	get_env_for_export(char **env, t_data *data)
 	cpy_env2 = NULL;
 	data->env = env;
 	export_without_env(data, cpy_env2);
-	i = 0;
+	i = 0 ;
 	while (env[i])
 	{
 		if (!(env[i][0] == '_' && env[i][1] == '='))

@@ -2,14 +2,10 @@
 
 static void	print_err_syntaxe(char err, int i)
 {
-	//int	j;
-
-	//j = 0;
 	ft_putstr_fd("minishell: operation `", 2);
 	while (i > 0)
 	{
 		ft_putchar_fd(err, 2);
-		//j++;
 		i--;
 	}
 	ft_putstr_fd("' not handle\n", 2);
@@ -43,6 +39,7 @@ static int	check_syntaxe_in_quote(char *line, int open_quote, int i,
 		return (3);
 	return (0);
 }
+
 static void	open_quote_exit(t_data *data)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
@@ -61,7 +58,6 @@ void	syntaxe_line(char *line, t_data *data)
 	if (i)
 	{
 		data->exit_status = 2;
-		//data->err = 1;
 		if (i == 3)
 			open_quote_exit(data);
 		return ;

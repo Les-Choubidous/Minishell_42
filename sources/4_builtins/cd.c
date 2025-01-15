@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-static int cd_check_args(t_commands *commands)
+static int	cd_check_args(t_commands *commands)
 {
 	if (commands->flag)
 		return (ft_printf_exit_code(CD_ERR_FLAGS, EXIT_FAILURE));
@@ -9,9 +9,9 @@ static int cd_check_args(t_commands *commands)
 	return (EXIT_SUCCESS);
 }
 
-static char *cd_resolve_path(t_commands *commands, t_data *data)
+static char	*cd_resolve_path(t_commands *commands, t_data *data)
 {
-	char *path;
+	char	*path;
 
 	if (!commands->arg)
 	{
@@ -34,12 +34,12 @@ static char *cd_resolve_path(t_commands *commands, t_data *data)
 	return (path);
 }
 
-static int cd_set_env(t_data *data, const char *key, const char *value)
+static int	cd_set_env(t_data *data, const char *key, const char *value)
 {
-	int   i;
-	char  *tmp;
-	char  *new_entry;
-	size_t key_len;
+	int		i;
+	char	*tmp;
+	char	*new_entry;
+	size_t	key_len;
 
 	if (!key || !value)
 		return (EXIT_FAILURE);
@@ -47,8 +47,9 @@ static int cd_set_env(t_data *data, const char *key, const char *value)
 	i = 0;
 	while (data->env && data->env[i])
 	{
-		if (!ft_strncmp(data->env[i], key, key_len) && data->env[i][key_len] == '=')
-			break;
+		if (!ft_strncmp(data->env[i], key, key_len)
+			&& data->env[i][key_len] == '=')
+			break ;
 		i++;
 	}
 	tmp = ft_strjoin(key, "=");
@@ -63,7 +64,8 @@ static int cd_set_env(t_data *data, const char *key, const char *value)
 	return (EXIT_SUCCESS);
 }
 
-static int cd_update_vars(t_data *data, const char *old_pwd, const char *new_pwd)
+static int	cd_update_vars(t_data *data, const char *old_pwd,
+		const char *new_pwd)
 {
 	if (cd_set_env(data, "OLDPWD", old_pwd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
@@ -72,7 +74,7 @@ static int cd_update_vars(t_data *data, const char *old_pwd, const char *new_pwd
 	return (EXIT_SUCCESS);
 }
 
-int builtin_cd(t_commands *commands, t_data *data)
+int	builtin_cd(t_commands *commands, t_data *data)
 {
 	char	old_pwd[PATH_MAX];
 	char	new_pwd[PATH_MAX];

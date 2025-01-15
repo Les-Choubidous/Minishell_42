@@ -211,9 +211,9 @@ void					lst_token_add_back(t_data *data, t_token *new);
 /*expander_main.c*/
 int						expander(t_data *data);
 char					*expan_var(char *str, t_data *data);
-char					*expand_else(t_data *data, char *str, int *i);
-char					*expand_stuff(t_data *data, char *var);
-char					*expand_exit_status(t_data *data, int *i);
+char 					*process_expansion(char *str, t_data *data, int *i);
+char					*process_character(t_data *data, char *str, int *i);
+char					*expand_var_or_exit(t_data *data, char *var, int *i);
 
 /*expand_dollars.c*/
 int						is_finish_expand(char *str, t_data *data, int count,

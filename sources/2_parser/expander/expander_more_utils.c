@@ -5,7 +5,6 @@ void	failed_mess(t_data *data, char *mess, int code)
 	ft_putstr_fd(mess, 2);
 	if (*mess)
 		ft_putstr_fd("\n", 2);
-	//data->err = 1;
 	data->exit_status += code;
 }
 

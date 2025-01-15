@@ -17,7 +17,8 @@ int	dollar_in_str(char *str)
 			in_double = !in_double;
 		if (str[i] == '$' && !in_single)
 		{
-			if (str[i + 1] == '$' || str[i + 1] == '?' || ft_isalnum(str[i + 1]))
+			if (str[i + 1] == '$' || str[i + 1] == '?'
+				|| ft_isalnum(str[i + 1]))
 				return (1);
 		}
 		i++;

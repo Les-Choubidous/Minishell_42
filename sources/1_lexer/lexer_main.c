@@ -9,16 +9,14 @@ int	check_double_tokens(char *str)
 		if ((*str == '<' && *(str + 1) == '<') || (*str == '>' && *(str
 					+ 1) == '>'))
 			return (EXIT_SUCCESS);
-		// else if ((*str == '<' && *(str + 1) == '<') || (*str == '>' && *(str + 1) == '>'))
-		// 	return (EXIT_SUCCESS);
 		else
 		{
-			printf("Syntax error: unexpected token %c after token %c\n", *(str + 1), *str);
+			printf("Syntax error: unexpected token %c after token %c\n",
+				*(str + 1), *str);
 			return (EXIT_FAILURE);
 		}
 	}
 }
-
 
 char	*append_char(char *str, char c)
 {
@@ -66,7 +64,7 @@ int	lexer_core(t_data *data, t_quote *current_quote,
 	return (EXIT_SUCCESS);
 }
 
-int lexer_finalize(t_data *data, t_quote current_quote,
+int	lexer_finalize(t_data *data, t_quote current_quote,
 		char **current_token, int is_new_command)
 {
 	if (current_quote != NQ)
@@ -85,7 +83,6 @@ int lexer_finalize(t_data *data, t_quote current_quote,
 	}
 	define_tokens_exit_echo(data->token);
 	define_arg_type(data->token);
-	//print_tokens(data->token);
 	return (EXIT_SUCCESS);
 }
 
@@ -100,6 +97,6 @@ int	lexer(t_data *data, int is_new_command)
 	ret = lexer_core(data, &current_quote, &current_token, &is_new_command);
 	if (ret != EXIT_SUCCESS)
 		return (ret);
-
-	return (lexer_finalize(data, current_quote, &current_token, is_new_command));
+	return (lexer_finalize(data, current_quote, &current_token,
+			is_new_command));
 }

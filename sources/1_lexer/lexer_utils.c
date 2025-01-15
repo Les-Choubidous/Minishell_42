@@ -50,6 +50,7 @@ t_token	*new_token(char *start, char *end, t_type type, t_quote quote)
 	}
 	return (new);
 }
+
 char	*extract_token_value(char *start, char *end, t_quote quote)
 {
 	char	*temp;
