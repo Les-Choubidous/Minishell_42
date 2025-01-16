@@ -15,13 +15,13 @@ static char	*cd_resolve_path(t_commands *commands, t_data *data)
 
 	if (!commands->arg)
 	{
-		path = find_env_value(data->env, "HOME");
+		path = find_env_value(data, "HOME");
 		if (!path)
 			ft_putstr_fd(CD_ERR_HOME, STDERR_FILENO);
 	}
 	else if (!ft_strcmp(commands->arg->value, "-"))
 	{
-		path = find_env_value(data->env, "OLDPWD");
+		path = find_env_value(data, "OLDPWD");
 		if (!path)
 		{
 			ft_putstr_fd(CD_ERR_OLDPWD, STDERR_FILENO);
@@ -85,6 +85,9 @@ int	builtin_cd(t_commands *commands, t_data *data)
 	if (!getcwd(old_pwd, sizeof(old_pwd)))
 		return (perror_return("getcwd error"));
 	path = cd_resolve_path(commands, data);
+
+	printf(RED "path: %s\n" RESET, path);
+
 	if (!path)
 		return (EXIT_FAILURE);
 	if (chdir(path) == -1)

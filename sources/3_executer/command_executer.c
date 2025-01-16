@@ -88,7 +88,6 @@ int	command_executer(t_commands *command, t_data *data)
 		return (EXIT_FAILURE);
 	exec_path = NULL;
 	exec_path = search_cmd_path(data, command, data->env);
-	printf("exec_path: %s\n", exec_path);
 	if (exec_path)
 		data->exit_status = execve(exec_path, command->final_group,
 				data->env);

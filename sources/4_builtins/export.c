@@ -31,21 +31,21 @@ static int	event_expansion(t_data *data)
 
 static void	update_env_from_tokens(t_data *data, t_token *token)
 {
-	t_token	*tmp_tiktok;
+	t_token	*tmp;
 	int		exist;
 
-	tmp_tiktok = data->token->next;
+	tmp = data->token->next;
 	while (token)
 	{
 		if (event_expansion(data))
 			return ;
-		if (!is_valid_name(export_key(tmp_tiktok->value)))
+		if (!is_valid_name(export_key(tmp->value)))
 		{
-			tmp_tiktok = token->next;
+			tmp = token->next;
 			token = token->next;
 			continue ;
 		}
-		tmp_tiktok = token->next;
+		tmp = token->next;
 		if (token->value)
 			exist = find_if_env_exist(data->cpy_env, token->value);
 		if (exist != -1)

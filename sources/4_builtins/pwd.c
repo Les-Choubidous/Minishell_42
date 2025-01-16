@@ -9,17 +9,18 @@ static int	check_args(t_commands *commands)
 	return (EXIT_SUCCESS);
 }
 
-char	*find_env_value(char **env, const char *key)
+char	*find_env_value(t_data *data, const char *key)
 {
 	int		i;
 	size_t	key_len;
 
 	key_len = ft_strlen(key);
 	i = 0;
-	while (env[i])
+
+	while (data->env[i])
 	{
-		if (!ft_strncmp(env[i], key, key_len) && env[i][key_len] == '=')
-			return (env[i] + key_len + 1);
+		if (!ft_strncmp(data->env[i], key, key_len) && data->env[i][key_len] == '=')
+			return (data->env[i] + key_len + 1);
 		i++;
 	}
 	return (NULL);
@@ -32,7 +33,7 @@ int	builtin_pwd(t_commands *commands, t_data *data)
 
 	if (check_args(commands))
 		return (EXIT_FAILURE);
-	pwd = find_env_value(data->env, "PWD");
+	pwd = find_env_value(data, "PWD");
 	if (pwd)
 	{
 		ft_putstr_fd(pwd, STDOUT_FILENO);

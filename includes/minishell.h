@@ -354,7 +354,7 @@ void					add_export(char *type, char *value, t_env **env,
 /*pwd.c*/
 //char					*find_env_value(t_env *env, const char *key);
 int						builtin_pwd(t_commands *commands, t_data *data);
-char					*find_env_value(char **env, const char *key);
+char					*find_env_value(t_data *data, const char *key);
 
 /*unset.c*/
 int						reverse_free_char_array(char **arr, ssize_t count,

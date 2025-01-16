@@ -26,6 +26,7 @@ static void	print_env(t_data *data, int fd)
 {
 	t_env	*tmp;
 
+	ft_get_env(data->env, data);
 	tmp = data->cpy_env;
 	while (tmp)
 	{
