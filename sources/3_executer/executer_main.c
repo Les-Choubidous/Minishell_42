@@ -25,8 +25,10 @@ int	executer(t_data *data)
 	fd_pipes = build_pipes(data->output.fd, data->input.fd, cmds_num);
 	if (!fd_pipes)
 		return (free(pid), EXIT_FAILURE);
+	data->pid = pid;
 	execute_pipeline(fd_pipes, pid, data);
 	free(fd_pipes);
 	free(pid);
+	pid = NULL;
 	return (EXIT_SUCCESS);
 }

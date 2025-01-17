@@ -26,6 +26,7 @@ void	free_env_list(t_env *list)
 	while (list)
 	{
 		temp = list->next;
+		free(list->type);
 		free(list->value);
 		free(list);
 		list = temp;
@@ -60,8 +61,12 @@ void	free_char_array(char **array)
 	i = 0;
 	while (array[i])
 	{
+		if (array[i])
+			free(array[i]);
 		array[i] = NULL;
 		i++;
 	}
+	if (array)
+		free(array);
 	array = NULL;
 }

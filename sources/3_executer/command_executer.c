@@ -10,7 +10,7 @@ char	**env_extract_paths(char **env)
 	i = 0;
 	while (env[i] && !ft_strnstr(env[i], "PATH", 4))
 		i++;
-	if (!env[i] || !(ft_strchr(env[i], '=') + 1))
+	if (!env[i])// || !(ft_strchr(env[i], '=') + 1))
 		return (NULL);
 	path_split = ft_split(ft_strchr(env[i], '=') + 1, ':');
 	i = 0;

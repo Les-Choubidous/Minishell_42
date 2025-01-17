@@ -31,7 +31,7 @@ static char	*append_pid(char *result)
 	char	*temp;
 	char	*pid_str;
 
-	pid_str = "(pid)";
+	pid_str = ft_strdup("(pid)");
 	if (!pid_str)
 		return (NULL);
 	if (!result)
