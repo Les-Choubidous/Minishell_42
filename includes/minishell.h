@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:23:04 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -118,6 +130,7 @@ typedef struct s_data
 	char				*full_path;
 	char				*line;
 	int					exit_status;
+
 	int					*fd_pipes;
 	int					nb_pipe;
 	pid_t				*pid;
@@ -139,8 +152,6 @@ struct s_data_extended
 	t_redir	*redir;
 	t_pipes	*pipex;
 };
-
-#define UNUSED(x) (void)(x)
 
 /********************************FUNCTIONS*************************************/
 /**************************       0_utils       *******************************/
@@ -214,14 +225,15 @@ void					lst_token_add_back(t_data *data, t_token *new);
 /*expander_main.c*/
 int						expander(t_data *data);
 char					*expan_var(char *str, t_data *data);
-char 					*process_expansion(char *str, t_data *data, int *i);
+char					*process_expansion(char *str, t_data *data, int *i);
 char					*process_character(t_data *data, char *str, int *i);
 char					*expand_var_or_exit(t_data *data, char *var, int *i);
 
 /*expand_dollars.c*/
 int						is_finish_expand(char *str, t_data *data, int count,
 							int *i);
-char					*expand_dollar_sequence(char **str, int *i, t_data *data);
+char					*expand_dollar_sequence(char **str, int *i,
+							t_data *data);
 char					*peer_odd_dollar(int dollar_count, char *result,
 							char *pid_str, char *temp);
 int						dollar_in_str(char *str);
@@ -332,7 +344,7 @@ int						find_key_index(t_data *data, char *key);
 int						is_valid_name(char *name);
 int						export_with_arg(t_commands *command, t_data *data);
 int						builtin_export(t_data *data, t_token *token, int fd);
-
+t_env					*sort_list(t_env *cpy, int (*cmp)(const char *, const char *));
 /*export_utils.c*/
 int						is_valid_name(char *name);
 char					*export_key(char *arg);
@@ -360,20 +372,17 @@ int						builtin_pwd(t_commands *commands, t_data *data);
 char					*find_env_value(t_data *data, const char *key);
 
 /*unset.c*/
-int						reverse_free_char_array(char **arr, ssize_t count,
-							int exit_code);
-int						build_new_env(t_data *data, char ***new_env,
-							ssize_t length,	ssize_t identifier_index);
-int						build_new_export(t_data *data, char ***new_env,
-							ssize_t length, ssize_t identifier_index);
+void					find_node_to_export(t_env *env, t_data *data, char *value);
+void					find_node_to_unset(t_env *env, t_data *data, char *value);
 int						builtin_unset(t_data *data, t_token *token);
 
 /*unset_utils.c*/
-int						remove_variable_from_export(char *identifier,
-							t_data *data);
-int						remove_variable_from_env(char *identifier,
-							t_data *data);
-int						remove_from_env_lst(t_data *data, t_list *ptr_env);
+char					**list_to_envp(t_env *env);
+char					*join_env_var(const char *type, const char *value);
+int						env_list_size(t_env *env);
+void					unset_export_node(t_env *delete, t_data *data);
+void					unset_env_node(t_env *delete, t_data *data);
+
 
 /*************************        5_free       *******************************/
 /*free_mem_btw_cmd.c*/
