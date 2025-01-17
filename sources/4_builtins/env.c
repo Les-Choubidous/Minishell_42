@@ -52,4 +52,3 @@ int	builtin_env(t_data *data, t_token *tok, int fd_out)
 		return (EXIT_SUCCESS);
 	}
 }
-

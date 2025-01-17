@@ -229,6 +229,7 @@ SRC         =   main.c \
 				4_builtins/get_env_export.c \
                 4_builtins/pwd.c \
 				4_builtins/syntaxe_export.c \
+				4_builtins/unset_utils.c \
                 4_builtins/unset.c \
                 5_free/free_all.c \
                 5_free/free_mem_btw_cmd.c \

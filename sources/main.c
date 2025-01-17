@@ -53,7 +53,6 @@ void	launch_minishell(t_data *data)
 		}
 		free_mem_between_cmd(data);
 	}
-
 }
 
 void	exit_minishell(t_data *data, int exit_status)

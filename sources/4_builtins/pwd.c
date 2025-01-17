@@ -16,10 +16,10 @@ char	*find_env_value(t_data *data, const char *key)
 
 	key_len = ft_strlen(key);
 	i = 0;
-
 	while (data->env[i])
 	{
-		if (!ft_strncmp(data->env[i], key, key_len) && data->env[i][key_len] == '=')
+		if (!ft_strncmp(data->env[i], key, key_len)
+			&& data->env[i][key_len] == '=')
 			return (data->env[i] + key_len + 1);
 		i++;
 	}

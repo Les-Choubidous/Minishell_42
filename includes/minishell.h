@@ -137,8 +137,6 @@ struct s_data_extended
 	t_pipes	*pipex;
 };
 
-#define UNUSED(x) (void)(x)
-
 /********************************FUNCTIONS*************************************/
 /**************************       0_utils       *******************************/
 /*init_env.c*/
@@ -211,14 +209,15 @@ void					lst_token_add_back(t_data *data, t_token *new);
 /*expander_main.c*/
 int						expander(t_data *data);
 char					*expan_var(char *str, t_data *data);
-char 					*process_expansion(char *str, t_data *data, int *i);
+char					*process_expansion(char *str, t_data *data, int *i);
 char					*process_character(t_data *data, char *str, int *i);
 char					*expand_var_or_exit(t_data *data, char *var, int *i);
 
 /*expand_dollars.c*/
 int						is_finish_expand(char *str, t_data *data, int count,
 							int *i);
-char					*expand_dollar_sequence(char **str, int *i, t_data *data);
+char					*expand_dollar_sequence(char **str, int *i,
+							t_data *data);
 char					*peer_odd_dollar(int dollar_count, char *result,
 							char *pid_str, char *temp);
 int						dollar_in_str(char *str);
@@ -242,7 +241,7 @@ int						here_doc(t_data *data);
 
 /******** Parser ********/
 /*parser_main.c*/
-int						open_redirection_fd(t_data *data, t_in_out *redir,
+int						open_redirection_fd(t_in_out *redir,
 							t_token *token, int oflag);
 int						parser_helper_redirections(t_data *data,
 							t_token *token);
@@ -357,20 +356,17 @@ int						builtin_pwd(t_commands *commands, t_data *data);
 char					*find_env_value(t_data *data, const char *key);
 
 /*unset.c*/
-int						reverse_free_char_array(char **arr, ssize_t count,
-							int exit_code);
-int						build_new_env(t_data *data, char ***new_env,
-							ssize_t length,	ssize_t identifier_index);
-int						build_new_export(t_data *data, char ***new_env,
-							ssize_t length, ssize_t identifier_index);
 int						builtin_unset(t_data *data, t_token *token);
+void					find_node_to_export(t_env *env, t_data *data, char *value);
+void					find_node_to_unset(t_env *env, t_data *data, char *value);
+
 
 /*unset_utils.c*/
-int						remove_variable_from_export(char *identifier,
-							t_data *data);
-int						remove_variable_from_env(char *identifier,
-							t_data *data);
-int						remove_from_env_lst(t_data *data, t_list *ptr_env);
+char 					**list_to_envp(t_env *env);
+char 					*join_env_var(const char *type, const char *value);
+int  					env_list_size(t_env *env);
+void					unset_export_node(t_env *delete, t_data *data);
+void					unset_env_node(t_env *delete, t_data *data);
 
 /*************************        5_free       *******************************/
 /*free_mem_btw_cmd.c*/

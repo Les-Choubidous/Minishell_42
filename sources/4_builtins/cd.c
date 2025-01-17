@@ -85,9 +85,6 @@ int	builtin_cd(t_commands *commands, t_data *data)
 	if (!getcwd(old_pwd, sizeof(old_pwd)))
 		return (perror_return("getcwd error"));
 	path = cd_resolve_path(commands, data);
-
-	printf(RED "path: %s\n" RESET, path);
-
 	if (!path)
 		return (EXIT_FAILURE);
 	if (chdir(path) == -1)

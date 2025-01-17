@@ -45,7 +45,7 @@ int	double_quote(t_data *data, t_quote *current_quote,
 			return (0);
 	}
 	return (1);
-}	
+}
 
 static int	no_quote_space_symbol(t_data *data, char **current_token,
 				int *is_new_command)

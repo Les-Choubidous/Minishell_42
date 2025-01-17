@@ -1,9 +1,8 @@
 #include "minishell.h"
 
-int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
+int	open_redirection_fd(t_in_out *redir, t_token *token,
 		int oflag)
 {
-	UNUSED(data);
 	if (redir->fd >= 3)
 		close(redir->fd);
 	if (!token->next)
@@ -28,18 +27,18 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 {
 	if (token->type == INPUT || token->type == HEREDOC)
 	{
-		if (open_redirection_fd(data, &data->input, token, O_RDONLY))
+		if (open_redirection_fd(&data->input, token, O_RDONLY))
 			return (EXIT_FAILURE);
 	}
 	else if (token->type == OUTPUT)
 	{
-		if (open_redirection_fd(data, &data->output, token,
+		if (open_redirection_fd(&data->output, token,
 				O_WRONLY | O_TRUNC | O_CREAT))
 			return (EXIT_FAILURE);
 	}
 	else if (token->type == APPEND)
 	{
-		if (open_redirection_fd(data, &data->output, token,
+		if (open_redirection_fd(&data->output, token,
 				O_WRONLY | O_APPEND | O_CREAT))
 			return (EXIT_FAILURE);
 	}
