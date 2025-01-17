@@ -1,0 +1,5 @@
+minishell
+.o/
+objects/
+libft/.o
+libft/objects

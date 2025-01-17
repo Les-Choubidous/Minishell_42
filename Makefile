@@ -233,10 +233,7 @@ SRC         =   main.c \
                 4_builtins/unset.c \
                 5_free/free_all.c \
                 5_free/free_mem_btw_cmd.c \
-                5_free/free_utils.c \
-                6_tests/here_doc_tests.c \
-                6_tests/lexer_tests.c \
-                6_tests/parser_tester.c
+                5_free/free_utils.c 
 
 SRCS		=	$(addprefix ${SRC_DIR}, ${SRC})
 OBJS		=	$(addprefix ${OBJ_DIR}, $(SRC:.c=.o))
