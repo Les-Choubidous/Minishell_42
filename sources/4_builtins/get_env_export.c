@@ -52,13 +52,13 @@ void	get_shlvl_export(t_data *data)
 	return ;
 }
 
-static void	export_without_env(t_data *data, t_env *cpy_env2)
+static void	export_without_env(t_data *data, t_env *export)
 {
 	if (!*data->env)
 	{
-		add_export(ft_strdup("OLDPWD"), ft_strdup(""), &cpy_env2, data);
-		add_export(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env2, data);
-		add_export(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env2, data);
+		add_export(ft_strdup("OLDPWD"), ft_strdup(""), &export, data);
+		add_export(ft_strdup("PWD"), getcwd(NULL, 0), &export, data);
+		add_export(ft_strdup("SHLVL"), ft_strdup("1"), &export, data);
 		return ;
 	}
 }
@@ -67,11 +67,11 @@ void	get_env_for_export(char **env, t_data *data)
 {
 	int		i;
 	int		j;
-	t_env	*cpy_env2;
+	t_env	*export;
 
-	cpy_env2 = NULL;
+	export = NULL;
 	data->env = env;
-	export_without_env(data, cpy_env2);
+	export_without_env(data, export);
 	i = 0 ;
 	while (env[i])
 	{
@@ -81,7 +81,7 @@ void	get_env_for_export(char **env, t_data *data)
 			while (env[i][j] != '=')
 				j++;
 			add_export(ft_substr(env[i], 0, j), ft_substr(env[i], j + 1,
-					ft_strlen(env[i])), &cpy_env2, data);
+					ft_strlen(env[i])), &export, data);
 		}
 		i++;
 	}

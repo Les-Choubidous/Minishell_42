@@ -82,12 +82,18 @@ int	builtin_export(t_data *data, t_token *token, int fd)
 	t_token	*tmp_tok;
 
 	tmp_tok = token->next;
+	if (tmp_tok && !ft_strcmp(tmp_tok->value, "|"))
+	{
+		tmp_tok = tmp_tok->next;
+		if (!ft_strcmp(tmp_tok->value, "export"))
+			tmp_tok = tmp_tok->next;
+	}
 	if (!data->export)
 	{
 		get_env_for_export(data->env, data);
 		data->export = sort_list(data->export, ft_strcmp);
 	}
-	if (tmp_tok->next->type != ARG)
+	if (!tmp_tok || tmp_tok->type != ARG)
 	{
 		display_export_order(data, fd);
 		return (EXIT_FAILURE);
@@ -97,6 +103,7 @@ int	builtin_export(t_data *data, t_token *token, int fd)
 		ft_putstr_fd(EXPORT_ERR_IDENTIFIER, 2);
 		return (EXIT_FAILURE);
 	}
-	update_env_from_tokens(data, tmp_tok);
+	if (!data->nb_pipe)
+		update_env_from_tokens(data, tmp_tok);
 	return (EXIT_SUCCESS);
 }

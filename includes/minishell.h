@@ -119,6 +119,7 @@ typedef struct s_data
 	char				*line;
 	int					exit_status;
 	int					*fd_pipes;
+	int					nb_pipe;
 	pid_t				*pid;
 
 	t_env				*cpy_env;
