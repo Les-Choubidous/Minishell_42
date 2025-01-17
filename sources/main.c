@@ -40,6 +40,7 @@ void	launch_minishell(t_data *data)
 		{
 			data->exit_status = 130;
 			free(data->line);
+			data->line = NULL;
 			continue ;
 		}
 		syntaxe_line(data->line, data);
@@ -53,13 +54,21 @@ void	launch_minishell(t_data *data)
 		}
 		free_mem_between_cmd(data);
 	}
+
 }
 
 void	exit_minishell(t_data *data, int exit_status)
 {
+	if (data->fd_pipes)
+	{
+		free(data->fd_pipes);
+		data->fd_pipes = NULL;
+	}
 	if (data->pid)
+	{
 		free(data->pid);
-	data->pid = NULL;
+		data->pid = NULL;
+	}
 	ft_printf_colour(RED, "Exiting minishell 👋\n");
 	free_all_memory(data);
 	clear_history();

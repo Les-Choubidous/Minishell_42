@@ -1,13 +1,40 @@
 #include "minishell.h"
 
+void	free_env(t_data *data, t_env *env, int cpy)
+{
+	t_env	*tmp;
+
+	if (cpy == 1 && !data->cpy_env)
+		return ;
+	if (cpy == 2 && !data->export)
+		return ;
+	tmp = env;
+	while (env)
+	{
+		tmp = env->next;
+		if (env->type)
+			free(env->type);
+		if (env->value)
+			free(env->value);
+		env->type = NULL;
+		env->value = NULL;
+		free(env);
+		env = tmp;
+	}
+	if (cpy == 1)
+		data->cpy_env = NULL;
+	else if (cpy == 2)
+		data->export = NULL;
+}
+
 void	free_all_memory(t_data *data)
 {
 	if (!data)
 		return ;
-	// free_char_array(data->full_env);
-	// free_char_array(data->env_export);
+	free_env(data, data->cpy_env, 1);
+	free_env(data, data->export, 2);
 	free_char_array(data->path);
-	if (data->line)
+	if (data->line && ft_strcmp(data->token->value, "exit"))
 	{
 		free(data->line);
 		data->line = NULL;
@@ -17,8 +44,6 @@ void	free_all_memory(t_data *data)
 		free(data->full_path);
 		data->full_path = NULL;
 	}
-	free_env_list(data->cpy_env);
-	free_env_list(data->export);
 	free_token(data);
 	free_command(data);
 	free_in_out(data);

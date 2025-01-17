@@ -36,31 +36,30 @@ static char	*cd_resolve_path(t_commands *commands, t_data *data)
 
 static int	cd_set_env(t_data *data, const char *key, const char *value)
 {
-	int		i;
-	char	*tmp;
-	char	*new_entry;
-	size_t	key_len;
+	t_env	*temp;
 
 	if (!key || !value)
 		return (EXIT_FAILURE);
-	key_len = ft_strlen(key);
-	i = 0;
-	while (data->env && data->env[i])
+	temp = data->cpy_env;
+	while (temp)
 	{
-		if (!ft_strncmp(data->env[i], key, key_len)
-			&& data->env[i][key_len] == '=')
-			break ;
-		i++;
+		if (!ft_strcmp(temp->type, key) && temp->equal == '=')
+		{
+			free(temp->value);
+			temp->value = ft_strdup(value);
+		}
+		temp = temp->next;
 	}
-	tmp = ft_strjoin(key, "=");
-	if (!tmp)
-		return (EXIT_FAILURE);
-	new_entry = ft_strjoin(tmp, value);
-	free(tmp);
-	if (!new_entry)
-		return (EXIT_FAILURE);
-	if (data->env && data->env[i])
-		data->env[i] = new_entry;
+	temp = data->export;
+	while (temp)
+	{
+		if (!ft_strcmp(temp->type, key) && temp->equal == '=')
+		{
+			free(temp->value);
+			temp->value = ft_strdup(value);
+		}
+		temp = temp->next;
+	}
 	return (EXIT_SUCCESS);
 }
 

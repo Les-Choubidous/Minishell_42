@@ -87,7 +87,7 @@ int	builtin_export(t_data *data, t_token *token, int fd)
 		get_env_for_export(data->env, data);
 		data->export = sort_list(data->export, ft_strcmp);
 	}
-	if (!tmp_tok)
+	if (tmp_tok->next->type != ARG)
 	{
 		display_export_order(data, fd);
 		return (EXIT_FAILURE);

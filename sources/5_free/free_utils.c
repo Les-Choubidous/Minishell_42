@@ -27,7 +27,9 @@ void	free_env_list(t_env *list)
 	{
 		temp = list->next;
 		free(list->type);
+		list->type = NULL;
 		free(list->value);
+		list->value = NULL;
 		free(list);
 		list = temp;
 	}

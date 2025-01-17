@@ -26,7 +26,6 @@ static void	print_env(t_data *data, int fd)
 {
 	t_env	*tmp;
 
-	ft_get_env(data->env, data);
 	tmp = data->cpy_env;
 	while (tmp)
 	{
@@ -52,3 +51,4 @@ int	builtin_env(t_data *data, t_token *tok, int fd_out)
 		return (EXIT_SUCCESS);
 	}
 }
+

@@ -22,9 +22,9 @@
 
 /*****************************messages**********************************/
 
-// #define LINE_EMPTY 1
-// #define LINE_SPECIAL 2
-// #define LINE_OK 0
+#define LINE_EMPTY 1
+#define LINE_SPECIAL 2
+#define LINE_OK 0
 
 /*****************************PROMPT**********************************/
 

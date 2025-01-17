@@ -38,6 +38,8 @@ int	init_data(t_data *data, char **env)
 {
 	ft_get_env(env, data);
 	data->full_path = init_full_path(env);
+	data->pid = NULL;
+	data->fd_pipes = NULL;
 	if (!data->full_path)
 		return (EXIT_FAILURE);
 	init_io(data);

@@ -5,7 +5,7 @@ int	check_syntax_export(char *value, t_data *data)
 	int	i;
 	int	digit;
 
-	(void)data;
+	(void)data; // Pour éviter le warning de paramètre non utilisé
 	i = 0;
 	digit = 0;
 	while (value[i])
