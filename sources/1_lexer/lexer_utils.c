@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:57:21 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:02:38 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	is_just_spaces(char *arg)
@@ -65,7 +77,7 @@ char	*extract_token_value(char *start, char *end, t_quote quote)
 		}
 		return (ft_strdup(temp));
 	}
-	else// if (quote == SQ)
+	else
 	{
 		temp = ft_substr(start, 0, end - start + 1);
 		if (start)
@@ -73,8 +85,6 @@ char	*extract_token_value(char *start, char *end, t_quote quote)
 		start = NULL;
 		return (temp);
 	}
-	// else
-		// return (ft_substr(start, 0, end - start + 1));
 }
 
 void	lst_token_add_back(t_data *data, t_token *new)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_executer.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:58:10 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:08:46 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <sys/stat.h>
 
@@ -10,7 +22,7 @@ char	**env_extract_paths(char **env)
 	i = 0;
 	while (env[i] && !ft_strnstr(env[i], "PATH", 4))
 		i++;
-	if (!env[i])// || !(ft_strchr(env[i], '=') + 1))
+	if (!env[i])
 		return (NULL);
 	path_split = ft_split(ft_strchr(env[i], '=') + 1, ':');
 	i = 0;

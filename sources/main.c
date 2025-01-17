@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 18:00:17 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:24:52 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	exit_minishell(t_data *data, int exit_status);
@@ -54,7 +66,6 @@ void	launch_minishell(t_data *data)
 		}
 		free_mem_between_cmd(data);
 	}
-
 }
 
 void	exit_minishell(t_data *data, int exit_status)

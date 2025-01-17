@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_mem_btw_cmd.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 18:00:04 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:24:29 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_in_out(t_data *data)
@@ -51,17 +63,11 @@ void	free_token(t_data *data)
 	{
 		temp = data->token;
 		data->token = data->token->next;
-		// temp->next = NULL;
-		// temp->prev = NULL;
 		if (temp->value)
 		{
 			free(temp->value);
 			temp->value = NULL;
 		}
-		// if (temp->quote)
-		// 	free(temp->quote);
-		// if (temp->type)
-		// 	free(temp->type);
 		if (temp)
 			free(temp);
 		temp = NULL;
@@ -70,11 +76,6 @@ void	free_token(t_data *data)
 
 void	free_mem_between_cmd(t_data *data)
 {
-	// if (data->line)
-	// {
-	// 	free(data->line);
-	// 	data->line = NULL;
-	// }
 	free_command(data);
 	free_token(data);
 	free_in_out(data);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:59:06 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:11:37 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	putstr_fd(t_data *data, char *str_err, char *s, int fd)
@@ -51,4 +63,3 @@ int	builtin_env(t_data *data, t_token *tok, int fd_out)
 		return (EXIT_SUCCESS);
 	}
 }
-

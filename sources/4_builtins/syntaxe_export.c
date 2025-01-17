@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntaxe_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:59:45 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:15:02 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_syntax_export(char *value, t_data *data)
@@ -5,7 +17,7 @@ int	check_syntax_export(char *value, t_data *data)
 	int	i;
 	int	digit;
 
-	(void)data; // Pour éviter le warning de paramètre non utilisé
+	(void)data;
 	i = 0;
 	digit = 0;
 	while (value[i])
