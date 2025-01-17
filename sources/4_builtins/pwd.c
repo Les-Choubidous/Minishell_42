@@ -1,6 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:59:41 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:18:15 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*Il faut mettre a jour la variable pwd lorsque je change de cd */
+#include "minishell.h"
 
 static int	check_args(t_commands *commands)
 {
@@ -16,10 +26,10 @@ char	*find_env_value(t_data *data, const char *key)
 
 	key_len = ft_strlen(key);
 	i = 0;
-
 	while (data->env[i])
 	{
-		if (!ft_strncmp(data->env[i], key, key_len) && data->env[i][key_len] == '=')
+		if (!ft_strncmp(data->env[i], key, key_len)
+			&& data->env[i][key_len] == '=')
 			return (data->env[i] + key_len + 1);
 		i++;
 	}
@@ -29,7 +39,7 @@ char	*find_env_value(t_data *data, const char *key)
 int	builtin_pwd(t_commands *commands, t_data *data)
 {
 	char	*cwd;
-	
+
 	(void)data;
 	if (check_args(commands))
 		return (EXIT_FAILURE);

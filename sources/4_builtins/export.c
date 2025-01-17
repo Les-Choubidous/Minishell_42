@@ -1,4 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:59:31 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:14:29 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+t_env	*sort_list(t_env *cpy, int (*cmp)(const char *, const char *))
+{
+	t_env	*tmp;
+	char	*temp;
+	char	*temp2;
+
+	tmp = cpy;
+	while (cpy && cpy->next)
+	{
+		if (cmp(cpy->type, cpy->next->type) > 0)
+		{
+			temp = cpy->type;
+			temp2 = cpy->value;
+			cpy->type = cpy->next->type;
+			cpy->value = cpy->next->value;
+			cpy->next->type = temp;
+			cpy->next->value = temp2;
+			cpy = tmp;
+		}
+		else
+			cpy = cpy->next;
+	}
+	return (tmp);
+}
 
 static int	event_expansion(t_data *data)
 {

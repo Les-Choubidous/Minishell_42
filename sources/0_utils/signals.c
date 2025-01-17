@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/17 17:56:50 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/17 18:02:10 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
@@ -9,7 +21,6 @@ static void	sigint_shell_action(int signum)
 	(void)signum;
 	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
-	//rl_replace_line("", 0);
 	rl_redisplay();
 }
 
@@ -27,7 +38,6 @@ static void	sigint_child_action(int signum)
 	rl_on_new_line();
 }
 
-// Fonction pour configurer la gestion des signaux pour les processus enfants
 void	configure_child_signals(void)
 {
 	signal(SIGINT, sigint_child_action);
