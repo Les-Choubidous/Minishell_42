@@ -13,27 +13,46 @@ int	close_fd(int *fd)
 	return (EXIT_SUCCESS);
 }
 
-int	close_unused_fd(int *fd_pipes, int pos, int keep, int len)
+int finalize_child_processes(pid_t *pid, int num, t_data *data, int *fd_pipes)
 {
-	int	i;
-	int	*ptr;
-	int	fd_in;
-	int	fd_out;
+    int i;
+    int exit_code;
 
-	if (!fd_pipes || pos < 0 || len == 0 || keep > FDX_RW || keep < FDX_NONE)
-		return (EXIT_FAILURE);
-	i = 1;
-	ptr = fd_pipes;
-	fd_in = -1;
-	fd_out = -1;
-	if (keep == FDX_RW || keep == FDX_OR)
-		fd_in = pos;
-	if (keep == FDX_RW || keep == FDX_OW)
-		fd_out = pos + 3;
-	while (++i < len)
+    if (!pid || num <= 0 || !fd_pipes)
+        return (EXIT_FAILURE);
+    for (i = 0; i < num; i++)
 	{
-		if (i != fd_in && fd_out && close_fd(&ptr[i]) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
+        if (pid[i] > 0)
+		{
+            waitpid(pid[i], &exit_code, 0);
+
+            if (i == num - 1 && WIFEXITED(exit_code))
+                data->exit_status = WEXITSTATUS(exit_code);
+            else if (i == num - 1 && WIFSIGNALED(exit_code))
+                data->exit_status = WTERMSIG(exit_code) + 128;
+
+            close_fd(&fd_pipes[i * 2]);
+            close_fd(&fd_pipes[i * 2 + 3]);
+        }
+    }
+    close_unused_fd(fd_pipes, num * 2 + 3);
+    return (EXIT_SUCCESS);
+}
+
+int close_unused_fd(int *fd_pipes, int len)
+{
+    int i;
+
+    if (!fd_pipes || len <= 0)
+        return (EXIT_FAILURE);
+
+    for (i = 0; i < len; i++) 
+	{
+        if (fd_pipes[i] > 2)
+		{
+            close(fd_pipes[i]);
+            fd_pipes[i] = -1;
+        }
+    }
+    return (EXIT_SUCCESS);
 }

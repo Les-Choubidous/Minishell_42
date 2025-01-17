@@ -291,16 +291,16 @@ int						executer(t_data *data);
 
 /*fd_manager.c*/
 int						close_fd(int *fd);
-int						close_unused_fd(int *fd_pipes, int pos, int keep,
-							int len);
+int close_unused_fd(int *fd_pipes, int len);
+
+							int finalize_child_processes(pid_t *pid, int num, t_data *data, int *fd_pipes);
+
 
 /*pipeline_execute.c*/
 int						execute_builtin(int *fd_pipes, int pos,
 							t_commands *command, t_data *data);
 int						execute_env(int *fd_pipes, int pos, int *pid,
 							t_data *data);
-int						catch_child_execs(pid_t *pid, int num, t_data *data,
-							int *fd_pipes);
 int						execute_pipeline(int *fd_pipes, pid_t *pid,
 							t_data *data);
 
