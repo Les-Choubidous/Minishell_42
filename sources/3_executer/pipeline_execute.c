@@ -92,7 +92,13 @@ int	execute_pipeline(int *fd_pipes, pid_t *pid, t_data *data)
 	while (command)
 	{
 		if (command_is_a_builtin(command))
+		{
+			// ft_putstr_fd(ft_strnstr(data->line, "exit", ft_strlen(data->line)), 2);
+			// ft_putstr_fd("\n", 2);
+			// if (ft_strstr(data->line, "exit"))
+			free(pid);
 			execute_builtin(fd_pipes, i * 2, command, data);
+		}
 		else
 			execute_env(fd_pipes, i * 2, &pid[i], data);
 		i++;

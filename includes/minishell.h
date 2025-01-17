@@ -118,6 +118,7 @@ typedef struct s_data
 	char				*full_path;
 	char				*line;
 	int					exit_status;
+	pid_t				*pid;
 
 	t_env				*cpy_env;
 	t_env				*export;

@@ -80,6 +80,7 @@ SRCS		=	Array/get_char_arr_length.c \
 				String/Analysis/ft_strlen.c \
 				String/Analysis/ft_strncmp.c \
 				String/Analysis/ft_strnstr.c \
+				String/Analysis/ft_strstr.c \
 				String/Analysis/ft_strrchr.c \
 				String/Manipulation/ft_concate.c \
 				String/Manipulation/ft_print_data.c \

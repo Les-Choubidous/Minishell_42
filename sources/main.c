@@ -10,19 +10,19 @@ static int	is_line_empty_or_need_continue(t_data *data)
 
 	i = 0;
 	if (!data->line[0])
-		return (1);
+		return (free(data->line), 1);
 	while (ft_isspace(data->line[i]))
 	{
 		i++;
 	}
 	if (data->line[i] == '\0')
-		return (69);
+		return (free(data->line), 69);
 	if (data->line[0] == ':' && !data->line[1])
-		return (69);
+		return (free(data->line), 69);
 	if (data->line[0] == '!' && !data->line[1])
 	{
 		data->exit_status = 1;
-		return (69);
+		return (free(data->line), 69);
 	}
 	return (0);
 }
@@ -58,6 +58,9 @@ void	launch_minishell(t_data *data)
 
 void	exit_minishell(t_data *data, int exit_status)
 {
+	if (data->pid)
+		free(data->pid);
+	data->pid = NULL;
 	ft_printf_colour(RED, "Exiting minishell 👋\n");
 	free_all_memory(data);
 	clear_history();

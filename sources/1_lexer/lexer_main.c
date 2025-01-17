@@ -33,6 +33,7 @@ char	*append_char(char *str, char c)
 	{
 		ft_memcpy(new_str, str, len);
 		free(str);
+		str = NULL;
 	}
 	new_str[len] = c;
 	new_str[len + 1] = '\0';

@@ -65,8 +65,16 @@ char	*extract_token_value(char *start, char *end, t_quote quote)
 		}
 		return (ft_strdup(temp));
 	}
-	else
-		return (ft_substr(start, 0, end - start + 1));
+	else// if (quote == SQ)
+	{
+		temp = ft_substr(start, 0, end - start + 1);
+		if (start)
+			free(start);
+		start = NULL;
+		return (temp);
+	}
+	// else
+		// return (ft_substr(start, 0, end - start + 1));
 }
 
 void	lst_token_add_back(t_data *data, t_token *new)

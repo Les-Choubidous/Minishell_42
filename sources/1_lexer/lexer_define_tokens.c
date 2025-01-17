@@ -24,7 +24,6 @@ int	create_and_add_symbol_token(t_data *data, char *value, t_type type)
 	t_token	*new;
 
 	new = new_token(value, value + ft_strlen(value), type, NQ);
-	free(value);
 	if (!new)
 		return (0);
 	lst_token_add_back(data, new);
