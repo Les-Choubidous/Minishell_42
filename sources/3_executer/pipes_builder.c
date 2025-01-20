@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_builder.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:49 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 17:58:51 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/20 11:47:28 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,3 @@ int	*build_pipes(int fd_out, int fd_in, int cmds_num)
 	}
 	return (fd_pipes);
 }
-
-/*Exemple avec fd_in = 0, fd_out = 1 et cmds_num = 3
-
-Index 2 & 3 connecte cmd 1 et cmd 2
-Index 4 & 5 connecte cmd 2 et cmd 3
-
-Sortie : [ 0, -1, pipe1_read, pipe1_write, pipe2_read, pipe2_write, -1, 1 ]
-
-fd_in -> entre standard pour cmd 1
-fd_out -> sortie standar pour cmd 3*/
