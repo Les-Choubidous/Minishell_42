@@ -201,6 +201,7 @@ SRC         =   main.c \
                 0_utils/signals.c \
                 0_utils/utils.c \
                 1_lexer/lexer_define_tokens.c \
+                1_lexer/lexer_define_tokens2.c \
 				1_lexer/lexer_main.c \
 				1_lexer/lexer_quotes.c \
                 1_lexer/lexer_utils.c \

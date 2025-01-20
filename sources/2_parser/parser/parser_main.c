@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 14:43:15 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:27:11 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,10 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 
 int	parser_helper_redirections(t_data *data, t_token *token)
 {
-	// if (token->type == INPUT || token->type == HEREDOC)
-	// {
-	// 	if (open_redirection_fd(data, &data->input, token, O_RDONLY))
-	// 		return (EXIT_FAILURE);
-	// }
-
-
 	if (token->type == HEREDOC)
 	{
 		if (!token->next || token->next->type != LIM)
-		{
-			ft_putstr_fd("minishell: syntax error: missing heredoc delimiter\n", 2);
-			return (EXIT_FAILURE);
-		}
+			return (ft_putstr_fd("minishell: syntax error\n", 2), EXIT_FAILURE);
 		if (here_doc(data, token->next->value) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
@@ -60,8 +50,6 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 		if (open_redirection_fd(data, &data->input, token, O_RDONLY))
 			return (EXIT_FAILURE);
 	}
-
-
 	else if (token->type == OUTPUT)
 	{
 		if (open_redirection_fd(data, &data->output, token,
@@ -137,7 +125,5 @@ int	parser(t_data *data)
 		return (ft_printf_exit_code("No command after pipe\n", EXIT_FAILURE));
 	if (concate_final_group_commands(data))
 		return (EXIT_FAILURE);
-	// if (data->input.type == HEREDOC && here_doc(data))
-	// 	return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

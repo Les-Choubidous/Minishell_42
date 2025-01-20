@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:45 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 14:46:33 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:29:00 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,6 @@
 // 	return (EXIT_SUCCESS);
 // }
 
-
-
-
-
-
-
 static int	restore_original_fd(int *original_fd)
 {
 	if (dup2(original_fd[0], STDIN_FILENO) == -1
@@ -150,8 +144,6 @@ static int	setup_redirections(int *fd_pipes, int pos, int *original_fd, t_data *
 		perror("dup error");
 		return (EXIT_FAILURE);
 	}
-
-
 	if (data->input.type == HEREDOC)
 	{
 		if (dup2(data->input.fd, STDIN_FILENO) == -1)
@@ -161,9 +153,8 @@ static int	setup_redirections(int *fd_pipes, int pos, int *original_fd, t_data *
 			close(original_fd[1]);
 			return (EXIT_FAILURE);
 		}
-		close(data->input.fd); // Fermer après redirection
+		close(data->input.fd);
 	}
-
 	else
 	{
 		if (dup2(fd_pipes[pos], STDIN_FILENO) == -1
