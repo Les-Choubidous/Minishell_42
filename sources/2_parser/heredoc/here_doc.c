@@ -6,13 +6,13 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/20 15:38:57 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:44:57 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int here_doc(t_data *data, char *delimiter)
+int	here_doc(t_data *data, char *delimiter)
 {
 	int	pipe_fds[2];
 	int	write_fd;
@@ -33,7 +33,7 @@ int here_doc(t_data *data, char *delimiter)
 
 int	populate_here_doc(int write_fd, char *delimiter)
 {
-	char *line;
+	char	*line;
 
 	if (!delimiter || !*delimiter)
 	{
@@ -45,8 +45,7 @@ int	populate_here_doc(int write_fd, char *delimiter)
 	{
 		line = readline(HERE_DOC_PROMPTE);
 		if (!line)
-			break;
-
+			break ;
 		if (!ft_strcmp(line, delimiter))
 		{
 			free(line);

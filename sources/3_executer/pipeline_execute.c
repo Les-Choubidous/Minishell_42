@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:45 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 15:29:00 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:39:31 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,8 @@ static int	restore_original_fd(int *original_fd)
 	return (EXIT_SUCCESS);
 }
 
-static int	setup_redirections(int *fd_pipes, int pos, int *original_fd, t_data *data)
+static int	setup_redirections(int *fd_pipes, int pos, int *original_fd,
+								t_data *data)
 {
 	original_fd[0] = dup(STDIN_FILENO);
 	original_fd[1] = dup(STDOUT_FILENO);

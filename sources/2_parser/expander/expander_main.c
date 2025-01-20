@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:31 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 16:19:48 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:40:34 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	*expand_var_or_exit(t_data *data, char *var, int *i)
 	before = ft_strdup(data->expanded_str);
 	if (!before)
 		return (failed_mess(data, "malloc failed", 1), NULL);
-
 	if (ft_strcmp(var, "$?") == 0)
 	{
 		in_var = ft_itoa(data->exit_status);
@@ -56,18 +55,13 @@ char	*expand_var_or_exit(t_data *data, char *var, int *i)
 		in_var = give_me_inside_var(var, data);
 	else
 		in_var = ft_strdup("");
-
-	// Libération systématique, car var est toujours dynamique
 	free(var);
-
 	free(data->expanded_str);
 	data->expanded_str = ft_concatenate(before, in_var);
 	free(before);
 	free(in_var);
-
 	if (!data->expanded_str)
 		return (failed_mess(data, "malloc failed", 1), NULL);
-
 	return (data->expanded_str);
 }
 
@@ -87,29 +81,12 @@ char	*process_character(t_data *data, char *str, int *i)
 	return (data->expanded_str);
 }
 
-// char	*process_expansion(char *str, t_data *data, int *i)
-// {
-// 	char	*var;
-
-// 	if (str[*i] == '$' && str[*i + 1] == '?' && !is_in_single_quotes(str, *i))
-// 		return (expand_var_or_exit(data, "$?", i));
-// 	if (str[*i] == '$' && !is_in_single_quotes(str, *i))
-// 	{
-// 		var = extract_var(str + *i, i);
-// 		if (!var)
-// 			return (failed_mess(data, "Failed to extract variable", 1), NULL);
-// 		return (expand_var_or_exit(data, var, i));
-// 	}
-// 	return (process_character(data, str, i));
-// }
-
 char	*process_expansion(char *str, t_data *data, int *i)
 {
 	char	*var;
 
 	if (str[*i] == '$' && str[*i + 1] == '?' && !is_in_single_quotes(str, *i))
 	{
-		// Allouer dynamiquement pour éviter les problèmes de free
 		var = ft_strdup("$?");
 		if (!var)
 			return (failed_mess(data, "malloc failed", 1), NULL);
@@ -137,7 +114,10 @@ char	*expan_var(char *str, t_data *data)
 	{
 		data->expanded_str = process_expansion(str, data, &i);
 		if (!data->expanded_str)
+		{
+			free(data->expanded_str);
 			return (NULL);
+		}
 	}
 	return (data->expanded_str);
 }

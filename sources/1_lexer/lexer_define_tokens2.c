@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/20 15:30:47 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:47:13 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 t_token	*mark_heredoc_tokens(t_token *token)
 {
-	t_token *current = token;
+	t_token	*current;
 
+	current = token;
 	while (current)
 	{
 		if (current->type == HEREDOC && current->next)
 		{
-			if (current->next->type != ARG) // Assurez-vous que le token suivant est un argument valide
+			if (current->next->type != ARG)
 			{
-				ft_putstr_fd("minishell: syntax error: invalid heredoc delimiter\n", 2);
+				ft_putstr_fd("minishell: syntax error:\
+								invalid heredoc delimiter\n", 2);
 				return (NULL);
 			}
 			current->next->type = LIM;
