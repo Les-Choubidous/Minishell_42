@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 11:43:56 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 12:22:08 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,9 +310,11 @@ int						finalize_child_processes(pid_t *pid, int num,
 /*pipeline_execute.c*/
 int						execute_builtin(int *fd_pipes, int pos,
 							t_commands *command, t_data *data);
-int						execute_env(int *fd_pipes, int pos, int *pid,
-							t_data *data);
 int						execute_pipeline(int *fd_pipes, pid_t *pid,
+							t_data *data);
+
+/*pipeline_execute2.c*/
+int						execute_env(int *fd_pipes, int pos, int *pid,
 							t_data *data);
 
 /*pipes_builder.c*/

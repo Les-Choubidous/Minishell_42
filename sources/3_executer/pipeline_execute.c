@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:45 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 12:10:13 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 12:20:52 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,8 @@ static int	setup_redirections(int *fd_pipes, int pos, int *original_fd)
 		perror("dup error");
 		return (EXIT_FAILURE);
 	}
-	if (dup2(fd_pipes[pos], STDIN_FILENO) == -1 ||
-		dup2(fd_pipes[pos + 3], STDOUT_FILENO) == -1)
+	if (dup2(fd_pipes[pos], STDIN_FILENO) == -1
+		|| dup2(fd_pipes[pos + 3], STDOUT_FILENO) == -1)
 	{
 		perror("dup2 error");
 		close(original_fd[0]);
@@ -172,71 +172,10 @@ int	execute_builtin(int *fd_pipes, int pos, t_commands *command, t_data *data)
 	return (exit_code);
 }
 
-static int	setup_env_execution(int *fd_pipes, int pos, t_data *data, t_commands **cmd)
-{
-	t_commands	*current_cmd;
-	int	cmd_count;
-
-	(void)fd_pipes;
-	current_cmd = data->command;
-	cmd_count = 0;
-	while (current_cmd && cmd_count++ * 2 < pos)
-		current_cmd = current_cmd->next;
-
-	if (!current_cmd || !current_cmd->command)
-		return (EXIT_FAILURE);
-	*cmd = current_cmd;
-	return (EXIT_SUCCESS);
-}
-
-static int	prepare_exec_path(t_data *data, t_commands *cmd, char **exec_path)
-{
-	*exec_path = search_cmd_path(data, cmd, data->env);
-	if (!(*exec_path))
-		return (EXIT_FAILURE);
-	free(*exec_path);
-	return (EXIT_SUCCESS);
-}
-
-static int	create_child_process(int *fd_pipes, int pos, t_data *data, t_commands *cmd)
-{
-	if (dup2(fd_pipes[pos], STDIN_FILENO) == -1 ||
-		dup2(fd_pipes[pos + 3], STDOUT_FILENO) == -1)
-	{
-		perror("dup2 in child error");
-		exit(EXIT_FAILURE);
-	}
-	close_unused_fd(fd_pipes, pos);
-	exit(command_executer(cmd, data));
-}
-
-int	execute_env(int *fd_pipes, int pos, int *pid, t_data *data)
-{
-	t_commands *cmd;
-	char *exec_path;
-
-	if (setup_env_execution(fd_pipes, pos, data, &cmd) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (prepare_exec_path(data, cmd, &exec_path) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	*pid = fork();
-	if (*pid < 0)
-	{
-		perror("fork error");
-		return (EXIT_FAILURE);
-	}
-	if (*pid == 0)
-		create_child_process(fd_pipes, pos, data, cmd);
-	close_fd(&fd_pipes[pos]);
-	close_fd(&fd_pipes[pos + 3]);
-
-	return (EXIT_SUCCESS);
-}
-
 int	execute_pipeline(int *fd_pipes, pid_t *pid, t_data *data)
 {
 	t_commands	*command;
-	int	i;
+	int			i;
 
 	if (!fd_pipes || !pid || !data)
 		return (EXIT_FAILURE);
@@ -248,7 +187,6 @@ int	execute_pipeline(int *fd_pipes, pid_t *pid, t_data *data)
 			execute_builtin(fd_pipes, i * 2, command, data);
 		else
 			execute_env(fd_pipes, i * 2, &pid[i], data);
-
 		i++;
 		command = command->next;
 	}

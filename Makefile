@@ -218,6 +218,7 @@ SRC         =   main.c \
                 3_executer/executer_main.c \
                 3_executer/fd_manager.c \
                 3_executer/pipeline_execute.c \
+				3_executer/pipeline_execute2.c \
                 3_executer/pipes_builder.c \
                 4_builtins/builtins_utils.c \
                 4_builtins/cd.c \
