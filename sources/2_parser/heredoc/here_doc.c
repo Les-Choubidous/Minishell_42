@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/20 15:21:48 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:38:57 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int here_doc(t_data *data, char *delimiter)
 {
-	int pipe_fds[2];
-	int write_fd;
+	int	pipe_fds[2];
+	int	write_fd;
 
 	if (pipe(pipe_fds) == -1)
 		return (perror_return("here_doc pipe"));
@@ -27,10 +27,11 @@ int here_doc(t_data *data, char *delimiter)
 		close(data->input.fd);
 		return (EXIT_FAILURE);
 	}
+	close(write_fd);
 	return (EXIT_SUCCESS);
 }
 
-int populate_here_doc(int write_fd, char *delimiter)
+int	populate_here_doc(int write_fd, char *delimiter)
 {
 	char *line;
 
