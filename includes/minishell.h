@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 18:23:04 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/20 11:43:56 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,10 +303,9 @@ int						executer(t_data *data);
 
 /*fd_manager.c*/
 int						close_fd(int *fd);
-int close_unused_fd(int *fd_pipes, int len);
-
-							int finalize_child_processes(pid_t *pid, int num, t_data *data, int *fd_pipes);
-
+int						close_unused_fd(int *fd_pipes, int len);
+int						finalize_child_processes(pid_t *pid, int num,
+							t_data *data, int *fd_pipes);
 
 /*pipeline_execute.c*/
 int						execute_builtin(int *fd_pipes, int pos,
@@ -344,7 +343,8 @@ int						find_key_index(t_data *data, char *key);
 int						is_valid_name(char *name);
 int						export_with_arg(t_commands *command, t_data *data);
 int						builtin_export(t_data *data, t_token *token, int fd);
-t_env					*sort_list(t_env *cpy, int (*cmp)(const char *, const char *));
+t_env					*sort_list(t_env *cpy,
+							int (*cmp)(const char *, const char *));
 /*export_utils.c*/
 int						is_valid_name(char *name);
 char					*export_key(char *arg);
@@ -372,8 +372,10 @@ int						builtin_pwd(t_commands *commands, t_data *data);
 char					*find_env_value(t_data *data, const char *key);
 
 /*unset.c*/
-void					find_node_to_export(t_env *env, t_data *data, char *value);
-void					find_node_to_unset(t_env *env, t_data *data, char *value);
+void					find_node_to_export(t_env *env, t_data *data,
+							char *value);
+void					find_node_to_unset(t_env *env, t_data *data,
+							char *value);
 int						builtin_unset(t_data *data, t_token *token);
 
 /*unset_utils.c*/
@@ -382,7 +384,6 @@ char					*join_env_var(const char *type, const char *value);
 int						env_list_size(t_env *env);
 void					unset_export_node(t_env *delete, t_data *data);
 void					unset_env_node(t_env *delete, t_data *data);
-
 
 /*************************        5_free       *******************************/
 /*free_mem_btw_cmd.c*/

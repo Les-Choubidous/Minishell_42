@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 17:57:58 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/20 11:40:17 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		int oflag)
 {
-	UNUSED(data);
+	(void)(data);
 	if (redir->fd >= 3)
 		close(redir->fd);
 	if (!token->next)
