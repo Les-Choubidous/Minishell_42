@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 17:57:11 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/20 14:27:23 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,34 @@ int	lexer_core(t_data *data, t_quote *current_quote,
 	return (EXIT_SUCCESS);
 }
 
+
+
+
+
+t_token	*mark_heredoc_tokens(t_token *token)
+{
+	t_token *current = token;
+
+	while (current)
+	{
+		if (current->type == HEREDOC && current->next)
+		{
+			if (current->next->type != ARG) // Assurez-vous que le token suivant est un argument valide
+			{
+				ft_putstr_fd("minishell: syntax error: invalid heredoc delimiter\n", 2);
+				return (NULL);
+			}
+			current->next->type = LIM;
+		}
+		current = current->next;
+	}
+	return (token);
+}
+
+
+
+
+
 int	lexer_finalize(t_data *data, t_quote current_quote,
 		char **current_token, int is_new_command)
 {
@@ -94,6 +122,15 @@ int	lexer_finalize(t_data *data, t_quote current_quote,
 			return (EXIT_FAILURE);
 		*current_token = NULL;
 	}
+
+	// mark_heredoc_tokens(data->token);
+	if (!mark_heredoc_tokens(data->token))
+	{
+		free(*current_token);
+		free_token(data);
+		return (EXIT_FAILURE);
+	}
+
 	define_tokens_exit_echo(data->token);
 	define_arg_type(data->token);
 	return (EXIT_SUCCESS);

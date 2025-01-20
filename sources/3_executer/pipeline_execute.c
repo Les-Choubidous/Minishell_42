@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:45 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 12:20:52 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 14:46:33 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,12 @@
 // 	return (EXIT_SUCCESS);
 // }
 
+
+
+
+
+
+
 static int	restore_original_fd(int *original_fd)
 {
 	if (dup2(original_fd[0], STDIN_FILENO) == -1
@@ -135,7 +141,7 @@ static int	restore_original_fd(int *original_fd)
 	return (EXIT_SUCCESS);
 }
 
-static int	setup_redirections(int *fd_pipes, int pos, int *original_fd)
+static int	setup_redirections(int *fd_pipes, int pos, int *original_fd, t_data *data)
 {
 	original_fd[0] = dup(STDIN_FILENO);
 	original_fd[1] = dup(STDOUT_FILENO);
@@ -144,13 +150,30 @@ static int	setup_redirections(int *fd_pipes, int pos, int *original_fd)
 		perror("dup error");
 		return (EXIT_FAILURE);
 	}
-	if (dup2(fd_pipes[pos], STDIN_FILENO) == -1
-		|| dup2(fd_pipes[pos + 3], STDOUT_FILENO) == -1)
+
+
+	if (data->input.type == HEREDOC)
 	{
-		perror("dup2 error");
-		close(original_fd[0]);
-		close(original_fd[1]);
-		return (EXIT_FAILURE);
+		if (dup2(data->input.fd, STDIN_FILENO) == -1)
+		{
+			perror("dup2 heredoc error");
+			close(original_fd[0]);
+			close(original_fd[1]);
+			return (EXIT_FAILURE);
+		}
+		close(data->input.fd); // Fermer après redirection
+	}
+
+	else
+	{
+		if (dup2(fd_pipes[pos], STDIN_FILENO) == -1
+			|| dup2(fd_pipes[pos + 3], STDOUT_FILENO) == -1)
+		{
+			perror("dup2 error");
+			close(original_fd[0]);
+			close(original_fd[1]);
+			return (EXIT_FAILURE);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
@@ -160,7 +183,7 @@ int	execute_builtin(int *fd_pipes, int pos, t_commands *command, t_data *data)
 	int	exit_code;
 	int	original_fd[2];
 
-	if (setup_redirections(fd_pipes, pos, original_fd) == EXIT_FAILURE)
+	if (setup_redirections(fd_pipes, pos, original_fd, data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	close_unused_fd(fd_pipes, pos + 1);
 	exit_code = launch_builtin(data, command, data->token, STDOUT_FILENO);

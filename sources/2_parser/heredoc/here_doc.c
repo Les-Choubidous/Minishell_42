@@ -6,49 +6,106 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/20 11:45:58 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 14:43:33 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	here_doc(t_data *data)
-{
-	int	pipe_fds[2];
-	int	write_fd;
+// int	here_doc(t_data *data)
+// {
+// 	int	pipe_fds[2];
+// 	int	write_fd;
 
-	if (pipe(pipe_fds) == -1)
-		return (perror_return("here_doc pipe"));
-	data->input.fd = pipe_fds[0];
-	write_fd = pipe_fds[1];
-	populate_here_doc(write_fd, data->input.value);
-	return (EXIT_SUCCESS);
+// 	if (pipe(pipe_fds) == -1)
+// 		return (perror_return("here_doc pipe"));
+// 	data->input.fd = pipe_fds[0];
+// 	write_fd = pipe_fds[1];
+// 	populate_here_doc(write_fd, data->input.value);
+// 	return (EXIT_SUCCESS);
+// }
+
+// void	populate_here_doc(int write_fd, char *delimiter)
+// {
+// 	char	*line;
+
+// 	if (!delimiter || !*delimiter)
+// 	{
+// 		perror("heredoc delimiter is missing");
+// 		close(write_fd);
+// 		return ;
+// 	}
+// 	while (1)
+// 	{
+// 		line = readline(HERE_DOC_PROMPTE);
+// 		if (!line)
+// 			break ;
+// 		if (!ft_strcmp(line, delimiter))
+// 		{
+// 			free(line);
+// 			line = NULL;
+// 			break ;
+// 		}
+// 		write(write_fd, line, ft_strlen(line));
+// 		write(write_fd, "\n", 1);
+// 		free(line);
+// 	}
+// 	close(write_fd);
+// }
+
+int here_doc(t_data *data, char *delimiter)
+{
+    int pipe_fds[2];
+    int write_fd;
+
+    if (pipe(pipe_fds) == -1)
+        return (perror_return("here_doc pipe"));
+
+    // Enregistrer le descripteur d'entrée pour la redirection
+    data->input.fd = pipe_fds[0];
+    write_fd = pipe_fds[1];
+
+    // Gérer les erreurs dans populate_here_doc
+    if (populate_here_doc(write_fd, delimiter) == EXIT_FAILURE)
+    {
+        close(write_fd);
+        close(data->input.fd);
+        return (EXIT_FAILURE);
+    }
+
+    return (EXIT_SUCCESS);
 }
 
-void	populate_here_doc(int write_fd, char *delimiter)
+int populate_here_doc(int write_fd, char *delimiter)
 {
-	char	*line;
+    char *line;
 
-	if (!delimiter || !*delimiter)
-	{
-		perror("heredoc delimiter is missing");
-		close(write_fd);
-		return ;
-	}
-	while (1)
-	{
-		line = readline(HERE_DOC_PROMPTE);
-		if (!line)
-			break ;
-		if (!ft_strcmp(line, delimiter))
-		{
-			free(line);
-			line = NULL;
-			break ;
-		}
-		write(write_fd, line, ft_strlen(line));
-		write(write_fd, "\n", 1);
-		free(line);
-	}
-	close(write_fd);
+    if (!delimiter || !*delimiter)
+    {
+        perror("heredoc delimiter is missing");
+        close(write_fd);
+        return (EXIT_FAILURE);
+    }
+
+    while (1)
+    {
+        // Afficher une invite pour l'utilisateur
+        line = readline(HERE_DOC_PROMPTE);
+        if (!line)
+            break; // Fin de l'entrée (CTRL+D)
+
+        if (!ft_strcmp(line, delimiter)) // Comparer avec le délimiteur
+        {
+            free(line);
+            break;
+        }
+
+        // Écrire dans le pipe
+        write(write_fd, line, ft_strlen(line));
+        write(write_fd, "\n", 1);
+        free(line);
+    }
+
+    close(write_fd); // Fermer le descripteur après utilisation
+    return (EXIT_SUCCESS);
 }

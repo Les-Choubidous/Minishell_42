@@ -6,9 +6,11 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 12:22:08 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/20 14:53:08 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp ./minishell */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -252,8 +254,8 @@ char					*give_me_inside_var(char *var, t_data *data);
 //int						is_in_double_quotes(char *str, int index);
 
 /******* Heredoc ********/
-void					populate_here_doc(int write_fd, char *delimiter);
-int						here_doc(t_data *data);
+int					populate_here_doc(int write_fd, char *delimiter);
+int						here_doc(t_data *data, char *delimiter);
 
 /******** Parser ********/
 /*parser_main.c*/
