@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 15:00:05 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 15:02:40 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,10 @@ int	command_executer(t_commands *command, t_data *data)
 		return (EXIT_FAILURE);
 	exec_path = NULL;
 	exec_path = search_cmd_path(data, command, data->env);
+	data->new_env = env_to_tab(data->cpy_env);
 	if (exec_path)
 		data->exit_status = execve(exec_path, command->final_group,
-				data->env);
+				data->new_env);
 	free(exec_path);
 	exit(data->exit_status);
 }
