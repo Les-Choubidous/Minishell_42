@@ -23,8 +23,8 @@ t_token	*mark_heredoc_tokens(t_token *token)
 		{
 			if (current->next->type != ARG)
 			{
-				ft_putstr_fd("minishell: syntax error:\
-								invalid heredoc delimiter\n", 2);
+				ft_putstr_fd("minishell: syntax error:", 2);
+				ft_putstr_fd(" invalid heredoc delimiter\n",2);
 				return (NULL);
 			}
 			current->next->type = LIM;
