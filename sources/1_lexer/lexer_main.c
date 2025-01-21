@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 15:31:57 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/21 13:21:15 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,81 @@ int	lexer_core(t_data *data, t_quote *current_quote,
 		data->line++;
 	}
 	return (EXIT_SUCCESS);
+}
+
+
+const char	*get_type_name(t_type type)
+{
+	switch (type)
+	{
+		case CMD:
+			return ("CMD");
+		case ARG:
+			return ("ARG");
+		case OUTPUT:
+			return ("OUTPUT");
+		case INPUT:
+			return ("INPUT");
+		case APPEND:
+			return ("APPEND");
+		case HEREDOC:
+			return ("HEREDOC");
+		case LIM:
+			return ("LIM");
+		case PIPE:
+			return ("PIPE");
+		case FLAG:
+			return ("FLAG");
+		case STDIN:
+			return ("STDIN");
+		case STDOUT:
+			return ("STDOUT");
+		case ARG_IN_OUT:
+			// Si tu veux l'appeler autrement :
+			return ("ARG_OUT");
+		default:
+			// Par sécurité, couvrir le cas où un type n'est pas géré
+			return ("UNKNOWN");
+	}
+}
+
+void	print_tokens(t_token *token)
+{
+	const char	*color;
+	//t_token		*current;
+	int			token_number = 0;
+	t_token		*start;
+	start = token;
+	//current = token;
+	while (token)
+	{
+		if (token->type == CMD || token->type == FLAG)
+			color = BLUE;
+		else if (token->type == ARG || token->type == ARG_IN_OUT)
+			color = ROSE;
+		else if (token->type == OUTPUT || token->type == INPUT
+			|| token->type == APPEND)
+			color = GREEN;
+		else if (token->type == PIPE)
+			color = CYAN;
+		else if (token->type == HEREDOC || token->type == LIM)
+			color = PURPLE;
+		else
+			color = RESET;
+
+		printf("token_number = %d\n", token_number);
+		printf("\n%s========== TOKEN %d ==========%s\n", GREEN, token_number,
+			RESET);
+		printf("%sType        : [%s]%s\n", color, get_type_name(token->type),
+			RESET);
+		printf("%sValue       : [%s]%s\n", color, token->value, RESET);
+
+		printf("%s-----------------------------%s\n", ROSE, RESET);
+
+		token = token->next;
+		token_number++;
+	}
+	token = start;
 }
 
 int	lexer_finalize(t_data *data, t_quote current_quote,

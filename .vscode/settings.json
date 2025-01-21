@@ -1,8 +1,5 @@
 {
     "files.associations": {
-		"cstdlib": "c",
-		"array": "c",
-		"string": "c",
-		"string_view": "c"
-	}
+        "cstdlib": "c"
+    }
 }

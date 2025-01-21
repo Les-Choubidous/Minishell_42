@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 16:42:01 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/21 14:02:01 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+extern int	g_waiting;
 
 # include "../libft/libft.h"
 # include "messages.h"
@@ -43,7 +45,7 @@ typedef enum e_quote
 	NQ,
 	SQ,
 	DQ,
-}			t_quote;
+}						t_quote;
 
 typedef enum e_type
 {
@@ -59,7 +61,7 @@ typedef enum e_type
 	STDIN,
 	STDOUT,
 	ARG_IN_OUT,
-}			t_type;
+}						t_type;
 
 typedef struct s_list
 {
@@ -101,27 +103,27 @@ typedef struct s_in_out
 
 typedef struct s_env
 {
-	char			*type;
-	char			equal;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
+	char				*type;
+	char				equal;
+	char				*value;
+	struct s_env		*next;
+}						t_env;
 
 typedef struct s_redir
 {
-	int	infile;
-	int	outfile;
-	int	fds_doc[2];
-	int	heredoc;
-}	t_redir;
+	int					infile;
+	int					outfile;
+	int					fds_doc[2];
+	int					heredoc;
+}						t_redir;
 
 typedef struct s_pipes
 {
-	int		nb_pipe;
-	int		**fds;
-	pid_t	*pid;
-	int		orig_fds[2];
-}			t_pipes;
+	int					nb_pipe;
+	int					**fds;
+	pid_t				*pid;
+	int					orig_fds[2];
+}						t_pipes;
 
 typedef struct s_data
 {
@@ -152,11 +154,11 @@ typedef struct s_data
 	t_pipes				*pipex;
 }						t_data;
 
-struct s_data_extended
+struct					s_data_extended
 {
-	t_data	base;
-	t_redir	*redir;
-	t_pipes	*pipex;
+	t_data				base;
+	t_redir				*redir;
+	t_pipes				*pipex;
 };
 
 /********************************FUNCTIONS*************************************/
@@ -174,8 +176,13 @@ void					init_io(t_data *data);
 char					*init_full_path(char **env);
 
 /*signals.c*/
-void					configure_child_signals(void);
-void					configure_shell_signals(void);
+// void					configure_child_signals(void);
+// void					configure_shell_signals(void);
+int						sig_event(void);
+void					handle_sigint(int sig);
+void					ft_signal(void);
+void					set_parent_exec_signals(void);
+void					set_child_signals(void);
 
 /*signals_here_doc.c*/
 void					signals_heredoc(void);
@@ -200,8 +207,6 @@ int						check_double_tokens(char *str);
 /*lexer_define_tokens.c*/
 t_type					get_token_type(t_data *data, char symbol,
 							int *is_new_command);
-int						create_and_add_symbol_token(t_data *data, char *value,
-							t_type type);
 int						add_symbol_token(t_data *data, char symbol,
 							int *is_new_command);
 t_token					*define_arg_type(t_token *token);
@@ -209,10 +214,9 @@ t_token					*define_tokens_exit_echo(t_token *token);
 
 /*lexer_define_tokens2.c*/
 t_token					*mark_heredoc_tokens(t_token *token);
-void					print_tokens(t_token *token);
-const char				*get_type_name(t_type type);
-
-
+int						create_and_add_symbol_token(t_data *data, char *value,
+							t_type type);
+							
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,
 							int *is_new_command);
@@ -261,7 +265,7 @@ void					failed_mess(t_data *data, char *mess, int code);
 char					*ft_concatenate(char *before, char *in_var);
 char					*extract_var(char *str, int *i);
 char					*give_me_inside_var(char *var, t_data *data);
-//int						is_in_double_quotes(char *str, int index);
+// int						is_in_double_quotes(char *str, int index);
 
 /******* Heredoc ********/
 int						populate_here_doc(int write_fd, char *delimiter);
@@ -367,8 +371,8 @@ void					modif_env_node(t_data *data, char *value, int j);
 int						find_if_env_exist(t_env *env, char *value);
 
 /*syntaxe_export.c*/
-t_env					*sort_list(t_env *cpy, int (*cmp)
-							(const char *, const char *));
+t_env					*sort_list(t_env *cpy, int (*cmp)(const char *,
+								const char *));
 int						check_syntax_export(char *value, t_data *data);
 void					no_equal_in_export(t_data *data, char *value);
 void					modif_export_node(t_data *data, char *value, int exist);
@@ -381,7 +385,7 @@ void					add_export(char *type, char *value, t_env **env,
 							t_data *data);
 
 /*pwd.c*/
-//char					*find_env_value(t_env *env, const char *key);
+// char					*find_env_value(t_env *env, const char *key);
 int						builtin_pwd(t_commands *commands, t_data *data);
 char					*find_env_value(t_data *data, const char *key);
 

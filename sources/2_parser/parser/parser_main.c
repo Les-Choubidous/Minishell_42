@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 15:27:11 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/21 13:44:06 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		int oflag)
@@ -30,6 +31,12 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 	if (redir->type != HEREDOC)
 	{
 		redir->fd = open(redir->value, oflag, 0644);
+		if (redir->fd < 0)
+			return (perror_return(redir->value));
+	}
+	else if (redir->type == HEREDOC)
+	{
+		redir->fd = open("heredoc.tmp", oflag, 0644);
 		if (redir->fd < 0)
 			return (perror_return(redir->value));
 	}
