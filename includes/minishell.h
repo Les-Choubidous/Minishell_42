@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 10:24:46 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:01:31 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,6 @@ int						check_double_tokens(char *str);
 /*lexer_define_tokens.c*/
 t_type					get_token_type(t_data *data, char symbol,
 							int *is_new_command);
-int						create_and_add_symbol_token(t_data *data, char *value,
-							t_type type);
 int						add_symbol_token(t_data *data, char symbol,
 							int *is_new_command);
 t_token					*define_arg_type(t_token *token);
@@ -216,7 +214,9 @@ t_token					*define_tokens_exit_echo(t_token *token);
 
 /*lexer_define_tokens2.c*/
 t_token					*mark_heredoc_tokens(t_token *token);
-
+int						create_and_add_symbol_token(t_data *data, char *value,
+							t_type type);
+							
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,
 							int *is_new_command);

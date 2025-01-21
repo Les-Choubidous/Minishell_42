@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/21 10:25:19 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:37:39 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	here_doc(t_data *data, char *delimiter)
 {
+	int	pipe_fds[2];
 	int	write_fd;
 
 	if (pipe(pipe_fds) == -1)
@@ -42,17 +43,7 @@ int	populate_here_doc(int write_fd, char *delimiter)
 	}
 	while (1)
 	{
-		if (g_waiting == 3)
-			return(close(write_fd), EXIT_FAILURE);
 		line = readline(HERE_DOC_PROMPTE);
-		if (g_waiting == 1)
-			return (close(write_fd), free(line), EXIT_FAILURE);
-		if (!line)
-		{
-			close(write_fd);
-			printf("minishell: warning: here-document at line 1 ");
-			printf("delimited by end-of-file (wanted `%s')\n", delimiter);
-		}
 		if (!line)
 			break ;
 		if (!ft_strcmp(line, delimiter))
@@ -62,7 +53,7 @@ int	populate_here_doc(int write_fd, char *delimiter)
 		}
 		write(write_fd, line, ft_strlen(line));
 		write(write_fd, "\n", 1);
-		// free(line);
+		free(line);
 	}
 	close(write_fd);
 	return (EXIT_SUCCESS);
