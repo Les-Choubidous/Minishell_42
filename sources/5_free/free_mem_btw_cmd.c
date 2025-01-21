@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:04 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 18:24:29 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:34:03 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ void	free_token(t_data *data)
 
 void	free_mem_between_cmd(t_data *data)
 {
+	if (data->expanded_str)
+	{
+		free(data->expanded_str);
+		data->expanded_str = NULL;
+	}
 	free_command(data);
 	free_token(data);
 	free_in_out(data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:31 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 16:40:34 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/21 16:33:15 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,19 +129,19 @@ int	expander(t_data *data)
 	data->expanded_str = NULL;
 	if (dollar_in_str(data->line))
 	{
-		data->expanded_str = expan_var(data->line, data);
+		expan_var(data->line, data);
 		if (!data->expanded_str)
 			return (EXIT_FAILURE);
 		free(data->line);
-		data->line = ft_strdup(data->expanded_str);
+		data->line = data->expanded_str;//ft_strdup(data->expanded_str);
 		if (!data->line)
 		{
-			free(data->expanded_str);
-			data->expanded_str = NULL;
+			// free(data->expanded_str);
+			// data->expanded_str = NULL;
 			return (EXIT_FAILURE);
 		}
-		free(data->expanded_str);
-		data->expanded_str = NULL;
+		// free(data->expanded_str);
+		// data->expanded_str = NULL;
 	}
 	return (EXIT_SUCCESS);
 }
