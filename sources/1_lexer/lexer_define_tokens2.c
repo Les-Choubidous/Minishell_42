@@ -39,6 +39,9 @@ t_token	*mark_heredoc_tokens(t_token *token)
 				return (NULL);
 			}
 			current->next->type = LIM;
+			if (current->next->next && current->next->next->type == ARG && !current->prev /*&& current->prev->type != CMD*/)
+				// printf("TEST\n");
+				current->next->next->type = CMD;
 		}
 		current = current->next;
 	}
