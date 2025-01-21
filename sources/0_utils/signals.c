@@ -20,8 +20,8 @@ static void	sigint_shell_action(int signum)
 {
 	(void)signum;
 	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
 	rl_redisplay();
+	rl_on_new_line();
 }
 
 void	configure_shell_signals(void)
