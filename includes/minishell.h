@@ -6,9 +6,12 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 20:48:16 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:24:46 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes 
+--track-fds=yes --suppressions=readline.supp ./minishell */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -137,6 +140,9 @@ typedef struct s_data
 	int					nb_pipe;
 	pid_t				*pid;
 
+	int					heredoc_fds[256];
+	int					heredoc_count;
+
 	t_env				*cpy_env;
 	t_env				*export;
 
@@ -208,6 +214,9 @@ int						add_symbol_token(t_data *data, char symbol,
 t_token					*define_arg_type(t_token *token);
 t_token					*define_tokens_exit_echo(t_token *token);
 
+/*lexer_define_tokens2.c*/
+t_token					*mark_heredoc_tokens(t_token *token);
+
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,
 							int *is_new_command);
@@ -260,7 +269,7 @@ char					*give_me_inside_var(char *var, t_data *data);
 
 /******* Heredoc ********/
 int						populate_here_doc(int write_fd, char *delimiter);
-int						here_doc(t_data *data);
+int						here_doc(t_data *data, char *delimiter);
 
 /******** Parser ********/
 /*parser_main.c*/
@@ -317,9 +326,11 @@ int						finalize_child_processes(pid_t *pid, int num,
 /*pipeline_execute.c*/
 int						execute_builtin(int *fd_pipes, int pos,
 							t_commands *command, t_data *data);
-int						execute_env(int *fd_pipes, int pos, int *pid,
-							t_data *data);
 int						execute_pipeline(int *fd_pipes, pid_t *pid,
+							t_data *data);
+
+/*pipeline_execute2.c*/
+int						execute_env(int *fd_pipes, int pos, int *pid,
 							t_data *data);
 
 /*pipes_builder.c*/
@@ -350,9 +361,8 @@ int						find_key_index(t_data *data, char *key);
 int						is_valid_name(char *name);
 int						export_with_arg(t_commands *command, t_data *data);
 int						builtin_export(t_data *data, t_token *token, int fd);
-t_env					*sort_list(t_env *cpy, int (*cmp)(const char *,
-								const char *));
-
+t_env					*sort_list(t_env *cpy,
+							int (*cmp)(const char *, const char *));
 /*export_utils.c*/
 int						is_valid_name(char *name);
 char					*export_key(char *arg);

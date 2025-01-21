@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:14 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 17:57:15 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/20 11:45:35 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	double_quote(t_data *data, t_quote *current_quote,
 			return (0);
 	}
 	return (1);
-}	
+}
 
 static int	no_quote_space_symbol(t_data *data, char **current_token,
 				int *is_new_command)

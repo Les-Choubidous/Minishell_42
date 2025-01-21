@@ -1,43 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
+/*   Updated: 2025/01/21 10:25:19 by memotyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
-int	here_doc(t_data *data)
+int	here_doc(t_data *data, char *delimiter)
 {
 	int	write_fd;
 
-	g_waiting = 2;
-	write_fd = open("heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (write_fd == -1)
-		return (perror("open"), false);
-	
-	// if (pipe(pipe_fds) == -1)
-	// 	return (perror_return("here_doc pipe"));
-	// data->input.fd = pipe_fds[0];
-	// write_fd = pipe_fds[1];
-	if (populate_here_doc(write_fd, data->input.value) == false)
-		return (data->exit_status = 130, false);
-	// printf("%d \n", data->redir->infile);
-	// data->redir->infile = write_fd;
+	if (pipe(pipe_fds) == -1)
+		return (perror_return("here_doc pipe"));
+	data->input.fd = pipe_fds[0];
+	write_fd = pipe_fds[1];
+	if (populate_here_doc(write_fd, delimiter) == EXIT_FAILURE)
+	{
+		close(write_fd);
+		close(data->input.fd);
+		return (EXIT_FAILURE);
+	}
 	close(write_fd);
 	return (EXIT_SUCCESS);
 }
-
-// {
-// 	int		fd;
-// 	t_token	*last;
-
-// 	g_waiting = 2;
-// 	fd = open("heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-// 	if (fd == -1)
-// 		return (perror("open"), FALSE);
-// 	if (print_in_file(fd, lim) == FALSE)
-// 		return (data->status = 130, FALSE);
-// 	last = ft_tokenlast(*args);
-// 	ft_free(last->content);
-// 	last->content = ft_strdup("<");
-// 	last->type = INFILE;
-// 	ft_tokenadd(args, ft_tokennew(FICHIER, ft_strdup("heredoc.tmp"), TRUE));
-// 	return (TRUE);
-// }
 
 int	populate_here_doc(int write_fd, char *delimiter)
 {
@@ -47,7 +38,7 @@ int	populate_here_doc(int write_fd, char *delimiter)
 	{
 		perror("heredoc delimiter is missing");
 		close(write_fd);
-		return (false);
+		return (EXIT_FAILURE);
 	}
 	while (1)
 	{
@@ -67,12 +58,12 @@ int	populate_here_doc(int write_fd, char *delimiter)
 		if (!ft_strcmp(line, delimiter))
 		{
 			free(line);
-			// line = NULL;
-			break ;
+			break;
 		}
 		write(write_fd, line, ft_strlen(line));
 		write(write_fd, "\n", 1);
 		// free(line);
 	}
-	return (close(write_fd), EXIT_SUCCESS);
+	close(write_fd);
+	return (EXIT_SUCCESS);
 }

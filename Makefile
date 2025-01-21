@@ -201,6 +201,7 @@ SRC         =   main.c \
                 0_utils/signals.c \
                 0_utils/utils.c \
                 1_lexer/lexer_define_tokens.c \
+                1_lexer/lexer_define_tokens2.c \
 				1_lexer/lexer_main.c \
 				1_lexer/lexer_quotes.c \
                 1_lexer/lexer_utils.c \
@@ -218,6 +219,7 @@ SRC         =   main.c \
                 3_executer/executer_main.c \
                 3_executer/fd_manager.c \
                 3_executer/pipeline_execute.c \
+				3_executer/pipeline_execute2.c \
                 3_executer/pipes_builder.c \
                 4_builtins/builtins_utils.c \
                 4_builtins/cd.c \
@@ -230,6 +232,7 @@ SRC         =   main.c \
                 4_builtins/pwd.c \
 				4_builtins/syntaxe_export.c \
                 4_builtins/unset.c \
+				4_builtins/unset_utils.c \
                 5_free/free_all.c \
                 5_free/free_mem_btw_cmd.c \
                 5_free/free_utils.c \
