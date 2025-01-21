@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 10:24:15 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 13:44:06 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,12 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		return (perror_return("ft_strdup for redirection value"));
 	if (redir->type != HEREDOC)
 	{
-		printf("1\n");
 		redir->fd = open(redir->value, oflag, 0644);
 		if (redir->fd < 0)
 			return (perror_return(redir->value));
 	}
 	else if (redir->type == HEREDOC)
 	{
-		printf("2\n");
 		redir->fd = open("heredoc.tmp", oflag, 0644);
 		if (redir->fd < 0)
 			return (perror_return(redir->value));
