@@ -209,6 +209,9 @@ t_token					*define_tokens_exit_echo(t_token *token);
 
 /*lexer_define_tokens2.c*/
 t_token					*mark_heredoc_tokens(t_token *token);
+void					print_tokens(t_token *token);
+const char				*get_type_name(t_type type);
+
 
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,

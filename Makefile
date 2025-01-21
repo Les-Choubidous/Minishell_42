@@ -170,7 +170,7 @@
 # Compiler targets and libraries
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra -g3 -MMD -MP
+CFLAGS		=	-Wall -Wextra -g3 -MMD -MP
 LIBFT		=	libft.a
 READLINE	=	-lreadline
 

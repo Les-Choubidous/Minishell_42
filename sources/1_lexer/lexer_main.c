@@ -102,6 +102,7 @@ int	lexer_finalize(t_data *data, t_quote current_quote,
 	}
 	define_tokens_exit_echo(data->token);
 	define_arg_type(data->token);
+	print_tokens(data->token); // Debug
 	return (EXIT_SUCCESS);
 }
 
