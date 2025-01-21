@@ -221,6 +221,7 @@ SRC         =   main.c \
                 3_executer/pipeline_execute.c \
 				3_executer/pipeline_execute2.c \
                 3_executer/pipes_builder.c \
+				3_executer/env_to_execve.c \
                 4_builtins/builtins_utils.c \
                 4_builtins/cd.c \
                 4_builtins/echo.c \

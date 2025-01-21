@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 11:01:31 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:45:13 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_data
 {
 	char				wich_quote_err;
 	char				**env;
+	char				**new_env;
 	char				*expanded_str;
 
 	char				**path;
@@ -335,6 +336,9 @@ int						execute_env(int *fd_pipes, int pos, int *pid,
 
 /*pipes_builder.c*/
 int						*build_pipes(int fd_out, int fd_in, int cmds_num);
+
+/* env_to_execve */
+char					**env_to_tab(t_env *env);
 
 /**************************      4_builtins     *******************************/
 /*builtins_utils.c*/
