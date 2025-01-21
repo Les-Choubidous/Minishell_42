@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:59:56 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 18:00:02 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:33:45 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ void	free_all_memory(t_data *data)
 	free_env(data, data->cpy_env, 1);
 	free_env(data, data->export, 2);
 	free_char_array(data->path);
+	if (data->expanded_str)
+	{
+		free(data->expanded_str);
+		data->expanded_str = NULL;
+	}
+	//free_char_array(data->env);
 	if (data->line && ft_strcmp(data->token->value, "exit"))
 	{
 		free(data->line);
