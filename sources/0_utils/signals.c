@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:50 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 18:02:10 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/17 19:26:42 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,41 @@
 #include <signal.h>
 #include <unistd.h>
 
-static void	sigint_shell_action(int signum)
+int	sig_event(void)
 {
-	(void)signum;
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_redisplay();
+	return (EXIT_SUCCESS);
 }
 
-void	configure_shell_signals(void)
+void	handle_sigint(int sig)
 {
-	signal(SIGINT, sigint_shell_action);
+	(void)sig;
+	g_waiting = 1;
+	rl_done = 1;
+}
+
+void	ft_signal(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	rl_event_hook = sig_event;
+	sa.sa_handler = handle_sigint;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 }
 
-static void	sigint_child_action(int signum)
+void	set_parent_exec_signals(void)
 {
-	(void)signum;
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGSTOP, SIG_IGN);
 }
 
-void	configure_child_signals(void)
+void	set_child_signals(void)
 {
-	signal(SIGINT, sigint_child_action);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	signal(SIGSTOP, SIG_IGN);
 }

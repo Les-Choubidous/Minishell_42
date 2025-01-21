@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:15 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 17:58:17 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/17 23:18:00 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	executer(t_data *data)
 	data->fd_pipes = build_pipes(data->output.fd, data->input.fd, cmds_num);
 	if (!data->fd_pipes)
 		return (free(data->pid), EXIT_FAILURE);
+	// print_tokens(data->token);
 	execute_pipeline(data->fd_pipes, data->pid, data);
 	free(data->fd_pipes);
 	free(data->pid);

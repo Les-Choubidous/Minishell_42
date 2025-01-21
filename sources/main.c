@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:17 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 18:24:52 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/17 19:41:43 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exit_minishell(t_data *data, int exit_status);
 void	launch_minishell(t_data *data);
-static volatile sig_atomic_t	g_signal_received = 0;
+int		g_waiting = 0;
 
 static int	is_line_empty_or_need_continue(t_data *data)
 {
@@ -43,12 +43,14 @@ void	launch_minishell(t_data *data)
 {
 	while (1)
 	{
+		ft_signal();
+		g_waiting = 0;
 		data->line = readline(PROMPTE);
 		if (data->line == NULL)
 			exit_minishell(data, EXIT_SUCCESS);
 		if (is_line_empty_or_need_continue(data))
 			continue ;
-		if (g_signal_received)
+		if (g_waiting == 1)
 		{
 			data->exit_status = 130;
 			free(data->line);
@@ -94,7 +96,7 @@ int	main(int ac, char **av, char **env)
 	if (ac != 1)
 		return (1);
 	ft_memset(&data, 0, sizeof(t_data));
-	configure_shell_signals();
+	// configure_shell_signals();
 	if (init_data(&data, env) == EXIT_FAILURE)
 		exit_minishell(&data, EXIT_FAILURE);
 	launch_minishell(&data);
