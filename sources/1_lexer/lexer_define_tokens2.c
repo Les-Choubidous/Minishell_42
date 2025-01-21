@@ -32,10 +32,10 @@ t_token	*mark_heredoc_tokens(t_token *token)
 	{
 		if (current->type == HEREDOC && current->next)
 		{
-			if (current->next->type != ARG)
+			if (current->next->type != ARG && current->next->type != CMD)
 			{
-				ft_putstr_fd("minishell: syntax error:\
-								invalid heredoc delimiter\n", 2);
+				ft_putstr_fd("minishell: syntax error: ", 2);
+				ft_putstr_fd("invalid heredoc delimiter\n", 2);
 				return (NULL);
 			}
 			current->next->type = LIM;
