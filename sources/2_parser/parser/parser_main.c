@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 11:00:04 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:49:25 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 	}
 	else if (redir->type == HEREDOC)
 	{
+		g_waiting = 2;
 		redir->fd = open("heredoc.tmp", oflag, 0644);
 		if (redir->fd < 0)
 			return (perror_return(redir->value));
+		heredoc_signal_handler();
 	}
 	return (EXIT_SUCCESS);
 }

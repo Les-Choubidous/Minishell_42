@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/22 10:51:44 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/22 12:08:53 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	here_doc(t_data *data, char *delimiter)
 	{
 		close(write_fd);
 		close(data->input.fd);
+		data->exit_status = 130;
 		return (EXIT_FAILURE);
 	}
 	close(write_fd);
@@ -41,9 +42,14 @@ int	populate_here_doc(int write_fd, char *delimiter)
 		close(write_fd);
 		return (EXIT_FAILURE);
 	}
-	while (1)
+	heredoc_signal_handler();
+	while (g_waiting != 3)// (1)
 	{
+		if (g_waiting == 3)
+			return (EXIT_FAILURE);
 		line = readline(HERE_DOC_PROMPTE);
+		if (g_waiting == 3)
+			return (free(line), EXIT_FAILURE);
 		if (!line)
 			break ;
 		if (!ft_strcmp(line, delimiter))

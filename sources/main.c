@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:17 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 10:51:02 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:50:01 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ void	launch_minishell(t_data *data)
 {
 	while (1)
 	{
-		ft_signal();
+		// ft_signal();
+		signal_handlers();
 		g_waiting = 0;
 		data->line = readline(PROMPTE);
+		if (g_waiting == 1 || g_waiting == 3)
+			data->exit_status = 130;
 		if (data->line == NULL)
 			exit_minishell(data, EXIT_SUCCESS);
 		if (is_line_empty_or_need_continue(data))

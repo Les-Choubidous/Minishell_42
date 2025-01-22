@@ -198,6 +198,7 @@ SRC         =   main.c \
                 0_utils/init_env.c \
                 0_utils/init.c \
                 0_utils/signals_here_doc.c \
+				0_utils/signal_child.c \
                 0_utils/signals.c \
                 0_utils/utils.c \
                 1_lexer/lexer_define_tokens.c \

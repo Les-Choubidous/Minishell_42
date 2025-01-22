@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 10:49:24 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:51:17 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@
 # define FDX_OW 1    // Seule la sortie pipe write reste ouvert
 # define FDX_RW 2    // Les deux (entree et sortie doivent rester ouvert)
 
+# ifndef GLOBALS_H
+#  define GLOBALS_H
+
 extern int	g_waiting;
+
+# endif
 
 /******************************DATA_STRUCTURE**********************************/
 typedef enum e_quote
@@ -179,11 +184,17 @@ char					*init_full_path(char **env);
 /*signals.c*/
 // void					configure_child_signals(void);
 // void					configure_shell_signals(void);
-int						sig_event(void);
-void					handle_sigint(int sig);
-void					ft_signal(void);
-void					set_parent_exec_signals(void);
-void					set_child_signals(void);
+// int						sig_event(void);
+// void					handle_sigint(int sig);
+// void					ft_signal(void);
+// void					set_parent_exec_signals(void);
+// void					set_child_signals(void);
+void	signal_handlers(void);
+void	reset_signal_handler(t_data *data);
+
+void	child_signal_handler(void);
+
+void	heredoc_signal_handler(void);
 
 /*signals_here_doc.c*/
 void					signals_heredoc(void);
