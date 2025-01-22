@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executer.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 15:02:40 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:52:52 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*search_cmd_path(t_data *data, t_commands *cmd, char **env)
 		return (NULL);
 	if (stat(cmd->command, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 		return (data->exit_status = 126, ft_putstr_fd(cmd->command, 2),
-			ft_putstr_fd(": is a directory", 2), NULL);
+			ft_putstr_fd(": is a directory\n", 2), NULL);
 	paths = env_extract_paths(env);
 	exec_path = try_paths(paths, cmd->command);
 	if (exec_path)

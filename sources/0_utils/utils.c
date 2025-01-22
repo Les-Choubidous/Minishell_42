@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:55 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 17:56:56 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:25:07 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	perror_return(char *str)
 {
-	perror(str);
+	fprintf(stderr, "%s\n", str);
 	return (EXIT_FAILURE);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:59:31 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 18:14:29 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:59:51 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,12 @@ int	builtin_export(t_data *data, t_token *token, int fd)
 		get_env_for_export(data->env, data);
 		data->export = sort_list(data->export, ft_strcmp);
 	}
-	if (!tmp_tok || tmp_tok->type != ARG)
+	if (!tmp_tok || tmp_tok->type != ARG )
 	{
 		display_export_order(data, fd);
 		return (EXIT_FAILURE);
 	}
-	if (tmp_tok->value[0] == '\0')
+	if (tmp_tok->value[0] == '\0' || !ft_strcmp(tmp_tok->value, "\"\""))
 	{
 		ft_putstr_fd(EXPORT_ERR_IDENTIFIER, 2);
 		return (EXIT_FAILURE);

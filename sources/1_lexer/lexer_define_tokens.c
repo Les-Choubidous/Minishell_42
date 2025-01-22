@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:04 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 10:55:34 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/22 17:48:51 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ char	*resolve_symbol_value(t_data *data, char symbol, int *is_new_command,
 	if (*type == HEREDOC)
 	{
 		if (*(data->line + 1) == '<')
-			return (data->exit_status = 2, printf("H"), NULL);
+			return (data->exit_status = 2, printf(H), NULL);
 		return (ft_strdup("<<"));
 	}
 	else if (*type == APPEND)
 	{
 		if (*(data->line + 1) == '>')
-			return (data->exit_status = 2, printf("A"), NULL);
+			return (data->exit_status = 2, printf(A), NULL);
 		return (ft_strdup(">>"));
 	}
 	else if (*type == INPUT)
