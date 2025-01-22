@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 15:02:07 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:14:13 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ extern int	g_waiting;
 # include <sys/errno.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+#include <signal.h>
+#include <unistd.h>
 
 /********************************MACROS***************************************/
 # define SUPPORTED_SYMBOLS "<|>"

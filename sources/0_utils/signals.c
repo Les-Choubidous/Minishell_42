@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:50 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 19:26:42 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:14:08 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>
-#include <unistd.h>
 
 int	sig_event(void)
 {
