@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 10:51:25 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:00:04 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,6 @@ int	parser(t_data *data)
 		return (ft_printf_exit_code("No command after pipe\n", EXIT_FAILURE));
 	if (concate_final_group_commands(data))
 		return (EXIT_FAILURE);
-	print_final_group(data->command);
+	// print_final_group(data->command); // Debug
 	return (EXIT_SUCCESS);
 }
