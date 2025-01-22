@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 11:51:17 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/22 12:24:17 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -405,18 +405,8 @@ int						builtin_pwd(t_commands *commands, t_data *data);
 char					*find_env_value(t_data *data, const char *key);
 
 /*unset.c*/
-void					find_node_to_export(t_env *env, t_data *data,
-							char *value);
-void					find_node_to_unset(t_env *env, t_data *data,
-							char *value);
 int						builtin_unset(t_data *data, t_token *token);
 
-/*unset_utils.c*/
-char					**list_to_envp(t_env *env);
-char					*join_env_var(const char *type, const char *value);
-int						env_list_size(t_env *env);
-void					unset_export_node(t_env *delete, t_data *data);
-void					unset_env_node(t_env *delete, t_data *data);
 
 /*************************        5_free       *******************************/
 /*free_mem_btw_cmd.c*/
