@@ -30,14 +30,12 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		return (perror_return("ft_strdup for redirection value"));
 	if (redir->type != HEREDOC)
 	{
-		printf("1\n");
 		redir->fd = open(redir->value, oflag, 0644);
 		if (redir->fd < 0)
 			return (perror_return(redir->value));
 	}
 	else if (redir->type == HEREDOC)
 	{
-		printf("2\n");
 		redir->fd = open("heredoc.tmp", oflag, 0644);
 		if (redir->fd < 0)
 			return (perror_return(redir->value));
@@ -123,8 +121,7 @@ int	parser(t_data *data)
 	{
 		if (ptr->type == PIPE)
 			create_new_node = 1;
-		else if (ptr->type == CMD || ptr->type == ARG || ptr->type == LIM
-			|| ptr->type == FLAG)
+		else if (ptr->type == CMD || ptr->type == ARG || ptr->type == FLAG)
 			parser_helper_others(data, ptr, &create_new_node);
 		else
 			parser_helper_redirections(data, ptr);
@@ -134,5 +131,6 @@ int	parser(t_data *data)
 		return (ft_printf_exit_code("No command after pipe\n", EXIT_FAILURE));
 	if (concate_final_group_commands(data))
 		return (EXIT_FAILURE);
+	print_final_group(data->command);
 	return (EXIT_SUCCESS);
 }

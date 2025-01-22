@@ -428,13 +428,9 @@ void					free_all_memory(t_data *data);
 /**************************        MAIN        ********************************/
 void					exit_minishell(t_data *data, int exit_status);
 
-/*************************        6_tests       *******************************/
-/*parser tests*/
-void					print_command_list(t_commands *head);
-void					print_string_array(char **arr, const char *label);
-void					print_list(t_list *lst, const char *label);
-
-/*utils_test.c*/
+/*************************        6_for_tests       *******************************/
+/*debug.c*/
+void					print_final_group(t_commands *cmd);
 const char				*get_type_name(t_type type);
 void					print_tokens(t_token *token);
 
