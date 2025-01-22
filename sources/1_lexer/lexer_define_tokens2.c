@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/21 15:00:09 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:52:39 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ t_token	*mark_heredoc_tokens(t_token *token)
 				return (NULL);
 			}
 			current->next->type = LIM;
-			if (current->next->next && current->next->next->type == ARG && !current->prev /*&& current->prev->type != CMD*/)
-				// printf("TEST\n");
+			if (current->next->next && current->next->next->type == ARG
+				&& !current->prev)
 				current->next->next->type = CMD;
 		}
 		current = current->next;

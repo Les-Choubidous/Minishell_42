@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 15:02:07 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:49:24 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-extern int	g_waiting;
 
 # include "../libft/libft.h"
 # include "messages.h"
@@ -38,6 +36,8 @@ extern int	g_waiting;
 # define FDX_OR 0    // Seul entre pipe read reste ouverte
 # define FDX_OW 1    // Seule la sortie pipe write reste ouvert
 # define FDX_RW 2    // Les deux (entree et sortie doivent rester ouvert)
+
+extern int	g_waiting;
 
 /******************************DATA_STRUCTURE**********************************/
 typedef enum e_quote
@@ -217,7 +217,7 @@ t_token					*define_tokens_exit_echo(t_token *token);
 t_token					*mark_heredoc_tokens(t_token *token);
 int						create_and_add_symbol_token(t_data *data, char *value,
 							t_type type);
-							
+
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,
 							int *is_new_command);
@@ -428,7 +428,7 @@ void					free_all_memory(t_data *data);
 /**************************        MAIN        ********************************/
 void					exit_minishell(t_data *data, int exit_status);
 
-/*************************        6_for_tests       *******************************/
+/*************************        6_for_tests       **************************/
 /*debug.c*/
 void					print_final_group(t_commands *cmd);
 const char				*get_type_name(t_type type);

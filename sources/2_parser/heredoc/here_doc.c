@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/21 10:37:39 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:51:44 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	populate_here_doc(int write_fd, char *delimiter)
 		if (!ft_strcmp(line, delimiter))
 		{
 			free(line);
-			break;
+			break ;
 		}
 		write(write_fd, line, ft_strlen(line));
 		write(write_fd, "\n", 1);
