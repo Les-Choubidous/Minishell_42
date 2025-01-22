@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:17 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 16:31:33 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 11:50:01 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,16 @@ void	launch_minishell(t_data *data)
 {
 	while (1)
 	{
-		ft_signal();
+		// ft_signal();
+		signal_handlers();
 		g_waiting = 0;
 		data->line = readline(PROMPTE);
+		if (g_waiting == 1 || g_waiting == 3)
+			data->exit_status = 130;
 		if (data->line == NULL)
 			exit_minishell(data, EXIT_SUCCESS);
 		if (is_line_empty_or_need_continue(data))
 			continue ;
-		if (g_waiting == 1)
-		{
-			data->exit_status = 130;
-			free(data->line);
-			data->line = NULL;
-			continue ;
-		}
 		syntaxe_line(data->line, data);
 		if (ft_strlen(data->line))
 			add_history(data->line);
@@ -96,7 +92,6 @@ int	main(int ac, char **av, char **env)
 	if (ac != 1)
 		return (1);
 	ft_memset(&data, 0, sizeof(t_data));
-	// configure_shell_signals();
 	if (init_data(&data, env) == EXIT_FAILURE)
 		exit_minishell(&data, EXIT_FAILURE);
 	launch_minishell(&data);

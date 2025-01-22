@@ -5,18 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/17 17:49:59 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 10:14:13 by melinaaam        ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/01/22 15:03:01 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 /*valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes 
 --track-fds=yes --suppressions=readline.supp ./minishell */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-extern int	g_waiting;
 
 # include "../libft/libft.h"
 # include "messages.h"
@@ -40,6 +39,13 @@ extern int	g_waiting;
 # define FDX_OR 0    // Seul entre pipe read reste ouverte
 # define FDX_OW 1    // Seule la sortie pipe write reste ouvert
 # define FDX_RW 2    // Les deux (entree et sortie doivent rester ouvert)
+
+# ifndef GLOBALS_H
+#  define GLOBALS_H
+
+extern int	g_waiting;
+
+# endif
 
 /******************************DATA_STRUCTURE**********************************/
 typedef enum e_quote
@@ -181,11 +187,17 @@ char					*init_full_path(char **env);
 /*signals.c*/
 // void					configure_child_signals(void);
 // void					configure_shell_signals(void);
-int						sig_event(void);
-void					handle_sigint(int sig);
-void					ft_signal(void);
-void					set_parent_exec_signals(void);
-void					set_child_signals(void);
+// int						sig_event(void);
+// void					handle_sigint(int sig);
+// void					ft_signal(void);
+// void					set_parent_exec_signals(void);
+// void					set_child_signals(void);
+void	signal_handlers(void);
+void	reset_signal_handler(t_data *data);
+
+void	child_signal_handler(void);
+
+void	heredoc_signal_handler(void);
 
 /*signals_here_doc.c*/
 void					signals_heredoc(void);
@@ -219,7 +231,7 @@ t_token					*define_tokens_exit_echo(t_token *token);
 t_token					*mark_heredoc_tokens(t_token *token);
 int						create_and_add_symbol_token(t_data *data, char *value,
 							t_type type);
-							
+
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,
 							int *is_new_command);
@@ -396,18 +408,8 @@ int						builtin_pwd(t_commands *commands, t_data *data);
 char					*find_env_value(t_data *data, const char *key);
 
 /*unset.c*/
-void					find_node_to_export(t_env *env, t_data *data,
-							char *value);
-void					find_node_to_unset(t_env *env, t_data *data,
-							char *value);
 int						builtin_unset(t_data *data, t_token *token);
 
-/*unset_utils.c*/
-char					**list_to_envp(t_env *env);
-char					*join_env_var(const char *type, const char *value);
-int						env_list_size(t_env *env);
-void					unset_export_node(t_env *delete, t_data *data);
-void					unset_env_node(t_env *delete, t_data *data);
 
 /*************************        5_free       *******************************/
 /*free_mem_btw_cmd.c*/
@@ -430,13 +432,9 @@ void					free_all_memory(t_data *data);
 /**************************        MAIN        ********************************/
 void					exit_minishell(t_data *data, int exit_status);
 
-/*************************        6_tests       *******************************/
-/*parser tests*/
-void					print_command_list(t_commands *head);
-void					print_string_array(char **arr, const char *label);
-void					print_list(t_list *lst, const char *label);
-
-/*utils_test.c*/
+/*************************        6_for_tests       **************************/
+/*debug.c*/
+void					print_final_group(t_commands *cmd);
 const char				*get_type_name(t_type type);
 void					print_tokens(t_token *token);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:04 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 13:57:09 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:55:34 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ t_type	get_token_type(t_data *data, char symbol, int *is_new_command)
 	return (-1);
 }
 
-char	*resolve_symbol_value(t_data *data, char symbol, int *is_new_command, t_type *type)
+char	*resolve_symbol_value(t_data *data, char symbol, int *is_new_command,
+								t_type *type)
 {
 	*type = get_token_type(data, symbol, is_new_command);
 	if (*type == HEREDOC)
 	{
-		if (*(data->line + 1) == '<')			
+		if (*(data->line + 1) == '<')
 			return (data->exit_status = 2, printf("H"), NULL);
 		return (ft_strdup("<<"));
 	}
@@ -50,13 +51,13 @@ char	*resolve_symbol_value(t_data *data, char symbol, int *is_new_command, t_typ
 		if (*(data->line + 1) == '>')
 			return (data->exit_status = 2, printf("A"), NULL);
 		return (ft_strdup(">>"));
-	} 
+	}
 	else if (*type == INPUT)
 		return (ft_strdup("<"));
 	else if (*type == OUTPUT)
 	{
 		if (*(data->line + 1) == '<')
-			return (data->exit_status = 2, 
+			return (data->exit_status = 2,
 				printf("Syntax error: unexpected token '<'\n"), NULL);
 		return (ft_strdup(">"));
 	}
@@ -75,7 +76,6 @@ int	add_symbol_token(t_data *data, char symbol, int *is_new_command)
 		return (0);
 	return (create_and_add_symbol_token(data, value, type));
 }
-
 
 t_token	*define_arg_type(t_token *token)
 {

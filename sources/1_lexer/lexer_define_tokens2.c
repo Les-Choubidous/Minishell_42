@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/21 15:00:09 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:52:39 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,16 @@ t_token	*mark_heredoc_tokens(t_token *token)
 	{
 		if (current->type == HEREDOC && current->next)
 		{
-			if (current->next->type != ARG)
+			if (current->next->type != ARG && current->next->type != CMD)
 			{
-				ft_putstr_fd("minishell: syntax error:\
-								invalid heredoc delimiter\n", 2);
+				ft_putstr_fd("minishell: syntax error: ", 2);
+				ft_putstr_fd("invalid heredoc delimiter\n", 2);
 				return (NULL);
 			}
 			current->next->type = LIM;
+			if (current->next->next && current->next->next->type == ARG
+				&& !current->prev)
+				current->next->next->type = CMD;
 		}
 		current = current->next;
 	}

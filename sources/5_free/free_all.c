@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:59:56 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 16:33:45 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:44:04 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	free_all_memory(t_data *data)
 		free(data->expanded_str);
 		data->expanded_str = NULL;
 	}
-	//free_char_array(data->env);
 	if (data->line && ft_strcmp(data->token->value, "exit"))
 	{
 		free(data->line);

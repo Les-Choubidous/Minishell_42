@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_execute.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:45 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 10:25:44 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/22 11:55:05 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,8 @@ int	execute_pipeline(int *fd_pipes, pid_t *pid, t_data *data)
 	i = 0;
 	while (command)
 	{
+		if (g_waiting == 3)
+			break ;
 		if (command_is_a_builtin(command))
 			execute_builtin(fd_pipes, i * 2, command, data);
 		else

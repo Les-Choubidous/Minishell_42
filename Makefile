@@ -170,7 +170,7 @@
 # Compiler targets and libraries
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -g3 -MMD -MP
+CFLAGS		=	-Wall -Werror -Wextra -g3 -MMD -MP
 LIBFT		=	libft.a
 READLINE	=	-lreadline
 
@@ -198,6 +198,7 @@ SRC         =   main.c \
                 0_utils/init_env.c \
                 0_utils/init.c \
                 0_utils/signals_here_doc.c \
+				0_utils/signal_child.c \
                 0_utils/signals.c \
                 0_utils/utils.c \
                 1_lexer/lexer_define_tokens.c \
@@ -233,10 +234,10 @@ SRC         =   main.c \
                 4_builtins/pwd.c \
 				4_builtins/syntaxe_export.c \
                 4_builtins/unset.c \
-				4_builtins/unset_utils.c \
                 5_free/free_all.c \
                 5_free/free_mem_btw_cmd.c \
-                5_free/free_utils.c 
+                5_free/free_utils.c \
+				6_for_tests/debug.c 
 
 SRCS		=	$(addprefix ${SRC_DIR}, ${SRC})
 OBJS		=	$(addprefix ${OBJ_DIR}, $(SRC:.c=.o))
