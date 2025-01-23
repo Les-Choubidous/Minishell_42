@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_execute2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:20:04 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/20 12:27:17 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/23 15:27:55 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	setup_env_execution(int *fd_pipes, int pos, t_data *data,
 
 static int	prepare_exec_path(t_data *data, t_commands *cmd, char **exec_path)
 {
-	*exec_path = search_cmd_path(data, cmd, data->env);
+	*exec_path = search_cmd_path(data, cmd);
 	if (!(*exec_path))
 		return (EXIT_FAILURE);
 	free(*exec_path);

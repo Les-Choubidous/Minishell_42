@@ -6,7 +6,7 @@
 /*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/01/22 15:03:01 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/23 15:58:06 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,9 +323,8 @@ void					syntaxe_line(char *line, t_data *data);
 
 /**************************      3_executer     *******************************/
 /*command_executer.c*/
-char					**env_extract_paths(char **env);
-char					*search_cmd_path(t_data *data, t_commands *cmd,
-							char **env);
+char	**env_extract_paths(t_env *env);
+char	*search_cmd_path(t_data *data, t_commands *cmd);
 int						command_executer(t_commands *command, t_data *data);
 
 /*executer_main.c*/

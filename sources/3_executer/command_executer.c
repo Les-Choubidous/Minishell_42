@@ -6,25 +6,24 @@
 /*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 15:52:52 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/23 15:33:36 by melinaaam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/stat.h>
 
-char	**env_extract_paths(char **env)
+char	**env_extract_paths(t_env *env)
 {
 	char	**path_split;
 	char	**path_split_full;
 	int		i;
 
-	i = 0;
-	while (env[i] && !ft_strnstr(env[i], "PATH", 4))
-		i++;
-	if (!env[i])
+	while (env && ft_strcmp(env->type, "PATH") != 0)
+		env = env->next;
+	if (!env || !env->value)
 		return (NULL);
-	path_split = ft_split(ft_strchr(env[i], '=') + 1, ':');
+	path_split = ft_split(env->value, ':');
 	i = 0;
 	while (path_split[i])
 		i++;
@@ -74,19 +73,24 @@ static char	*try_direct_command(t_data *data, char *cmd)
 	return (NULL);
 }
 
-char	*search_cmd_path(t_data *data, t_commands *cmd, char **env)
+char	*search_cmd_path(t_data *data, t_commands *cmd)
 {
 	char		*exec_path;
 	char		**paths;
 	struct stat	path_stat;
 
-	if (!cmd || !env || !cmd->command[0])
+	if (!cmd || !data->cpy_env || !cmd->command[0])
 		return (NULL);
 	if (stat(cmd->command, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
-		return (data->exit_status = 126, ft_putstr_fd(cmd->command, 2),
-			ft_putstr_fd(": is a directory\n", 2), NULL);
-	paths = env_extract_paths(env);
+	{
+		data->exit_status = 126;
+		ft_putstr_fd(cmd->command, 2);
+		ft_putstr_fd(": is a directory\n", 2);
+		return (NULL);
+	}
+	paths = env_extract_paths(data->cpy_env);
 	exec_path = try_paths(paths, cmd->command);
+
 	if (exec_path)
 		return (exec_path);
 	return (try_direct_command(data, cmd->command));
@@ -99,7 +103,7 @@ int	command_executer(t_commands *command, t_data *data)
 	if (!command || !command->command)
 		return (EXIT_FAILURE);
 	exec_path = NULL;
-	exec_path = search_cmd_path(data, command, data->env);
+	exec_path = search_cmd_path(data, command);
 	data->new_env = env_to_tab(data->cpy_env);
 	if (exec_path)
 		data->exit_status = execve(exec_path, command->final_group,
