@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 11:00:14 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/23 17:16:33 by melinamotyl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	lexer_finalize(t_data *data, t_quote current_quote,
 	}
 	define_tokens_exit_echo(data->token);
 	define_arg_type(data->token);
-	// print_tokens(data->token); // Debug
 	return (EXIT_SUCCESS);
 }
 

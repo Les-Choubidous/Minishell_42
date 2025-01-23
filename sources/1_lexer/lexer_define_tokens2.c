@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/22 15:39:12 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/23 17:16:22 by melinamotyl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_token	*mark_heredoc_tokens(t_token *token)
 		{
 			if (current->next->type != ARG && current->next->type != CMD)
 			{
-				ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
+				ft_putstr_fd("minishell: syntax error near unexpected token\n",
+					2);
 				ft_putstr_fd("invalid heredoc delimiter\n", 2);
 				return (NULL);
 			}

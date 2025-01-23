@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:59:51 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/23 14:33:36 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/23 17:30:34 by melinamotyl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,6 @@ static void	find_node_to_unset2(t_env *env, t_data *data, char *value)
 
 int	builtin_unset(t_data *data, t_token *token)
 {
-	// t_token	*tmp_tok;
-
-	// tmp_tok = token->next;
-	// while (tmp_tok)
-	// {
-	// 	if (tmp_tok->value)
-	// 	{
-	// 		find_node_to_unset(data->cpy_env, data, tmp_tok->value);
-	// 		find_node_to_export(data->export, data, tmp_tok->value);
-	// 	}
-	// 	tmp_tok = tmp_tok->next;
-	// }
-	// data->env = list_to_envp(data->cpy_env);
 	t_token	*tmp_tok;
 
 	tmp_tok = token->next;

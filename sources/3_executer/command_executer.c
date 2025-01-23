@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executer.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/23 15:33:36 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/23 17:26:26 by melinamotyl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ char	*search_cmd_path(t_data *data, t_commands *cmd)
 	}
 	paths = env_extract_paths(data->cpy_env);
 	exec_path = try_paths(paths, cmd->command);
-
 	if (exec_path)
 		return (exec_path);
 	return (try_direct_command(data, cmd->command));

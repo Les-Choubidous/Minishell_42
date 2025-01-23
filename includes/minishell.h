@@ -3,16 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/01/23 15:58:06 by melinaaam        ###   ########.fr       */
+/*   Created: 2025/01/23 17:11:42 by melinamotyl       #+#    #+#             */
+/*   Updated: 2025/01/23 17:35:01 by melinamotyl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-/*valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes 
---track-fds=yes --suppressions=readline.supp ./minishell */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -30,8 +26,8 @@
 # include <sys/errno.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-#include <signal.h>
-#include <unistd.h>
+# include <signal.h>
+# include <unistd.h>
 
 /********************************MACROS***************************************/
 # define SUPPORTED_SYMBOLS "<|>"
@@ -185,19 +181,10 @@ void					init_io(t_data *data);
 char					*init_full_path(char **env);
 
 /*signals.c*/
-// void					configure_child_signals(void);
-// void					configure_shell_signals(void);
-// int						sig_event(void);
-// void					handle_sigint(int sig);
-// void					ft_signal(void);
-// void					set_parent_exec_signals(void);
-// void					set_child_signals(void);
-void	signal_handlers(void);
-void	reset_signal_handler(t_data *data);
-
-void	child_signal_handler(void);
-
-void	heredoc_signal_handler(void);
+void					signal_handlers(void);
+void					reset_signal_handler(t_data *data);
+void					child_signal_handler(void);
+void					heredoc_signal_handler(void);
 
 /*signals_here_doc.c*/
 void					signals_heredoc(void);
@@ -323,8 +310,8 @@ void					syntaxe_line(char *line, t_data *data);
 
 /**************************      3_executer     *******************************/
 /*command_executer.c*/
-char	**env_extract_paths(t_env *env);
-char	*search_cmd_path(t_data *data, t_commands *cmd);
+char					**env_extract_paths(t_env *env);
+char					*search_cmd_path(t_data *data, t_commands *cmd);
 int						command_executer(t_commands *command, t_data *data);
 
 /*executer_main.c*/
@@ -408,7 +395,6 @@ char					*find_env_value(t_data *data, const char *key);
 
 /*unset.c*/
 int						builtin_unset(t_data *data, t_token *token);
-
 
 /*************************        5_free       *******************************/
 /*free_mem_btw_cmd.c*/

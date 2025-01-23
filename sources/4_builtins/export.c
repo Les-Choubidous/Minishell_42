@@ -3,39 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:59:31 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 16:59:51 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/23 17:35:27 by melinamotyl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_env	*sort_list(t_env *cpy, int (*cmp)(const char *, const char *))
-{
-	t_env	*tmp;
-	char	*temp;
-	char	*temp2;
-
-	tmp = cpy;
-	while (cpy && cpy->next)
-	{
-		if (cmp(cpy->type, cpy->next->type) > 0)
-		{
-			temp = cpy->type;
-			temp2 = cpy->value;
-			cpy->type = cpy->next->type;
-			cpy->value = cpy->next->value;
-			cpy->next->type = temp;
-			cpy->next->value = temp2;
-			cpy = tmp;
-		}
-		else
-			cpy = cpy->next;
-	}
-	return (tmp);
-}
 
 static int	event_expansion(t_data *data)
 {
@@ -114,6 +89,21 @@ static void	display_export_order(t_data *data, int fd)
 	}
 }
 
+static int	check_export_conditions(t_data *data, t_token *tmp_tok, int fd)
+{
+	if (!tmp_tok || tmp_tok->type != ARG)
+	{
+		display_export_order(data, fd);
+		return (EXIT_FAILURE);
+	}
+	if (tmp_tok->value[0] == '\0' || !ft_strcmp(tmp_tok->value, "\"\""))
+	{
+		ft_putstr_fd(EXPORT_ERR_IDENTIFIER, 2);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	builtin_export(t_data *data, t_token *token, int fd)
 {
 	t_token	*tmp_tok;
@@ -130,16 +120,8 @@ int	builtin_export(t_data *data, t_token *token, int fd)
 		get_env_for_export(data->env, data);
 		data->export = sort_list(data->export, ft_strcmp);
 	}
-	if (!tmp_tok || tmp_tok->type != ARG )
-	{
-		display_export_order(data, fd);
+	if (check_export_conditions(data, tmp_tok, fd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	}
-	if (tmp_tok->value[0] == '\0' || !ft_strcmp(tmp_tok->value, "\"\""))
-	{
-		ft_putstr_fd(EXPORT_ERR_IDENTIFIER, 2);
-		return (EXIT_FAILURE);
-	}
 	if (!data->nb_pipe)
 		update_env_from_tokens(data, tmp_tok);
 	return (EXIT_SUCCESS);
