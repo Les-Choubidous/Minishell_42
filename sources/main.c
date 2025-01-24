@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:17 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 16:14:06 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:26:20 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ static void	check_no_child_process(void)
 {
 	if (!isatty(STDIN_FILENO))
 	{
-		ft_printf_colour(RED,
-			"Error: minishell cannot be launched in a child/non-interactive process.\n");
+		ft_printf_colour(RED, "Arrete avec tes tests tricky 😠 \n");
 		exit(1);
 	}
 }
