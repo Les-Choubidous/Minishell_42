@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 10:44:19 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 12:40:30 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 	{
 		redir->fd = open(redir->value, oflag, 0644);
 		if (redir->fd < 0)
-			return (perror_return(redir->value));
+			return (perror_return("No such file or directory"));
 	}
 	else if (redir->type == HEREDOC)
 	{
@@ -57,7 +57,8 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 	else if (token->type == INPUT)
 	{
 		if (open_redirection_fd(data, &data->input, token, O_RDONLY))
-			return (EXIT_FAILURE);
+			return (2);
+			// return (EXIT_FAILURE);
 	}
 	else if (token->type == OUTPUT || token->type == APPEND)
 	{
@@ -120,7 +121,10 @@ int	parser(t_data *data)
 		else if (ptr->type == CMD || ptr->type == ARG || ptr->type == FLAG)
 			parser_helper_others(data, ptr, &create_new_node);
 		else
-			parser_helper_redirections(data, ptr);
+		{
+			if (parser_helper_redirections(data, ptr))
+				return (EXIT_FAILURE);	
+		}
 		ptr = ptr->next;
 	}
 	if (create_new_node && *data->line)

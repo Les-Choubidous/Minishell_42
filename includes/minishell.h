@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:11:42 by melinamotyl       #+#    #+#             */
-/*   Updated: 2025/01/24 11:11:49 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 12:03:36 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,9 +215,11 @@ t_token					*define_arg_type(t_token *token);
 t_token					*define_tokens_exit_echo(t_token *token);
 
 /*lexer_define_tokens2.c*/
-t_token					*mark_heredoc_tokens(t_token *token);
 int						create_and_add_symbol_token(t_data *data, char *value,
 							t_type type);
+t_token					*mark_heredoc_tokens(t_token *token);
+t_token					*mark_input_tokens(t_token *token);
+
 
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,
@@ -425,3 +427,9 @@ const char				*get_type_name(t_type type);
 void					print_tokens(t_token *token);
 
 #endif
+
+/*
+valgrind --leak-check=full --track-fds=yes --track-origins=yes
+--show-leak-kinds=all --trace-children=yes --suppressions=readline.supp
+./minishell
+*/

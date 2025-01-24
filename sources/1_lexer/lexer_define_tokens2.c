@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/23 17:16:22 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2025/01/24 12:29:16 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,30 @@ t_token	*mark_heredoc_tokens(t_token *token)
 			}
 			current->next->type = LIM;
 			if (current->next->next && current->next->next->type == ARG
+				&& !current->prev)
+				current->next->next->type = CMD;
+		}
+		current = current->next;
+	}
+	return (token);
+}
+
+t_token	*mark_input_tokens(t_token *token)
+{
+	t_token	*current;
+
+	current = token;
+	while (current)
+	{
+		if (current->type == INPUT && current->next)
+		{
+			if (current->next->type != ARG && current->next->type != ARG_IN_OUT && current->next->type != CMD)
+			{
+				ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+				return (NULL);
+			}
+			current->next->type = ARG_IN_OUT;
+			if (current->next->next
 				&& !current->prev)
 				current->next->next->type = CMD;
 		}
