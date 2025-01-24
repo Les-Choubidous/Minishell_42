@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/23 17:25:41 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2025/01/24 10:44:19 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 	{
 		if (!token->next || token->next->type != LIM)
 			return (ft_putstr_fd
-				("syntax error near unexpected token \n", 2), EXIT_FAILURE);
+				("syntax error near unexpected token\n", 2), EXIT_FAILURE);
 		if (here_doc(data, token->next->value) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
