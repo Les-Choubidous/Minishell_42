@@ -6,18 +6,11 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:59:41 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 12:34:34 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:40:52 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static int	check_args(t_commands *commands)
-// {
-// 	if (commands->flag)
-// 		return (ft_printf_exit_code(PWD_ERR_FLAGS, EXIT_FAILURE));
-// 	return (EXIT_SUCCESS);
-// }
 
 static int	check_args(t_commands *commands)
 {
@@ -28,7 +21,6 @@ static int	check_args(t_commands *commands)
 	}
 	return (EXIT_SUCCESS);
 }
-
 
 char	*find_env_value(t_data *data, const char *key)
 {

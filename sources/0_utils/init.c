@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:39 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/20 16:41:19 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 15:06:14 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ int	init_data(t_data *data, char **env)
 	data->pid = NULL;
 	data->fd_pipes = NULL;
 	data->nb_pipe = 0;
-	if (!data->full_path)
-		return (EXIT_FAILURE);
 	init_io(data);
 	data->exit_status = 0;
 	return (EXIT_SUCCESS);

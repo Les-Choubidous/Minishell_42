@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:15 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 09:42:00 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 14:41:34 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	executer(t_data *data)
 	data->fd_pipes = build_pipes(data->output.fd, data->input.fd, cmds_num);
 	if (!data->fd_pipes)
 		return (free(data->pid), data->pid = NULL, EXIT_FAILURE);
-		// return (free(data->pid), EXIT_FAILURE);
 	child_signal_handler();
 	execute_pipeline(data->fd_pipes, data->pid, data);
 	free(data->fd_pipes);

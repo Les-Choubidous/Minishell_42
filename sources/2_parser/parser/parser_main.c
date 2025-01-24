@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 12:58:16 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:09:22 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 	{
 		if (!token->next || token->next->type != LIM)
 			return (ft_putstr_fd
-				("minishell: syntax error near unexpected token\n", 2), EXIT_FAILURE);
+				("minishell: syntax error near unexpected token\n", 2),
+				EXIT_FAILURE);
 		if (here_doc(data, token->next->value) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
