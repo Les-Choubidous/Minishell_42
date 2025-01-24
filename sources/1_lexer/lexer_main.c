@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/23 17:16:33 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2025/01/24 12:17:57 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,35 @@ int	lexer_core(t_data *data, t_quote *current_quote,
 	return (EXIT_SUCCESS);
 }
 
+static int	if_no_good_pipe(t_data *data)
+{
+	t_token *pipe;
+	
+	pipe = data->token;
+    while (pipe)
+    {
+        if (pipe->type == PIPE)
+        {
+            if (data->token == pipe && pipe->next == NULL)
+            {
+                ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", 2);
+                data->exit_status = 2;
+                free_token(data);
+                return (EXIT_FAILURE);
+            }
+            else if (pipe->next == NULL)
+            {
+                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
+                data->exit_status = 2;
+                free_token(data);
+                return (EXIT_FAILURE);
+            }
+        }
+		pipe = pipe->next;
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	lexer_finalize(t_data *data, t_quote current_quote,
 		char **current_token, int is_new_command)
 {
@@ -102,6 +131,7 @@ int	lexer_finalize(t_data *data, t_quote current_quote,
 	}
 	define_tokens_exit_echo(data->token);
 	define_arg_type(data->token);
+	if_no_good_pipe(data);
 	return (EXIT_SUCCESS);
 }
 
