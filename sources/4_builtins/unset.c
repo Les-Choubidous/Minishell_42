@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:59:51 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/23 17:30:34 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2025/01/24 10:33:18 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
