@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:11:42 by melinamotyl       #+#    #+#             */
-/*   Updated: 2025/01/24 15:33:15 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 15:34:57 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,8 @@ int						add_symbol_token(t_data *data, char symbol,
 							int *is_new_command);
 t_token					*define_arg_type(t_token *token);
 t_token					*define_tokens_exit_echo(t_token *token);
+char					*resolve_symbol_value(t_data *data, char symbol,
+							int *is_new_command, t_type *type);
 
 /*lexer_define_tokens2.c*/
 int						create_and_add_symbol_token(t_data *data, char *value,
