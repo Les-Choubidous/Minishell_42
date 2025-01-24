@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 15:31:11 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 15:59:50 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 	if (token->type == HEREDOC)
 	{
 		if (!token->next || token->next->type != LIM)
-			return (ft_putstr_fd
-				("minishell: syntax error near unexpected token\n", 2),
-				EXIT_FAILURE);
+			return (ft_putstr_fd(M, 2), EXIT_FAILURE);
 		if (here_doc(data, token->next->value) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
@@ -98,10 +96,16 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 		if (open_redirection_fd(data, &data->input, token, O_RDONLY))
 			return (2);
 	}
-	else if (token->type == OUTPUT || token->type == APPEND)
+	else if (token->type == OUTPUT)
 	{
 		if (open_redirection_fd(data, &data->output, token,
 				O_WRONLY | O_TRUNC | O_CREAT))
+			return (EXIT_FAILURE);
+	}
+	else if (token->type == APPEND)
+	{
+		if (open_redirection_fd(data, &data->output, token,
+				O_WRONLY | O_APPEND | O_CREAT))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

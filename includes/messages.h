@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:48 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 15:30:45 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:59:33 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define A          "minishell: syntax error: unexpected token '>>>'\n"
 # define G          "minishell: syntax error: unexpected token '<'\n"
 # define P          "minishell: syntax error: unexpected token '|'\n"
+# define M          "minishell: syntax error: unexpected token\n"
 /*****************************PROMPT**********************************/
 
 # define PROMPT             "\033[0;34mminishell$\033[1;35m> \033[0m"
