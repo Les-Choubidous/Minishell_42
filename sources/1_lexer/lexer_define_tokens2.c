@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/24 12:29:16 by uzanchi          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/01/24 12:57:57 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
