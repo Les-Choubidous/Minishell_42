@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/01/24 10:31:42 by uzanchi          ###   ########.fr       */
+/*   Created: 2025/01/17 17:58:10 by memotyle          #+#    #+#             */
+/*   Updated: 2025/01/24 10:34:44 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,9 @@ char	*search_cmd_path(t_data *data, t_commands *cmd)
 	if (!cmd || !data->cpy_env || !cmd->command[0])
 		return (NULL);
 	if (stat(cmd->command, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
-	{
-		data->exit_status = 126;
-		ft_putstr_fd(cmd->command, 2);
-		ft_putstr_fd(": is a directory\n", 2);
-		return (NULL);
-	}
-	paths = env_extract_paths(data->cpy_env);
+		return (data->exit_status = 126, ft_putstr_fd(cmd->command, 2),
+			ft_putstr_fd(": is a directory\n", 2), NULL);
+	paths = env_extract_paths(env);
 	exec_path = try_paths(paths, cmd->command);
 	if (exec_path)
 		return (exec_path);
