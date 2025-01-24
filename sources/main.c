@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:17 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 11:09:51 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 16:14:06 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 void	exit_minishell(t_data *data, int exit_status);
 void	launch_minishell(t_data *data);
 int		g_waiting = 0;
+
+static void	check_no_child_process(void)
+{
+	if (!isatty(STDIN_FILENO))
+	{
+		ft_printf_colour(RED,
+			"Error: minishell cannot be launched in a child/non-interactive process.\n");
+		exit(1);
+	}
+}
 
 static int	is_line_empty_or_need_continue(t_data *data)
 {
@@ -91,6 +101,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (ac != 1)
 		return (1);
+	check_no_child_process();
 	ft_memset(&data, 0, sizeof(t_data));
 	if (init_data(&data, env) == EXIT_FAILURE)
 		exit_minishell(&data, EXIT_FAILURE);

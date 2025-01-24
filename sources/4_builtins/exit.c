@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:12:09 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 18:12:12 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:11:00 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static int	handle_too_many_args(t_data *data)
 
 int	builtin_exit(t_commands *command, t_data *data)
 {
+	if (data->nb_pipe > 0)
+		return (EXIT_SUCCESS);
 	if (!command->arg)
 		exit_minishell(data, EXIT_SUCCESS);
 	if (command->arg && is_valid_longlong(command->arg->value)
