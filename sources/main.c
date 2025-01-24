@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:17 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/23 17:36:11 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2025/01/24 11:09:51 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	launch_minishell(t_data *data)
 
 void	exit_minishell(t_data *data, int exit_status)
 {
+	close_fds_recursive(3);
 	if (data->fd_pipes)
 	{
 		free(data->fd_pipes);

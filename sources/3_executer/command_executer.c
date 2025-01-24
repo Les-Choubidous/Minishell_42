@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   command_executer.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/23 17:26:26 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2025/01/24 10:37:37 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 #include <sys/stat.h>

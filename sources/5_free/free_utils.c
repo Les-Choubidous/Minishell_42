@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:00:12 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/21 15:54:35 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:10:00 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,14 @@ void	free_char_array(char **array)
 	if (array)
 		free(array);
 	array = NULL;
+}
+
+void	close_fds_recursive(int fd)
+{
+	if (fd > 1023)
+		return;
+	if (close(fd) == 0)
+		close_fds_recursive(fd + 1);
+	else
+		close_fds_recursive(fd + 1);
 }

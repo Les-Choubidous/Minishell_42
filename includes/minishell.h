@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinamotylewski <melinamotylewski@stud    +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:11:42 by melinamotyl       #+#    #+#             */
-/*   Updated: 2025/01/23 17:35:01 by melinamotyl      ###   ########.fr       */
+/*   Updated: 2025/01/24 11:11:49 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -407,12 +407,13 @@ void					free_token(t_data *data);
 void					free_decomposed_str(char **str1, char **str2,
 							char **str3);
 void					free_env_list(t_env *list);
-void					free_char_array(char **array);
 void					free_list(t_list *list);
-void					free_env(t_data *data, t_env *env, int cpy);
+void					free_char_array(char **array);
+void					close_fds_recursive(int fd);
 
 /*free_all.c*/
 void					free_all_memory(t_data *data);
+void					free_env(t_data *data, t_env *env, int cpy);
 
 /**************************        MAIN        ********************************/
 void					exit_minishell(t_data *data, int exit_status);
