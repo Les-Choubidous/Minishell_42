@@ -6,29 +6,11 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 12:17:57 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:44:41 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_double_tokens(char *str)
-{
-	if (!ft_strchr(SUPPORTED_SYMBOLS, *(str + 1)))
-		return (EXIT_SUCCESS);
-	else
-	{
-		if ((*str == '<' && *(str + 1) == '<') || (*str == '>' && *(str
-					+ 1) == '>'))
-			return (EXIT_SUCCESS);
-		else
-		{
-			printf("Syntax error: unexpected token %c after token %c\n",
-				*(str + 1), *str);
-			return (EXIT_FAILURE);
-		}
-	}
-}
 
 char	*append_char(char *str, char c)
 {
@@ -79,28 +61,28 @@ int	lexer_core(t_data *data, t_quote *current_quote,
 
 static int	if_no_good_pipe(t_data *data)
 {
-	t_token *pipe;
-	
+	t_token	*pipe;
+
 	pipe = data->token;
-    while (pipe)
-    {
-        if (pipe->type == PIPE)
-        {
-            if (data->token == pipe && pipe->next == NULL)
-            {
-                ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", 2);
-                data->exit_status = 2;
-                free_token(data);
-                return (EXIT_FAILURE);
-            }
-            else if (pipe->next == NULL)
-            {
-                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
-                data->exit_status = 2;
-                free_token(data);
-                return (EXIT_FAILURE);
-            }
-        }
+	while (pipe)
+	{
+		if (pipe->type == PIPE)
+		{
+			if (data->token == pipe && pipe->next == NULL)
+			{
+				ft_putstr_fd("syntax error near unexpected token '|'\n", 2);
+				data->exit_status = 2;
+				free_token(data);
+				return (EXIT_FAILURE);
+			}
+			else if (pipe->next == NULL)
+			{
+				ft_putstr_fd("syntax error near unexpected token\n", 2);
+				data->exit_status = 2;
+				free_token(data);
+				return (EXIT_FAILURE);
+			}
+		}
 		pipe = pipe->next;
 	}
 	return (EXIT_SUCCESS);

@@ -6,11 +6,29 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/24 12:52:29 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:34:10 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_double_tokens(char *str)
+{
+	if (!ft_strchr(SUPPORTED_SYMBOLS, *(str + 1)))
+		return (EXIT_SUCCESS);
+	else
+	{
+		if ((*str == '<' && *(str + 1) == '<') || (*str == '>' && *(str
+					+ 1) == '>'))
+			return (EXIT_SUCCESS);
+		else
+		{
+			printf("Syntax error: unexpected token %c after token %c\n",
+				*(str + 1), *str);
+			return (EXIT_FAILURE);
+		}
+	}
+}
 
 int	create_and_add_symbol_token(t_data *data, char *value, t_type type)
 {

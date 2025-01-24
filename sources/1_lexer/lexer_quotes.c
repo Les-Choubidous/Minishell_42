@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:14 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 12:06:38 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:40:25 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ t_token	*create_and_add_token(t_data *data, char *value,
 	t_type	type;
 	t_token	*new;
 
-	type = ARG;
+	if (value[0] == '-')
+		type = FLAG;
+	else
+		type = ARG;
 	if (*is_new_command)
 	{
 		type = CMD;
