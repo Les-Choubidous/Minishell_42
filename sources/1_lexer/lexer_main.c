@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:10 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 15:09:09 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:17:42 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,7 @@ int	lexer_finalize(t_data *data, t_quote current_quote,
 			return (EXIT_FAILURE);
 		*current_token = NULL;
 	}
-	if (!mark_heredoc_tokens(data->token))
-	{
-		free(*current_token);
-		free_token(data);
-		return (EXIT_FAILURE);
-	}
-		if (!mark_input_tokens(data->token))
+	if (!mark_heredoc_tokens(data->token) || !mark_input_tokens(data->token))
 	{
 		free(*current_token);
 		free_token(data);

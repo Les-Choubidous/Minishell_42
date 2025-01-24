@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   messages.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:49:48 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 17:48:03 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/24 15:30:45 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@
 # define GREY           "\033[38;2;184;134;11m"
 
 /*****************************messages**********************************/
-# define H                  "Syntax error: unexpected token '<<<'\n"      
-# define A                  "Syntax error: unexpected token '>>>'\n"
-
+# define H          "minishell: syntax error: unexpected token '<<<'\n"      
+# define A          "minishell: syntax error: unexpected token '>>>'\n"
+# define G          "minishell: syntax error: unexpected token '<'\n"
+# define P          "minishell: syntax error: unexpected token '|'\n"
 /*****************************PROMPT**********************************/
 
 # define PROMPT             "\033[0;34mminishell$\033[1;35m> \033[0m"

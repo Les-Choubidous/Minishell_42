@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:11:42 by melinamotyl       #+#    #+#             */
-/*   Updated: 2025/01/24 12:46:10 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:12:49 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,6 @@ int						create_and_add_symbol_token(t_data *data, char *value,
 							t_type type);
 t_token					*mark_heredoc_tokens(t_token *token);
 t_token					*mark_input_tokens(t_token *token);
-
 
 /*lexer_quotes.c*/
 t_token					*create_and_add_token(t_data *data, char *value,

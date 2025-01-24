@@ -6,12 +6,22 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:30:27 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/24 15:08:20 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:30:19 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
+
+int	add_symbol_token(t_data *data, char symbol, int *is_new_command)
+{
+	t_type	type;
+	char	*value;
+
+	value = resolve_symbol_value(data, symbol, is_new_command, &type);
+	if (!value)
+		return (0);
+	return (create_and_add_symbol_token(data, value, type));
+}
 
 int	check_double_tokens(char *str)
 {
@@ -77,9 +87,10 @@ t_token	*mark_input_tokens(t_token *token)
 	{
 		if (current->type == INPUT && current->next)
 		{
-			if (current->next->type != ARG && current->next->type != ARG_IN_OUT && current->next->type != CMD)
+			if (current->next->type != ARG && current->next->type != ARG_IN_OUT
+				&& current->next->type != CMD)
 			{
-				ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+				ft_putstr_fd("syntax error near unexpected token\n", 2);
 				return (NULL);
 			}
 			current->next->type = ARG_IN_OUT;
