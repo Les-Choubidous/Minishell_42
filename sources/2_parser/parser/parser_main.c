@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 10:44:19 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 12:56:00 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 	{
 		if (!token->next || token->next->type != LIM)
 			return (ft_putstr_fd
-				("syntax error near unexpected token\n", 2), EXIT_FAILURE);
+				("minishell: syntax error near unexpected token\n", 2), EXIT_FAILURE);
 		if (here_doc(data, token->next->value) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
@@ -120,7 +120,10 @@ int	parser(t_data *data)
 		else if (ptr->type == CMD || ptr->type == ARG || ptr->type == FLAG)
 			parser_helper_others(data, ptr, &create_new_node);
 		else
-			parser_helper_redirections(data, ptr);
+		{
+			if (parser_helper_redirections(data, ptr))
+				return (EXIT_FAILURE);
+		}
 		ptr = ptr->next;
 	}
 	if (create_new_node && *data->line)

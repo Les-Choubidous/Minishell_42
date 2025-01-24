@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:05 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 12:21:13 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 12:51:21 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,12 @@ static int	check_syntaxe_in_quote(char *line, int open_quote, int i,
 	return (0);
 }
 
-static void	open_quote_exit(t_data *data)
+static int	open_quote_exit(t_data *data)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(&data->wich_quote_err, 2);
 	ft_putstr_fd("'\n", 2);
+	return (EXIT_FAILURE);
 }
 
 void	syntaxe_line(char *line, t_data *data)
