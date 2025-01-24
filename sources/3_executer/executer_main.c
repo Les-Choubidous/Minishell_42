@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:15 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 11:52:22 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 09:42:00 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@ int	executer(t_data *data)
 	data->nb_pipe = cmds_num - 1;
 	data->fd_pipes = build_pipes(data->output.fd, data->input.fd, cmds_num);
 	if (!data->fd_pipes)
-		return (free(data->pid), EXIT_FAILURE);
+		return (free(data->pid), data->pid = NULL, EXIT_FAILURE);
+		// return (free(data->pid), EXIT_FAILURE);
 	child_signal_handler();
 	execute_pipeline(data->fd_pipes, data->pid, data);
 	free(data->fd_pipes);
+	data->fd_pipes = NULL;
 	free(data->pid);
 	data->pid = NULL;
-	data->fd_pipes = NULL;
 	return (EXIT_SUCCESS);
 }
