@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntaxe_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:05 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 16:03:53 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/24 12:21:13 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ static int	check_syntaxe_in_quote(char *line, int open_quote, int i,
 		if ((line[i] == '\n' || line[i] == ';' || line[i] == '\\')
 			&& !open_quote)
 			return (print_err_syntaxe(line[i], 1), 1);
-		if (((line[i] == '&' && line[i + 1] == '&')
-				|| (line[i] == '|' && line[i + 1] == '|')) && !open_quote)
+		if (((line[i] == '&' && line[i + 1] == '&')) && !open_quote)
 			return (print_err_syntaxe(line[i], 2), 2);
 		i++;
 	}

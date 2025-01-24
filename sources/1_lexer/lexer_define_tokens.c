@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_define_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melinaaam <melinaaam@student.42.fr>        +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:04 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/22 17:48:51 by melinaaam        ###   ########.fr       */
+/*   Updated: 2025/01/24 12:22:54 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,16 @@ char	*resolve_symbol_value(t_data *data, char symbol, int *is_new_command,
 	{
 		if (*(data->line + 1) == '<')
 			return (data->exit_status = 2,
-				printf("Syntax error: unexpected token '<'\n"), NULL);
+				printf("minishell: syntax error: unexpected token '<'\n"), NULL);
 		return (ft_strdup(">"));
 	}
 	else if (*type == PIPE)
+	{
+		if (*(data->line + 1) == '|')
+			return (data->exit_status = 2,
+				printf("minishell: syntax error: unexpected token '|'\n"), NULL);
 		return (ft_strdup("|"));
+	}
 	return (NULL);
 }
 
