@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:56:35 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 14:59:17 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:39:57 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_get_env(char **env, t_data *data)
 	{
 		add_cpy_env(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env, data);
 		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env, data);
-		add_cpy_env(ft_strdup("_"), ft_strdup("chemin de last commande"),
+		add_cpy_env(ft_strdup("_"), ft_strdup("/usr/bin/env"),
 			&cpy_env, data);
 		return ;
 	}
