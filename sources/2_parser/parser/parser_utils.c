@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:58:01 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/17 17:58:03 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:27:10 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,15 @@ void	ft_commandlst_addback(t_data *data, t_commands *new)
 	while (ptr->next)
 		ptr = ptr->next;
 	ptr->next = new;
+}
+
+int	comp_value_token(t_data *data, t_token *token)
+{
+	if (!data || !token || !token->value)
+		return (EXIT_FAILURE);
+	if (data->input.value && ft_strcmp(data->input.value, token->value) == 0)
+		return (EXIT_SUCCESS);
+	if (data->output.value && ft_strcmp(data->output.value, token->value) == 0)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:11:42 by melinamotyl       #+#    #+#             */
-/*   Updated: 2025/01/24 12:46:10 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:28:01 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,6 @@ int						parser_helper_redirections(t_data *data,
 							t_token *token);
 int						parser_helper_others(t_data *data, t_token *token,
 							int *create_new_node);
-int						comp_value_token(t_data *data, t_token *token);
 int						parser(t_data *data);
 
 /*parser_command_concate.c*/
@@ -299,6 +298,7 @@ int						concate_final_group_commands(t_data *data);
 /*parser_utils.c*/
 t_commands				*add_new_command_node(t_data *data);
 void					ft_commandlst_addback(t_data *data, t_commands *new);
+int						comp_value_token(t_data *data, t_token *token);
 
 /*parser_command_populate*/
 // int						populate_command(t_data *data, t_token *token);

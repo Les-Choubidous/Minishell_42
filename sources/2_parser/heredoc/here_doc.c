@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 11:45:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2025/01/24 11:08:57 by uzanchi          ###   ########.fr       */
+/*   Updated: 2025/01/24 15:20:11 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,21 @@ int	here_doc(t_data *data, char *delimiter)
 	return (EXIT_SUCCESS);
 }
 
+static int	handle_line(char *line, char *delimiter, int write_fd)
+{
+	if (!line)
+		return (0);
+	if (!ft_strcmp(line, delimiter))
+	{
+		free(line);
+		return (0);
+	}
+	write(write_fd, line, ft_strlen(line));
+	write(write_fd, "\n", 1);
+	free(line);
+	return (1);
+}
+
 int	populate_here_doc(int write_fd, char *delimiter)
 {
 	char	*line;
@@ -55,17 +70,8 @@ int	populate_here_doc(int write_fd, char *delimiter)
 			close(write_fd);
 			return (EXIT_FAILURE);
 		}
-		if (!line)
+		if (!handle_line(line, delimiter, write_fd))
 			break ;
-		if (!ft_strcmp(line, delimiter))
-		{
-			free(line);
-			break ;
-		}
-		write(write_fd, line, ft_strlen(line));
-		write(write_fd, "\n", 1);
-		free(line);
 	}
-	close(write_fd);
-	return (EXIT_SUCCESS);
+	return (close(write_fd), EXIT_SUCCESS);
 }

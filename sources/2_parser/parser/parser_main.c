@@ -3,23 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:57:57 by memotyle          #+#    #+#             */
-/*   Updated: 2025/01/24 15:09:22 by memotyle         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:31:11 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
-		int oflag)
+// int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
+// 		int oflag)
+// {
+// 	(void)(data);
+// 	if (redir->fd >= 3)
+// 		close(redir->fd);
+// 	if (!token->next)
+// 		return (perror_return("syntax error near unexpected token "));
+// 	redir->type = token->type;
+// 	redir->quote = token->quote;
+// 	if (redir->value)
+// 		free(redir->value);
+// 	redir->value = ft_strdup(token->next->value);
+// 	if (!redir->value)
+// 		return (perror_return("ft_strdup for redirection value"));
+// 	if (redir->type != HEREDOC)
+// 	{
+// 		redir->fd = open(redir->value, oflag, 0644);
+// 		if (redir->fd < 0)
+// 			return (perror_return("No such file or directory"));
+// 	}
+// 	else if (redir->type == HEREDOC)
+// 	{
+// 		g_waiting = 2;
+// 		redir->fd = open("heredoc.tmp", oflag, 0644);
+// 		if (redir->fd < 0)
+// 			return (perror_return(redir->value));
+// 		heredoc_signal_handler();
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
+
+static int	open_and_handle_redirection(t_in_out *redir, t_token *token,
+										int oflag)
 {
-	(void)(data);
-	if (redir->fd >= 3)
-		close(redir->fd);
-	if (!token->next)
-		return (perror_return("syntax error near unexpected token "));
 	redir->type = token->type;
 	redir->quote = token->quote;
 	if (redir->value)
@@ -33,7 +60,7 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		if (redir->fd < 0)
 			return (perror_return("No such file or directory"));
 	}
-	else if (redir->type == HEREDOC)
+	else
 	{
 		g_waiting = 2;
 		redir->fd = open("heredoc.tmp", oflag, 0644);
@@ -42,6 +69,17 @@ int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
 		heredoc_signal_handler();
 	}
 	return (EXIT_SUCCESS);
+}
+
+int	open_redirection_fd(t_data *data, t_in_out *redir, t_token *token,
+						int oflag)
+{
+	(void)(data);
+	if (redir->fd >= 3)
+		close(redir->fd);
+	if (!token->next)
+		return (perror_return("syntax error near unexpected token "));
+	return (open_and_handle_redirection(redir, token, oflag));
 }
 
 int	parser_helper_redirections(t_data *data, t_token *token)
@@ -59,7 +97,6 @@ int	parser_helper_redirections(t_data *data, t_token *token)
 	{
 		if (open_redirection_fd(data, &data->input, token, O_RDONLY))
 			return (2);
-			// return (EXIT_FAILURE);
 	}
 	else if (token->type == OUTPUT || token->type == APPEND)
 	{
@@ -95,17 +132,6 @@ int	parser_helper_others(t_data *data, t_token *token, int *create_new_node)
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
-}
-
-int	comp_value_token(t_data *data, t_token *token)
-{
-	if (!data || !token || !token->value)
-		return (EXIT_FAILURE);
-	if (data->input.value && ft_strcmp(data->input.value, token->value) == 0)
-		return (EXIT_SUCCESS);
-	if (data->output.value && ft_strcmp(data->output.value, token->value) == 0)
-		return (EXIT_SUCCESS);
-	return (EXIT_FAILURE);
 }
 
 int	parser(t_data *data)
